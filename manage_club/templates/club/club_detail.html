@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Club Information{% endblock %}
+
+{% block content %}
+<div class="row text-center vertical-middle-sm" style="margin-top: 20px">
+    <h1>社团{{ club.name }}的基本信息</h1>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-4 text-right"><span>社团名称：</span></div>
+                <div class="col-md-8 text-left">{{ club.name }}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 text-right"><span>社长姓名：</span></div>
+                <div class="col-md-8 text-left">{{ club.lead_name }}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 text-right"><span>社团编号：</span></div>
+                <div class="col-md-8 text-left">{{ club.club_id }}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 text-right"><span>社团内人数：</span></div>
+                <div class="col-md-8 text-left">{{ club.num_of_mem }}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 text-right"><span>社团简介：</span></div>
+                <div class="col-md-8 text-left">{{ club.Aboutme }}</div>
+            </div>
+            <a href="{% url 'club:join_club' club.id %}"><button class="btn btn-primary btn-lg">我要加入！</button></a>
+        </div>
+        <div class="col-md-6">
+            <div style="margin-right: 100px">
+                {% if club.photo %}
+                <img name="club_face" src="{{ club.photo | striptags }}" class="img-circle" id="club_photo">
+                {% else %}
+                <img name="user_face" src="{% static 'images/face.jpg' %}" class="img-circle"  id="my_photo">
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
