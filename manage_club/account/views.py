@@ -5,9 +5,12 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django import forms
-from .forms import UserInfoForm,LoginForm,RegistrationForm,UserForm
+from .forms import UserInfoForm, LoginForm, RegistrationForm, UserForm
 from .models import UserInfo
 from club.models import InClub
+from django.http import JsonResponse
+from django.contrib import messages
+
 
 
 def user_login(request):
@@ -15,19 +18,20 @@ def user_login(request):
         login_form = LoginForm(request.POST)
         if login_form.is_valid():
             cd = login_form.cleaned_data
-            user = authenticate(username=cd['username'],password=cd['password'])
+            user = authenticate(username=cd['username'], password=cd['password'])
 
             if user:
-                login(request,user)
+                login(request, user)
                 return redirect('/home/')
             else:
-                return HttpResponse("Sorry. Your username or password is not right.")
+                return redirect('/account/fault_re_login/')
         else:
             return HttpResponse("Invalid login!")
 
     if request.method == "GET":
         login_form = LoginForm()
-        return render(request,"registration/login.html",{"form":login_form})
+        return render(request, "registration/login.html", {"form": login_form})
+
 
 def register(request):
     if request.method == "POST":
@@ -38,19 +42,21 @@ def register(request):
             new_user.save()
             print("1")
             UserInfo.objects.create(user=new_user)
-            return HttpResponseRedirect(reverse("account:user_login"))
+            return JsonResponse({'success': False})
         else:
             return HttpResponse("Sorry,you can not register!")
     else:
         user_form = RegistrationForm()
-        return render(request,"account/register.html",{"form":user_form})
+        return render(request, "account/register.html", {"form": user_form})
+
 
 @login_required(login_url='/account/login/')
 def myself(request):
     user = User.objects.get(username=request.user.username)
     userinfo = UserInfo.objects.get(user=user)
     club = InClub.objects.get(member=request.user)
-    return render(request,"account/myself.html",{"user":user,"userinfo":userinfo,"club":club})
+    return render(request, "account/myself.html", {"user": user, "userinfo": userinfo, "club": club})
+
 
 @login_required(login_url='/account/login/')
 def myself_edit(request):
@@ -60,7 +66,7 @@ def myself_edit(request):
     if request.method == "POST":
         user_form = UserForm(request.POST)
         userinfo_form = UserInfoForm(request.POST)
-        if user_form.is_valid()*userinfo_form.is_valid():
+        if user_form.is_valid() * userinfo_form.is_valid():
             user_cd = user_form.cleaned_data
             userinfo_cd = userinfo_form.cleaned_data
             print(user_cd["email"])
@@ -75,10 +81,12 @@ def myself_edit(request):
         return HttpResponseRedirect('/account/my-information')
     else:
         user_form = UserForm(instance=request.user)
-        userinfo_form = UserInfoForm(initial={"school":userinfo.school,"age":userinfo.age,"department":userinfo.department
-                                              ,"level":userinfo.level,"aboutme":userinfo.aboutme})
-        return render(request,"account/myself_edit.html",{"user_form":user_form,
-                                                          "userinfo_form":userinfo_form})
+        userinfo_form = UserInfoForm(
+            initial={"school": userinfo.school, "age": userinfo.age, "department": userinfo.department
+                , "level": userinfo.level, "aboutme": userinfo.aboutme})
+        return render(request, "account/myself_edit.html", {"user_form": user_form,
+                                                            "userinfo_form": userinfo_form})
+
 
 @login_required(login_url='/account/login/')
 def my_image(request):
@@ -89,4 +97,4 @@ def my_image(request):
         userInfo.save()
         return HttpResponse("1")
     else:
-        return render(request,'account/imagecrop.html',)
+        return render(request, 'account/imagecrop.html', )

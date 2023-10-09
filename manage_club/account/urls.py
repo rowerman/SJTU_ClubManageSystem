@@ -9,6 +9,7 @@ app_name='account'
 urlpatterns = [
     url(r'^login/$',views.user_login,name="user_login"),
     path(r'logout/', auth_views.LogoutView.as_view(template_name="account/logout.html"), name='logout'),
+    path(r'fault_re_login/', auth_views.LogoutView.as_view(template_name="account/fault_re_login.html"), name='re_login'),
     url(r'^register/$',views.register,name="user_register"),
     path('password-change/',
          auth_views.PasswordChangeView.as_view(template_name='registration/password_change_form.html',
