@@ -10,6 +10,8 @@ from .models import UserInfo
 from club.models import InClub
 from django.http import JsonResponse
 from django.contrib import messages
+import tkinter.messagebox
+from tkinter import *
 
 
 
@@ -24,7 +26,8 @@ def user_login(request):
                 login(request, user)
                 return redirect('/home/')
             else:
-                return redirect('/account/fault_re_login/')
+                messages.success(request, '用户名或密码错误！')
+                return redirect('/account/login/')
         else:
             return HttpResponse("Invalid login!")
 
@@ -42,9 +45,10 @@ def register(request):
             new_user.save()
             print("1")
             UserInfo.objects.create(user=new_user)
-            return JsonResponse({'success': False})
+            return HttpResponseRedirect(reverse('account:user_login'))
         else:
-            return HttpResponse("Sorry,you can not register!")
+            messages.success(request, '对不起，您不能登录！')
+            return redirect('/account/register/')
     else:
         user_form = RegistrationForm()
         return render(request, "account/register.html", {"form": user_form})
