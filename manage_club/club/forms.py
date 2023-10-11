@@ -18,3 +18,8 @@ class messageForm(forms.ModelForm):
         model = message
         fields = ("content","receiver_name",)
 
+class ClubForm(forms.ModelForm):
+    class Meta:
+        model = Club
+        fields = ("name","club_id","Aboutme")
+

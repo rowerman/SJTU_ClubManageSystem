@@ -63,7 +63,6 @@ def myself_edit(request):
         if user_form.is_valid()*userinfo_form.is_valid():
             user_cd = user_form.cleaned_data
             userinfo_cd = userinfo_form.cleaned_data
-            print(user_cd["email"])
             user.email = user_cd["email"]
             userinfo.school = userinfo_cd["school"]
             userinfo.department = userinfo_cd["department"]

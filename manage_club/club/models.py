@@ -4,7 +4,7 @@ from django.db import models
 
 #社团信息
 class Club(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100,unique=True)
     lead_name = models.CharField(max_length=100,default="hanwen")
     club_id = models.CharField(max_length=100)          #社团编号
     created = models.DateTimeField(auto_now_add=True)
@@ -17,7 +17,7 @@ class InClub(models.Model):
     In_club = models.ManyToManyField(Club,related_name="In_club")
 
 class Activity(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100,unique=True)
     begin_date = models.DateTimeField(max_length=100)
     end_date = models.DateTimeField(max_length=100)
     description = models.TextField(max_length=1000)
@@ -30,6 +30,12 @@ class message(models.Model):
     content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
     receiver_read = models.BooleanField(default=False)
+
+class UserLevel(models.Model):
+    user = models.OneToOneField(User,unique=True,related_name="user_level",on_delete=models.CASCADE)
+    #1.普通成员：common_member  2.管理员：manager  3.社长：leader
+    level = models.CharField(max_length=100,default="common_member")
+    club = models.ForeignKey(Club,related_name="club_level",on_delete=models.CASCADE)
 
 
 

@@ -15,3 +15,5 @@ class UserInfo(models.Model):
 
     def __str__(self):
         return "user:{}".format(self.user.username)
+
+

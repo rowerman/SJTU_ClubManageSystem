@@ -13,6 +13,8 @@
             <p class="list-group-item-text">社长：<a href="#">{{ club.lead_name }}</a></p>
             <p class="list-group-item-text">概要：{{ club.Aboutme |slice:'70'|linebreaks }}</p>
     </div>
+    {% empty %}
+    <h4 class="text-center">还没有社团捏~</h4>
     {% endfor %}
     {% include "paginator.html" %}
 </div>
