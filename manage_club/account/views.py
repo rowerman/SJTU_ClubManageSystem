@@ -7,6 +7,7 @@ from django.template.defaulttags import csrf_token
 from django.urls import reverse
 from django import forms
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib import messages
 
 from .forms import UserInfoForm, LoginForm, RegistrationForm, UserForm, SearchForm
 from .models import UserInfo
@@ -18,19 +19,20 @@ def user_login(request):
         login_form = LoginForm(request.POST)
         if login_form.is_valid():
             cd = login_form.cleaned_data
-            user = authenticate(username=cd['username'],password=cd['password'])
+            user = authenticate(username=cd['username'], password=cd['password'])
 
             if user:
-                login(request,user)
+                login(request, user)
                 return redirect('/home/')
             else:
-                return HttpResponse("Sorry. Your username or password is not right.")
+                messages.success(request, '用户名或密码错误！')
+                return redirect('/account/login/')
         else:
             return HttpResponse("Invalid login!")
 
     if request.method == "GET":
         login_form = LoginForm()
-        return render(request,"registration/login.html",{"form":login_form})
+        return render(request, "registration/login.html", {"form": login_form})
 
 def register(request):
     if request.method == "POST":
@@ -41,12 +43,14 @@ def register(request):
             new_user.save()
             print("1")
             UserInfo.objects.create(user=new_user)
-            return HttpResponseRedirect(reverse("account:user_login"))
+            return HttpResponseRedirect(reverse('account:user_login'))
         else:
-            return HttpResponse("Sorry,you can not register!")
+            messages.success(request, '对不起，您不能登录！')
+            return redirect('/account/register/')
     else:
         user_form = RegistrationForm()
-        return render(request,"account/register.html",{"form":user_form})
+        return render(request, "account/register.html", {"form": user_form})
+
 
 @login_required(login_url='/account/login/')
 def myself(request):
