@@ -10,7 +10,7 @@
     <div class="list-group">
         <a href="{% url 'club:message_detail' message.id %}" class="list-group-item active" style="margin-right: 100px">
             <h4 class="list-group-item-heading">发信人：{{ message.sender.username }}</h4>
-            <h4 class="list-group-item-heading">发信时间：{{ message.timestamp | date:"Y-m-d h:m:s" }}</h4>
+            <h4 class="list-group-item-heading">发信时间：{{ message.timestamp | date:"Y-m-d H:m:s" }}</h4>
         </a>
             <p class="list-group-item-text">内容：{{ message.content |slice:'70'|linebreaks }}</p>
     </div>

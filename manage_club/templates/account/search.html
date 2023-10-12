@@ -19,6 +19,8 @@
         <li><a href="{% url 'account:my_information' user.id %}">{{ user.username }}</a></li>
         {% endfor %}
     </ul>
+{% else %}
+    <h3>查无此人~</h3>
 {% endif %}
 
 <script src="{% static 'js/jquery.js' %}"></script>

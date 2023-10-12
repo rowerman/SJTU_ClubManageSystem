@@ -12,7 +12,7 @@
             </div>
             <div class="row">
                 <div class="col-md-4 text-right"><span>发信日期：</span></div>
-                <div class="col-md-8 text-left">{{ Message.timestamp }}</div>
+                <div class="col-md-8 text-left">{{ Message.timestamp | timezone:"Asia/Shanghai" | date:"Y-m-d H:m:s"}}</div>
             </div>
             <div class="row">
                 <div class="col-md-4 text-right"><span>信息内容：</span></div>

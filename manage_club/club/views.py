@@ -13,6 +13,7 @@ from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from .forms import messageForm
 from django.db.models import QuerySet
 from .forms import ClubForm
+from account.forms import SearchForm
 
 @login_required(login_url='/account/login')
 @csrf_exempt
@@ -87,40 +88,145 @@ def send_message(request):
         message_form = messageForm()
         return render(request, 'club/send_message.html',{"message_form":message_form})
 
-@login_required(login_url='account/login')
+@login_required(login_url='/account/login/')
 def my_send(request):
-    messages = message.objects.filter(sender=request.user)
-    paginator = Paginator(messages,3)
-    page = request.GET.get('page')
-    try:
-        current_page = paginator.page(page)
-        messages = current_page.object_list
-    except PageNotAnInteger:
-        current_page = paginator.page(1)
-        messages = current_page.object_list
-    except EmptyPage:
-        current_page = paginator.page(paginator.num_pages)
-        messages = current_page.object_list
-    return render(request,"club/my_send.html",{"messages":messages,"page":current_page})
-
-@login_required(login_url='account/login')
-def my_send_type(request,type):
-    if type == 1:
-        messages = message.objects.filter(Q(sender=request.user)&Q(receiver_read=True))
+    if request.method == "GET":
+        search_form = SearchForm()
+        messages = message.objects.filter(sender=request.user)
+        paginator = Paginator(messages,3)
+        page = request.GET.get('page')
+        try:
+            current_page = paginator.page(page)
+            messages = current_page.object_list
+        except PageNotAnInteger:
+            current_page = paginator.page(1)
+            messages = current_page.object_list
+        except EmptyPage:
+            current_page = paginator.page(paginator.num_pages)
+            messages = current_page.object_list
+        return render(request,"club/my_send.html",{"messages":messages,"page":current_page,"search_form":search_form})
     else:
-        messages = message.objects.filter(Q(sender=request.user)&Q(receiver_read=False))
-    paginator = Paginator(messages,3)
-    page = request.GET.get('page')
-    try:
-        current_page = paginator.page(page)
-        messages = current_page.object_list
-    except PageNotAnInteger:
-        current_page = paginator.page(1)
-        messages = current_page.object_list
-    except EmptyPage:
-        current_page = paginator.page(paginator.num_pages)
-        messages = current_page.object_list
-    return render(request,"club/my_send.html",{"messages":messages,"page":current_page})
+        search_form = SearchForm(request.POST)
+        if search_form.is_valid():
+            keyword = request.POST['keyword']
+            try:
+                messages = message.objects.filter(receiver_name=keyword)
+                paginator = Paginator(messages, 3)
+                page = request.GET.get('page')
+                try:
+                    current_page = paginator.page(page)
+                    messages = current_page.object_list
+                except PageNotAnInteger:
+                    current_page = paginator.page(1)
+                    messages = current_page.object_list
+                except EmptyPage:
+                    current_page = paginator.page(paginator.num_pages)
+                    messages = current_page.object_list
+                return render(request,"club/my_send.html",{"search_form":search_form,"messages":messages,"page":current_page})
+            except:
+                messages = message.objects.none()
+                paginator = Paginator(messages, 3)
+                page = request.GET.get('page')
+                try:
+                    current_page = paginator.page(page)
+                    messages = current_page.object_list
+                except PageNotAnInteger:
+                    current_page = paginator.page(1)
+                    messages = current_page.object_list
+                except EmptyPage:
+                    current_page = paginator.page(paginator.num_pages)
+                    messages = current_page.object_list
+                return render(request,"club/my_send.html",{"search_form":search_form,"messages":messages,"page":current_page})
+        else:
+            return HttpResponse("2")       #表单错误
+
+
+@login_required(login_url='/account/login/')
+def my_send_type(request,type):
+    if request.method == "GET":
+        search_form = SearchForm()
+        if type == "1":
+            messages = message.objects.filter(sender=request.user,receiver_read="yes")
+        else:
+            messages = message.objects.filter(sender=request.user,receiver_read="no")
+        paginator = Paginator(messages,3)
+        page = request.GET.get('page')
+        try:
+            current_page = paginator.page(page)
+            messages = current_page.object_list
+        except PageNotAnInteger:
+            current_page = paginator.page(1)
+            messages = current_page.object_list
+        except EmptyPage:
+            current_page = paginator.page(paginator.num_pages)
+            messages = current_page.object_list
+        return render(request,"club/my_send_type.html",{"messages":messages,"page":current_page,"search_form":search_form,"type":type})
+    else:
+        search_form = SearchForm(request.POST)
+        if search_form.is_valid():
+            keyword = request.POST['keyword']
+            if type == "1":
+                try:
+                    messages = message.objects.filter(receiver_name=keyword,receiver_read="yes")
+                    paginator = Paginator(messages, 3)
+                    page = request.GET.get('page')
+                    try:
+                        current_page = paginator.page(page)
+                        messages = current_page.object_list
+                    except PageNotAnInteger:
+                        current_page = paginator.page(1)
+                        messages = current_page.object_list
+                    except EmptyPage:
+                        current_page = paginator.page(paginator.num_pages)
+                        messages = current_page.object_list
+                    return render(request,"club/my_send_type.html",{"search_form":search_form,"messages":messages,"page":current_page,"type":type})
+                except:
+                    messages = message.objects.none()
+                    paginator = Paginator(messages, 3)
+                    page = request.GET.get('page')
+                    try:
+                        current_page = paginator.page(page)
+                        messages = current_page.object_list
+                    except PageNotAnInteger:
+                        current_page = paginator.page(1)
+                        messages = current_page.object_list
+                    except EmptyPage:
+                        current_page = paginator.page(paginator.num_pages)
+                        messages = current_page.object_list
+                    return render(request,"club/my_send_type.html",{"search_form":search_form,"messages":messages,"page":current_page,"type":type})
+            else:
+                try:
+                    messages = message.objects.filter(receiver_name=keyword,receiver_read="no")
+                    print(messages)
+                    paginator = Paginator(messages, 3)
+                    page = request.GET.get('page')
+                    try:
+                        current_page = paginator.page(page)
+                        messages = current_page.object_list
+                    except PageNotAnInteger:
+                        current_page = paginator.page(1)
+                        messages = current_page.object_list
+                    except EmptyPage:
+                        current_page = paginator.page(paginator.num_pages)
+                        messages = current_page.object_list
+                    return render(request,"club/my_send.html",{"search_form":search_form,"messages":messages,"page":current_page,"type":type})
+                except:
+                    messages = message.objects.none()
+                    paginator = Paginator(messages, 3)
+                    page = request.GET.get('page')
+                    try:
+                        current_page = paginator.page(page)
+                        messages = current_page.object_list
+                    except PageNotAnInteger:
+                        current_page = paginator.page(1)
+                        messages = current_page.object_list
+                    except EmptyPage:
+                        current_page = paginator.page(paginator.num_pages)
+                        messages = current_page.object_list
+                    return render(request,"club/my_send.html",{"search_form":search_form,"messages":messages,"page":current_page,"type":type})
+        else:
+            return HttpResponse("2")       #表单错误
+
 
 @login_required(login_url='account/login')
 def my_recceived(request):
@@ -141,7 +247,7 @@ def my_recceived(request):
 @login_required(login_url='account/login')
 def message_detail(request,message_id):
     Message = message.objects.get(id=message_id)
-    Message.receiver_read = True
+    Message.receiver_read = "yes"
     Message.save()
     return render(request,"club/message_detail.html",{"Message":Message})
 
@@ -335,7 +441,7 @@ def delete_activity(request):
     except:
         return HttpResponse("2")
 
-@login_required(login_url='account/login')
+@login_required(login_url='/account/login/')
 def all_activity(request):
     activities = Activity.objects.all()
     paginator = Paginator(activities, 4)

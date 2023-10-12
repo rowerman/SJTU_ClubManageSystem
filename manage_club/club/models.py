@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils import timezone
 
 
 #社团信息
@@ -19,8 +20,8 @@ class InClub(models.Model):
 
 class Activity(models.Model):
     name = models.CharField(max_length=100,unique=True)
-    begin_date = models.DateTimeField(max_length=100)
-    end_date = models.DateTimeField(max_length=100)
+    begin_date = models.DateTimeField(default=timezone.now)
+    end_date = models.DateTimeField(default=timezone.now)
     description = models.TextField(max_length=1000)
     belong = models.ForeignKey(Club,related_name="launch",on_delete=models.CASCADE)
 
@@ -30,7 +31,7 @@ class message(models.Model):
     receiver_name = models.CharField(max_length=100,default="hanwen")
     content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
-    receiver_read = models.BooleanField(default=False)
+    receiver_read = models.CharField(max_length=10,default="no")
 
 
 

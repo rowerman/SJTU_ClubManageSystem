@@ -42,8 +42,8 @@
                 <div class="col-md-8 text-left">{{ club.lead_name }}</div>
             </div>
             <div class="row">
-                <div class="col-md-4 text-right"><span>社团编号：</span></div>
-                <div class="col-md-8 text-left">{{ club.club_id }}</div>
+                <div class="col-md-4 text-right"><span>社团创建时间：</span></div>
+                <div class="col-md-8 text-left">{{ club.created | timezone:"Asia/Shanghai" | date:"Y-m-d H:m:s" }}</div>
             </div>
             <div class="row">
                 <div class="col-md-4 text-right"><span>社团内人数：</span></div>

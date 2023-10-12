@@ -3,7 +3,6 @@ from club.models import Club
 
 class GoodType(models.Model):
     type = models.CharField(max_length=20)
-
     def __str__(self):
         return self.type
 
@@ -13,5 +12,6 @@ class Commodity(models.Model):
     contact = models.CharField(max_length=100)
     expense = models.FloatField()
     intro = models.TextField(max_length=500,help_text="不超过500个字符")
+    photo = models.ImageField(upload_to='images/%Y/%m/%d',default="static/images/face.jpg")
     owner = models.ForeignKey(Club,related_name="owner",on_delete=models.CASCADE)
     Type = models.ManyToManyField(GoodType,related_name="Type",blank=True)

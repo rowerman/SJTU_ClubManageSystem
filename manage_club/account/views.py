@@ -23,7 +23,7 @@ def user_login(request):
 
             if user:
                 login(request, user)
-                return redirect('/home/')
+                return redirect('/home/homepage/')
             else:
                 messages.success(request, '用户名或密码错误！')
                 return redirect('/account/login/')
@@ -121,7 +121,8 @@ def search(request):
             if results:
                 return render(request,"account/search.html",{"search_form":search_form,"results":results})
             else:
-                return HttpResponse("1")   #查无此人
+                results = User.objects.none()
+                return render(request,"account/search.html",{"search_form":search_form,"results":results})
         else:
             return HttpResponse("2")       #表单错误
 
