@@ -10,6 +10,8 @@ from django.views.decorators.csrf import csrf_exempt
 from club.models import Club
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from django.db.models import QuerySet
+from .forms import CommodityForm
+from .models import Commodity,GoodType
 
 @login_required(login_url='account/login')
 def create_good(request,club_id):

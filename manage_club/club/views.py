@@ -174,8 +174,15 @@ def confirm_join(request,club_id):
 
 @login_required(login_url='/account/login')
 def my_club(request):
-    inclubs = InClub.objects.get(member=request.user)
-    clubs = inclubs.In_club.all()
+    try:
+        inclubs = InClub.objects.get(member_id=request.user.id)
+    except:
+        inclubs = None
+    if inclubs:
+        clubs = inclubs.In_club.all()
+    else:
+        clubs = Club.objects.none()
+    print(clubs)
     paginator = Paginator(clubs,3)
     page = request.GET.get('page')
     try:
