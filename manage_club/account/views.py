@@ -60,7 +60,7 @@ def myself(request):
     return render(request,"account/myself.html",{"user":user,"userinfo":userinfo,"club":club})
 
 @login_required(login_url='/account/login/')
-def myself(request,user_id):
+def myself_version(request,user_id):
     user = User.objects.get(id=user_id)
     userinfo = UserInfo.objects.get(user=user)
     try:

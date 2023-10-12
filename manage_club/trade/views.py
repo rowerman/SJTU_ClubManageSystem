@@ -15,4 +15,9 @@ from .models import Commodity,GoodType
 
 @login_required(login_url='account/login')
 def create_good(request,club_id):
-    return
+    if request.method == "GET":
+        good_form = CommodityForm()
+        return render(request,"trade/create_good.html",name="create_good")
+    else:
+        good_form = CommodityForm(request.POST)
+        return
