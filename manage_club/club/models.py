@@ -11,6 +11,7 @@ class Club(models.Model):
     num_of_mem = models.IntegerField(max_length=500,default=1)
     photo = models.TextField(max_length=10000,blank=True)
     Aboutme = models.TextField(max_length=1000)
+    fans = models.ManyToManyField(User,related_name="fans",blank=True)
 
 class InClub(models.Model):
     member = models.OneToOneField(User,related_name="member",on_delete=models.CASCADE)
@@ -31,11 +32,6 @@ class message(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     receiver_read = models.BooleanField(default=False)
 
-class UserLevel(models.Model):
-    user = models.OneToOneField(User,unique=True,related_name="user_level",on_delete=models.CASCADE)
-    #1.普通成员：common_member  2.管理员：manager  3.社长：leader
-    level = models.CharField(max_length=100,default="common_member")
-    club = models.ForeignKey(Club,related_name="club_level",on_delete=models.CASCADE)
 
 
 

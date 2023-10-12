@@ -29,3 +29,6 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ("email",)
+
+class SearchForm(forms.Form):
+    keyword = forms.CharField(label="keyword",max_length=200)

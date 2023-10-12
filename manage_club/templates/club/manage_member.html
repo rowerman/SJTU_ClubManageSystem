@@ -33,19 +33,23 @@
         <tr>
             <td>序号</td>
             <td>姓名</td>
-            <td>身份</td>
+            <td>是否为社长</td>
             <td>操作</td>
         </tr>
-        {% for member in members %}
+        {% for member in commons %}
         <tr id="{{ forloop.counter }}">
             <td>{{ forloop.counter }}</td>
-            <td><a href="#">{{ member.user.username }}</a></td>
-            <td>{{ member.level }}</td>
+            <td><a href="#">{{ member.username }}</a></td>
+            {% if club.lead_name == member.username %}
+            <td>是</td>
+            {% else %}
+            <td>否</td>
+            {% endif %}
             <td>
                 {% if forloop.counter == 1 %}
                 <a name="leader" href="#"><span class="glyphicon glyphicon-apple" style="margin-left: 20px"></span></a>
                 {% else %}
-                <a name="delete" href="javascript:" onclick="delete_member({{ member.user_id }})"><span class="glyphicon glyphicon-trash" style="margin-left: 20px"></span></a>
+                <a name="delete" href="javascript:" onclick="delete_member({{ member.id}})"><span class="glyphicon glyphicon-trash" style="margin-left: 20px"></span></a>
                 {% endif %}
             </td>
         </tr>

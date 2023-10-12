@@ -29,4 +29,5 @@ urlpatterns = [
     url(r'^activity-detail/(?P<activity_id>\d+)/$',views.activity_detail_version,name="activity_detail"),
     url(r'^delete-activity/$',views.delete_activity,name="delete_activity"),
     url(r'^all-activity/$',views.all_activity,name="all_activity"),
+    url(r'^fan-Club/$',views.fan_Club,name="fan_Club"),
 ]

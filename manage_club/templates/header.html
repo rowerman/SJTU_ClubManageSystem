@@ -9,10 +9,11 @@
             <ul class="nav navbar-nav" role="tablist">
                 <li><a href="{% url 'home' %}">HOME</a></li>
                 <li><a href="{% url 'club:my_club' %}">我加入的社团</a></li>
+                <li><a href="{% url 'club:manage_Myclub' %}">我管理的社团</a></li>
                 <li><a href="{% url 'club:list_club' %}">全部社团</a></li>
                 <li><a href="{% url 'club:all_activity' %}">最新活动</a></li>
                 <li><a href="{% url 'club:create_club' %}">创建社团</a></li>
-                <li><a href="{% url 'club:manage_Myclub' %}">我管理的社团</a></li>
+                <li><a href="{% url 'account:search' %}">查找用户</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right" style="margin-right: 10px">
                 {% if user.is_authenticated %}

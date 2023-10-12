@@ -3,9 +3,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
+from django.template.defaulttags import csrf_token
 from django.urls import reverse
 from django import forms
-from .forms import UserInfoForm,LoginForm,RegistrationForm,UserForm
+from django.views.decorators.csrf import csrf_exempt
+
+from .forms import UserInfoForm, LoginForm, RegistrationForm, UserForm, SearchForm
 from .models import UserInfo
 from club.models import InClub
 
@@ -53,6 +56,16 @@ def myself(request):
     return render(request,"account/myself.html",{"user":user,"userinfo":userinfo,"club":club})
 
 @login_required(login_url='/account/login/')
+def myself(request,user_id):
+    user = User.objects.get(id=user_id)
+    userinfo = UserInfo.objects.get(user=user)
+    try:
+        club = InClub.objects.get(member=user)
+    except:
+        club = None
+    return render(request,"account/myself.html",{"user":user,"userinfo":userinfo,"club":club})
+
+@login_required(login_url='/account/login/')
 def myself_edit(request):
     user = User.objects.get(username=request.user.username)
     userinfo = UserInfo.objects.get(user=request.user)
@@ -89,3 +102,23 @@ def my_image(request):
         return HttpResponse("1")
     else:
         return render(request,'account/imagecrop.html',)
+
+@login_required(login_url='/account/login/')
+@csrf_exempt
+def search(request):
+    if request.method == "GET":
+        search_form = SearchForm()
+        return render(request,"account/search.html",{"search_form":search_form})
+    else:
+        search_form = SearchForm(request.POST)
+        if search_form.is_valid():
+            keyword = request.POST['keyword']
+            results = User.objects.filter(username__icontains=keyword)
+            if results:
+                return render(request,"account/search.html",{"search_form":search_form,"results":results})
+            else:
+                return HttpResponse("1")   #查无此人
+        else:
+            return HttpResponse("2")       #表单错误
+
+

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'account',
     'club',
     'image',
+    'trade',
 ]
 
 MIDDLEWARE = [

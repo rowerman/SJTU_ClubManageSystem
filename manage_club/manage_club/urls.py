@@ -29,4 +29,5 @@ urlpatterns = [
     url(r'^account/',include('account.urls',namespace='account')),
     url(r'^club/', include('club.urls', namespace='club')),
     path('home/', TemplateView.as_view(template_name="home.html"), name='home'),
+    url(r'^trade/',include('trade.urls',namespace='trade')),
 ]

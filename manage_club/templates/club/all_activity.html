@@ -10,6 +10,7 @@
     <div class="list-group">
         <a href="{% url 'club:activity_detail' activity.id  %}" class="list-group-item active" style="margin-right: 100px">
             <h4 class="list-group-item-heading">{{ activity.name }}</h4></a>
+        <p class="list-group-item-text">本活动由<a href="{% url 'club:club_detail' activity.belong.id %}">{{ activity.belong.name }}</a>承办</p>
             <p class="list-group-item-text">开始时间：{{ activity.begin_date | date:"Y-m-d h:m:s" }}</p>
             <p class="list-group-item-text">结束时间：{{ activity.end_date | date:"Y-m-d h:m:s" }}</p>
             <p class="list-group-item-text">概要：{{ activity.description |slice:'70'|linebreaks }}</p>
