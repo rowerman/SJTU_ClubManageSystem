@@ -1,38 +1,143 @@
-{% extends "base.html" %}
-
 {% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container-diy {
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            
+        }
+        
+        .left-diy {
+            flex: 1;
+            background: linear-gradient(-70deg, #ffffff 50%, #c9151e 50%);
+        }
+        .row-diy {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        .col-left {
+            position: absolute;
+            top: 50%;
+            left: 20%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
 
-{% block title %}register user{% endblock %}
+        .col-right {
+            position: absolute;
+            top: 50%;
+            left: 80%;
+            transform: translate(-70%, -50%);
+            text-align: center;
 
-{% block content %}
-<div class="row text-center vertical-middle-sm">
-    <h1>Register</h1>
-    <p>If you are a user,<strong><a href="{% url 'account:user_login' %}">Login</a></strong>,please</p>
-    <p>or register</p>
-    <form class="form-horizontal" action="." method="post">{% csrf_token %}
-        <div class="form-group">
-            <label for="{{ form.username.id_for_label }}" class="col-md-5 control-label">Username</label>
-            <div class="col-md-6 text-left">
-                {{ form.username }}
+        }
+        .log-bxsd{box-shadow:0 0 5px #e0e0e0;  background:#efefef; height:560px; width: 400px; margin-top: 80px}
+        
+        .log-con {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .log-not, .log-fst {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .empty-line1 {
+            margin-bottom: 50px; /*设置标准化空格间距*/
+        }
+        .log-not{margin-bottom:15px; }
+        .clear { clear: both; height: 0; font-size: 0; line-height:0; }
+        .clearfix { 
+            zoom: 1;
+}
+        .log-tit{position:relative; padding-bottom:30px; }
+        .log-tit h3{color:#c9151e; font-weight:bold; font-size:36px; font-family:shsc; position:relative; z-index:10;left:-150px  }
+        .log-tit span{display:block; position:absolute; top:42px; left:-130px; z-index:1;  line-height:1em;  font-size:30px; font-weight:bold;  font-family:shsc; color:#b39c9c41; }
+    </style>
+</head>
+<body>
+    <div class="container-diy">
+        <div class="left-diy">
+            <div class="row-diy text-center vertical-middle-sm separator">
+                <div class="col-left" >
+
+                    
+                    
+                    <div class="log-not clearfix" style="height: 180px" id="newsnotice">
+                        <img src="../../static/images/logo.png" alt="" style="height: 150px;"> 
+                    </div>				  
+                
+                    <div class="log-fst" style="height: 200px" id="links">
+                        <p style="color: #e1e1e1;">welcome you！<br>
+                        欢迎新成员加入！</p>
+                        
+                    </div> 
+                    
+          
+                </div>
+
+            </div>
+            
+        </div>
+
+    
+        <div class="right">
+            <img src="../../static/images/lion.jpg" alt="" style="position:absolute; height: 100px; top:80px; right:80px;">
+            <div class="col-right">
+
+                <div class="log-con log-bxsd" style="height: 400px">
+                    <div class="log-tit">
+                        <h3 style="margin-bottom: 10px;">注册</h3>
+                        <span>register</span>  
+                    </div>
+                    <p style="margin-bottom: 10px;">If you are a user, <strong><a href="{% url 'account:user_login' %}">Login</a></strong>, please</p>
+                    <p style="margin-bottom: 10px;">or register</p>
+                    <div class="log-not clearfix" id="newsnotice">
+
+                      <div class="empty-line1"></div>
+                      <form class="form-horizontal" action="." method="post">{% csrf_token %}
+                        <div class="form-group">
+                          <label for="{{ form.username.id_for_label }}" class="col-md-5 control-label">Username</label>
+                          <div class="col-md-6 text-left">
+                            {{ form.username }}
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="{{ form.email.id_for_label }}" class="col-md-5 control-label">Email</label>
+                          <div class="col-md-6 text-left">{{ form.email }}</div>
+                        </div>
+                        <div class="form-group">
+                          <label for="{{ form.password.id_for_label }}" class="col-md-5 control-label">Password</label>
+                          <div class="col-md-6 text-left">{{ form.password }}</div>
+                        </div>
+                        <div class="form-group">
+                          <label for="{{ form.password.id_for_label }}" class="col-md-5 control-label">Confirm Password</label>
+                          <div class="col-md-6 text-left">{{ form.password2 }}</div>
+                        </div>
+                        <input type="submit" class="btn btn-primary btn-lg" value="REGISTER">
+                      </form>
+                    </div>
+                  </div>
+                </div>
             </div>
         </div>
-<div class="form-group">
-    <label for="{{ form.email.id_for_label }}" class="col-md-5 control-label">Email</label>
-    <div class="col-md-6 text-left">{{ form.email }}</div>
-</div>
-
-<div class="form-group">
-    <label for="{{ form.password.id_for_label }}" class="col-md-5 control-label">Password</label>
-    <div class="col-md-6 text-left">{{ form.password }}</div>
-</div>
-
-<div class="form-group">
-    <label for="{{ form.password.id_for_label }}" class="col-md-5 control-label">Confirm Password</label>
-    <div class="col-md-6 text-left">{{ form.password2 }}</div>
-</div>
-
-
-<input type="submit" class="btn btn-primary btn-lg" value="REGISTER">
-    </form>
-</div>
-{% endblock %}
+    </div>
+</body>
+</html>
