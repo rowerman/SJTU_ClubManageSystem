@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}My send{% endblock %}
+{% block content %}
+<div class="row text-center vertical-middle-sm">
+    <h1>我收到的消息👇</h1>
+</div>
+<div class="container">
+    {% for message in messages %}
+    <div class="list-group">
+        <a href="{% url 'club:message_detail' message.id %}" class="list-group-item active" style="margin-right: 100px">
+            <h4 class="list-group-item-heading">发信人：{{ message.sender.username }}</h4>
+            <h4 class="list-group-item-heading">发信时间：{{ message.timestamp | date:"Y-m-d h:m:s" }}</h4>
+        </a>
+            <p class="list-group-item-text">内容：{{ message.content |slice:'70'|linebreaks }}</p>
+    </div>
+    {% empty %}
+    <div class="text-center">
+        <p>您还没有此类消息</p>
+    </div>
+    {% endfor %}
+    {% include "paginator.html" %}
+</div>
+
+{% endblock %}>

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}My send{% endblock %}
+{% block content %}
+<p class="text-center">
+    你确定要加入{{ club.name }}吗？
+</p>
+<div class="form-horizontal">
+    <input type="button" class="btn btn-primary btn-lg" value="我确定！" onclick="join_it()">
+    <input type="button" class="btn" value="我再想想~" onclick="cancel()">
+</div>
+
+<script type="text/javascript">
+    function join_it(){
+        var club_id = "{{ club.id }}" ;
+        $.ajax({
+            url: "{% url 'club:comfirm_join' club.id %}",
+            type: "GET",
+            data: {"club_id":club_id},
+            success: function (e){
+            },
+        });
+    }
+</script>
+
+<script type="text/javascript">
+    function cancel(){
+        location.href = "{% url 'club:list_club' %}"
+    }
+</script>
+{% endblock %}

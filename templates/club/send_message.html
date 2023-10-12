@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Send message{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'editor/css/style.css' %}">
+<link rel="stylesheet" href="{% static 'editor/css/editormd.css' %}">
+<div style="margin-left: 10px">
+    <form class="form-horizontal" action="." method="post" id="messageForm">{% csrf_token %}
+        <div class="row" style="margin-top: 10px">
+            <div class="col-md-2 text-right"><span>收信人：</span></div>
+            <div class="col-md-10 text-left">{{ message_form.receiver_name }}</div>
+        </div>
+
+        <div class="row" style="margin-top: 10px">
+            <div class="col-md-2 text-right"><span>信息内容：</span></div>
+            <div class="col-md-10 text-left">{{ message_form.content }}</div>
+        </div>
+        <div class="row">
+            <input type="submit" class="btn btn-primary btn-lg" value="发布">
+        </div>
+
+    </form>
+</div>
+
+<script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/layer.js' %}"></script>
+
+{% endblock %}

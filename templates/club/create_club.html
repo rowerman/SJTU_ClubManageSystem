@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+{%block title%}Create new club{% endblock %}
+{% block content %}
+<div class="text-center vertical-middle-sm" style="margin-left: 10px">
+    <form class="form-horizontal" action="." method="post">{% csrf_token %}
+        <div class="row" style="margin-top: 10px">
+            <div class="col-md-2 text-right"><span>社团名称：</span></div>
+            <div class="col-md-10 text-left">{{ club_form.name }}</div>
+        </div>
+        <div class="row" style="margin-top: 10px">
+            <div class="col-md-2 text-right"><span>社团编号(命名规则如20231007-19)：</span></div>
+            <div class="col-md-10 text-left">{{ club_form.club_id }}</div>
+        </div>
+        <div class="row" style="margin-top: 10px">
+            <div class="col-md-2 text-right"><span>社团简介：</span></div>
+            <div class="col-md-10 text-left">{{ club_form.Aboutme }}</div>
+        </div>
+        <div class="row">
+            <input type="submit" class="btn btn-primary btn-lg" value="创建！">
+        </div>
+    </form>
+</div>
+{% endblock %}
