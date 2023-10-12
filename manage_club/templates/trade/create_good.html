@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}create good{% endblock %}
+{% block content %}
+<div style="margin-left: 10px">
+    <form class="form-horizontal" action="." method="post" enctype="multipart/form-data">{% csrf_token %}
+        <div class="row" style="margin-top: 10px">
+            <div class="col-md-2 text-right"><span>商品名称：</span></div>
+            <div class="col-md-10 text-left">{{ good_form.name }}</div>
+        </div>
+
+        <div class="row" style="margin-top: 10px">
+            <div class="col-md-2 text-right"><span>商品标签：</span></div>
+            <div class="col-md-10 text-left">
+                {% for type in types %}
+                <label class="checkbox-inline">
+                    <input class="tagcheckbox" type="checkbox" id="{{ type.id }}" name="good_type" value="{{ type.type }}">{{ type.type }}
+                </label>
+                {% empty %}
+                <p>You have not type for goods.</a></p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="row" style="margin-top: 10px">
+            <div class="col-md-2 text-right"><span>商品价格：</span></div>
+            <input type="text" class="text-left col-md-4" id="id_expense">
+        </div>
+        <div class="row" style="margin-top: 10px">
+            <div class="col-md-2 text-right"><span>商品介绍：</span></div>
+            <input type="text" class="text-left col-md-6" id="id_intro">
+        </div>
+        <div class="row" style="margin-top: 10px">
+            <div class="col-md-2 text-right"><span>联系方式：</span></div>
+            <input type="text" class="text-left col-md-6" id="id_contact">
+        </div>
+        <div class="row" style="margin-top: 10px">
+            <input type="file" name="image_file" id="image_file">
+        </div>
+        <div class="row">
+            <input type="button" class="btn btn-primary btn-lg" value="发布物品" onclick="publish_good()">
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/layer.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/json2.js' %}"></script>
+<script type="text/javascript">
+    function publish_good(){
+        var name = $("#id_name").val();
+        var expense = $("#id_expense").val();
+        var intro = $("#id_intro").val();
+        var contact = $("#id_contact").val();
+        var photo = $("#image_file").val();
+        console.log("photo:",photo)
+        var good_types = [];
+        $.each($("input[name='good_type']:checked"),function (){good_types.push($(this).val());});
+        $.ajax({
+            url:"{% url 'trade:create_good' club_id %}",
+            type:"POST",
+            data:{"name":name,
+                "expense":expense,
+                "intro":intro,
+                "contact":contact,
+                "photo":photo,
+                "types":JSON.stringify(good_types)},
+            success:function (e){
+                if(e=="1"){
+                    layer.msg("successful!");
+                }
+                else if(e=="2"){
+                    layer.msg("Sorry~");
+                }
+            },
+        });
+    }
+</script>
+{% endblock %}

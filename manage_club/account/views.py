@@ -3,9 +3,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
+from django.template.defaulttags import csrf_token
 from django.urls import reverse
 from django import forms
-from .forms import UserInfoForm,LoginForm,RegistrationForm,UserForm
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib import messages
+
+from .forms import UserInfoForm, LoginForm, RegistrationForm, UserForm, SearchForm
 from .models import UserInfo
 from club.models import InClub
 
@@ -15,19 +19,20 @@ def user_login(request):
         login_form = LoginForm(request.POST)
         if login_form.is_valid():
             cd = login_form.cleaned_data
-            user = authenticate(username=cd['username'],password=cd['password'])
+            user = authenticate(username=cd['username'], password=cd['password'])
 
             if user:
-                login(request,user)
-                return redirect('/home/')
+                login(request, user)
+                return redirect('/home/homepage/')
             else:
-                return HttpResponse("Sorry. Your username or password is not right.")
+                messages.success(request, '用户名或密码错误！')
+                return redirect('/account/login/')
         else:
             return HttpResponse("Invalid login!")
 
     if request.method == "GET":
         login_form = LoginForm()
-        return render(request,"registration/login.html",{"form":login_form})
+        return render(request, "registration/login.html", {"form": login_form})
 
 def register(request):
     if request.method == "POST":
@@ -38,18 +43,30 @@ def register(request):
             new_user.save()
             print("1")
             UserInfo.objects.create(user=new_user)
-            return HttpResponseRedirect(reverse("account:user_login"))
+            return HttpResponseRedirect(reverse('account:user_login'))
         else:
-            return HttpResponse("Sorry,you can not register!")
+            messages.success(request, '对不起，您不能登录！')
+            return redirect('/account/register/')
     else:
         user_form = RegistrationForm()
-        return render(request,"account/register.html",{"form":user_form})
+        return render(request, "account/register.html", {"form": user_form})
+
 
 @login_required(login_url='/account/login/')
 def myself(request):
     user = User.objects.get(username=request.user.username)
     userinfo = UserInfo.objects.get(user=user)
     club = InClub.objects.get(member=request.user)
+    return render(request,"account/myself.html",{"user":user,"userinfo":userinfo,"club":club})
+
+@login_required(login_url='/account/login/')
+def myself_version(request,user_id):
+    user = User.objects.get(id=user_id)
+    userinfo = UserInfo.objects.get(user=user)
+    try:
+        club = InClub.objects.get(member=user)
+    except:
+        club = None
     return render(request,"account/myself.html",{"user":user,"userinfo":userinfo,"club":club})
 
 @login_required(login_url='/account/login/')
@@ -63,7 +80,6 @@ def myself_edit(request):
         if user_form.is_valid()*userinfo_form.is_valid():
             user_cd = user_form.cleaned_data
             userinfo_cd = userinfo_form.cleaned_data
-            print(user_cd["email"])
             user.email = user_cd["email"]
             userinfo.school = userinfo_cd["school"]
             userinfo.department = userinfo_cd["department"]
@@ -90,3 +106,24 @@ def my_image(request):
         return HttpResponse("1")
     else:
         return render(request,'account/imagecrop.html',)
+
+@login_required(login_url='/account/login/')
+@csrf_exempt
+def search(request):
+    if request.method == "GET":
+        search_form = SearchForm()
+        return render(request,"account/search.html",{"search_form":search_form})
+    else:
+        search_form = SearchForm(request.POST)
+        if search_form.is_valid():
+            keyword = request.POST['keyword']
+            results = User.objects.filter(username__icontains=keyword)
+            if results:
+                return render(request,"account/search.html",{"search_form":search_form,"results":results})
+            else:
+                results = User.objects.none()
+                return render(request,"account/search.html",{"search_form":search_form,"results":results})
+        else:
+            return HttpResponse("2")       #表单错误
+
+

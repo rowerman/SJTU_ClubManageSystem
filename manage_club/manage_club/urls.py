@@ -28,5 +28,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     url(r'^account/',include('account.urls',namespace='account')),
     url(r'^club/', include('club.urls', namespace='club')),
-    path('home/', TemplateView.as_view(template_name="home.html"), name='home'),
+    url(r'^home/',include("home.urls",namespace='home')),
+    url(r'^trade/',include('trade.urls',namespace='trade')),
 ]

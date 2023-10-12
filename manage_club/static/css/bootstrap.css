@@ -336,6 +336,11 @@ th {
 .glyphicon-ok:before {
   content: "\e013";
 }
+
+.glyphicon-left-arrow:before {
+  content: "\e2190";
+}
+
 .glyphicon-remove:before {
   content: "\e014";
 }

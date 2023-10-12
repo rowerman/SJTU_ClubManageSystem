@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+{% load tz %}
+{% block title %}Message Information{% endblock %}
+
+{% block content %}
+<div class="row text-center vertical-middle-sm" style="margin-top: 20px">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-4 text-right"><span>活动名：</span></div>
+                <div class="col-md-8 text-left">{{ activity.name }}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 text-right"><span>活动开始时间：</span></div>
+                <div class="col-md-8 text-left">{{ activity.begin_date | timezone:"Asia/Shanghai" | date:"Y-m-d H:m:s" }}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 text-right"><span>活动结束时间：</span></div>
+                <div class="col-md-8 text-left">{{ activity.begin_date | timezone:"Asia/Shanghai" | date:"Y-m-d H:m:s" }}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 text-right"><span>活动描述：</span></div>
+                <div class="col-md-8 text-left">{{ activity.description }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <button class="btn btn-primary btn-lg" style="margin-left: 20px" onclick="delete_activity({{ activity.id }})">删除该活动！</button>
+    </div>
+</div>
+
+<script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/layer.js' %}"></script>
+<script type="text/javascript">
+    function delete_activity(activity_id){
+        var index = layer.open({
+            type: 1,
+            skin:"layui-layer-rim",
+            area: ["400px","200px"],
+            title: "Comfirmation",
+            content: '<div class="text-center" style="margin-top: 20px"><p>确定要删除{{ activity.name }}嘛~</p></div>',
+            btn: ['Yes','No'],
+            yes: function (index,layero){
+                $.ajax({
+                    url: "{% url 'club:delete_activity' %}",
+                    type: "POST",
+                    data: {"activity_id":activity_id},
+                    success: function (e){
+                        if(e=="1"){
+                            layer.msg("deleted~");
+                            window.location.href = "{% url 'club:list_activity' club_id %}";
+                        }
+                        else{
+                            layer.msg("delete error!");
+                        }
+                    },
+                });
+            },
+            btn2: function (index,layero){
+                layer.close(index);
+            },
+        });
+    }
+</script>
+{% endblock %}

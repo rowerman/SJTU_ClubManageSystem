@@ -26,3 +26,4 @@ class ActivityAdmin(admin.ModelAdmin):
     }
 admin.site.register(Activity,ActivityAdmin)
 
+
