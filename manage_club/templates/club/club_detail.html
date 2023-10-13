@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load tz %}
 {% block title %}{{ club.name }}{% endblock %}
 
 {% block content %}
@@ -23,9 +24,19 @@
 .glyphicon-star:before {
   content: "\2605";
 }
+.glyphicon-left-arrow:before {
+  content: "\2190";
+  font-size: 30px;
+  font-weight: bolder;
+}
+.glyphicon-cryFace:before {
+  content: "\1F62D";
+}
 </style>
 
-
+    <div class="row" style="margin-left: 30px">
+        <a href="{% url 'club:list_club' %}"><span style="margin-left: 20px" class="glyphicon glyphicon-left-arrow"></span></a>
+    </div>
 <div class="row text-center vertical-middle-sm" style="margin-top: 20px">
     <h1>社团{{ club.name }}的基本信息</h1>
     <div class="row">
@@ -57,10 +68,10 @@
             <div>
                 <p class="text-center">
                   <a onclick="fan_Club({{ club.id }},'follow')" href="#">
-                    <span class="glyphicon glyphicon-thumbs-up">follow</span>
+                    <span class="glyphicon glyphicon-star">follow</span>
                   </a>
                   <a onclick="fan_Club({{ club.id }},'unfollow')" href="#">
-                    <span style="margin-left: 15px" class="glyphicon glyphicon-thumbs-down">unfollow</span>
+                    <span style="margin-left: 15px" class="glyphicon glyphicon-cryFace">unfollow</span>
                   </a>
                 </p>
           </div>

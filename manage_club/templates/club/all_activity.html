@@ -3,6 +3,14 @@
 {% block title %}articles{% endblock %}
 {% block content %}
 <div class="row text-center vertical-middle-sm">
+    <div class="text-center vertical-middle-sm" style="margin-left: 10px">
+    <form class="form-horizontal" action="{% url 'club:all_activity' %}" method="post">{% csrf_token %}
+        <div class="row" style="display: flex">
+            <div class="col-md-12 text-right"><span>请输入要搜索的活动名：</span></div>
+            <div class="col-md-12 text-left" id="keyword">{{ search_form.keyword }}<input type="submit" value="搜索"></div>
+        </div>
+    </form>
+    </div>
     <h1>全部活动👇</h1>
 </div>
 <div class="container">
@@ -16,7 +24,7 @@
             <p class="list-group-item-text">概要：{{ activity.description |slice:'70'|linebreaks }}</p>
     </div>
     {% empty %}
-    <h4 class="text-center">还没有活动捏~</h4>
+    <h4 class="text-center">没有活动捏~</h4>
     {% endfor %}
     {% include "paginator.html" %}
 </div>
