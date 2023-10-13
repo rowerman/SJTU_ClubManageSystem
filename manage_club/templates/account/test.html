@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 <head>
@@ -131,4 +132,139 @@
         </div>
     </div>
 </body>
+=======
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+        
+        .left {
+            flex: 1;
+            background: linear-gradient(-60deg, #ffffff 50%, #c9151e 50%);
+        }
+        .row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        .col-md-6-left {
+            position: absolute;
+            top: 50%;
+            left: 20%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .col-md-6-right {
+            position: absolute;
+            top: 50%;
+            left: 70%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+
+        }
+        
+        .log-con {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .log-not, .log-fst {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .empty-line1 {
+            margin-bottom: 50px; /*设置标准化空格间距*/
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left">
+            <div class="row text-center vertical-middle-sm separator">
+                <div class="col-md-6-left" >
+
+                    <div class="log-con log-bxsd" style="height: 550px" >
+                    
+                    <div class="log-not clearfix" style="height: 180px" id="newsnotice">
+                        <img src="../../static/images/logo.png" alt="" style="height: 150px;"> 
+                    </div>				  
+                
+                    <div class="log-fst" style="height: 200px" id="links">
+                        <p style="color: #e1e1e1;">welcome you！<br>
+                        欢迎新成员加入！</p>
+                        
+                    </div> 
+                    </div>
+          
+                </div>
+
+            </div>
+            
+        </div>
+
+    
+        <div class="right">
+            <img src="../../static/images/lion.jpg" alt="" style="position:absolute; height: 100px; top:50px; right:50px;">
+            <div class="col-md-6-right">
+
+                <div class="log-con log-bxsd" style="height: 550px" >
+                
+                    <div class="log-not clearfix" style="height: 180px" id="newsnotice">
+                        <h1>Register</h1>
+                        <p>If you are a user,<strong><a href="{% url 'account:user_login' %}">Login</a></strong>,please</p>
+                        <p>or register</p>
+
+
+                        <form class="form-horizontal" action="." method="post">{% csrf_token %}
+                            <div class="form-group">
+                                <label for="{{ form.username.id_for_label }}" class="col-md-5 control-label">Username</label>
+                                <div class="col-md-6 text-left">
+                                    {{ form.username }}
+                                </div>
+                            </div>
+                    <div class="form-group">
+                        <label for="{{ form.email.id_for_label }}" class="col-md-5 control-label">Email</label>
+                        <div class="col-md-6 text-left">{{ form.email }}</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="{{ form.password.id_for_label }}" class="col-md-5 control-label">Password</label>
+                        <div class="col-md-6 text-left">{{ form.password }}</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="{{ form.password.id_for_label }}" class="col-md-5 control-label">Confirm Password</label>
+                        <div class="col-md-6 text-left">{{ form.password2 }}</div>
+                    </div>
+                    
+                    
+                    <input type="submit" class="btn btn-primary btn-lg" value="REGISTER">
+                        </form>
+                    </div> 
+                
+                    <div class="log-fst" style="height: 200px" id="links">
+                        <h1>test！</h1>
+                        
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+>>>>>>> zth
 </html>
