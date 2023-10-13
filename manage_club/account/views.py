@@ -56,7 +56,10 @@ def register(request):
 def myself(request):
     user = User.objects.get(username=request.user.username)
     userinfo = UserInfo.objects.get(user=user)
-    club = InClub.objects.get(member=request.user)
+    try:
+        club = InClub.objects.get(member=request.user)
+    except:
+        club = None
     return render(request,"account/myself.html",{"user":user,"userinfo":userinfo,"club":club})
 
 @login_required(login_url='/account/login/')
