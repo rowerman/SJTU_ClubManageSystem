@@ -2,100 +2,21 @@
 {% load static %}
 {%block title%}Create new club{% endblock %}
 {% block content %}
-
-
-<style>
-    body {
-        background-image: url("{% static './images/background.jpg' %}");
-        background-size: cover;
-        background-repeat: no-repeat;
-
-    }
-
-
-    .input-box {
-        border: 2px solid gray;
-        border-radius: 4px; /* 添加边框圆角 */
-        padding: 10px;
-        width: 300px;
-        font-size: 16px;
-        color: #333;
-        background-color: #f7f7f7;
-        transition: border-color 0.3s ease; /* 添加边框颜色过渡效果 */
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 添加阴影效果 */
-    }
-
-    .input-box:focus {
-        border-color: black;
-        outline: none; /* 移除默认的焦点样式 */
-        box-shadow: 0 0 8px rgba(100, 150, 243, 0.6); /* 添加焦点时的阴影效果 */
-    }
-
-    .input-box-about {
-        border: 2px solid gray;
-        border-radius: 4px; /* 添加边框圆角 */
-        padding: 10px;
-        width: 500px;
-        height: 200px;
-        font-size: 16px;
-        color: #333;
-        background-color: #f7f7f7;
-        transition: border-color 0.3s ease; /* 添加边框颜色过渡效果 */
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 添加阴影效果 */
-    }
-
-    .input-box-about:focus {
-        border-color: black;
-        outline: none; /* 移除默认的焦点样式 */
-        box-shadow: 0 0 8px rgba(100, 150, 243, 0.6); /* 添加焦点时的阴影效果 */
-    }
-
-    .font-set {
-        font-family: Arial, sans-serif; /* 设置字体 */
-        font-size: 24px; /* 设置字号 */
-        font-weight: bold; /* 设置字体粗细 */
-        color: #333; /* 设置字体颜色 */
-        margin-bottom: 5px; /* 设置下边距 */
-    }
-
-
-</style>
-
-
 <div class="text-center vertical-middle-sm" style="margin-left: 10px">
     <form class="form-horizontal" action="." method="post">{% csrf_token %}
-        <div class="row" style="margin-top: 20px">
-            <div class="col-md-12 text-center ">
-                <span class="font-set">社团名称：</span>
-                <br>  <!-- 添加换行符 -->
-                <div style="margin-top: 20px">
-                    {{ club_form.name }}
-                </div>
-            </div>
+        <div class="row" style="margin-top: 10px">
+            <div class="col-md-2 text-right"><span>社团名称：</span></div>
+            <div class="col-md-10 text-left">{{ club_form.name }}</div>
         </div>
-
-        <div class="row" style="margin-top: 50px">
-            <div class="col-md-12 text-center ">
-                <span class="font-set">社团编号(命名规则如20231007-19)：</span>
-                <br>  <!-- 添加换行符 -->
-                <div style="margin-top: 20px">
-                    {{club_form.club_id}}
-                </div>
-            </div>
+        <div class="row" style="margin-top: 10px">
+            <div class="col-md-2 text-right"><span>社团编号(命名规则如20231007-19)：</span></div>
+            <div class="col-md-10 text-left">{{ club_form.club_id }}</div>
         </div>
-
-        <div class="row" style="margin-top: 50px">
-            <div class="col-md-12 text-center ">
-                <span class="font-set">社团简介：</span>
-                <br>  <!-- 添加换行符 -->
-                <div style="margin-top: 20px">
-                    {{club_form.Aboutme }}>
-                </div>
-            </div>
+        <div class="row" style="margin-top: 10px">
+            <div class="col-md-2 text-right"><span>社团简介：</span></div>
+            <div class="col-md-10 text-left">{{ club_form.Aboutme }}</div>
         </div>
-
-
-        <div class="row" style="margin-top: 50px">
+        <div class="row">
             <input type="submit" class="btn btn-primary btn-lg" value="创建！">
         </div>
     </form>
