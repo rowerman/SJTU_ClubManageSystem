@@ -1,31 +1,107 @@
-{% extends "base.html" %}
-
+<!--
+ * @FileName: 
+ * @Description: 
+ * @Autor: Liujunjie/Aries-441
+ * @StudentNumber: 521021911059
+ * @Date: 2023-10-09 23:59:22
+ * @E-mail: sjtu.liu.jj@gmail.com/sjtu.1518228705@sjtu.edu.cn
+ * @LastEditTime: 2023-10-12 23:34:17
+-->
+{% extends "base_withoutheader.html" %}
 {% load static %}
-
 {% block title %}Login{% endblock %}
-
 {% block content %}
-<div class="row text-center vertical-middle-sm">
-    <h1>Login</h1>
-    <p>Input your username and password</p>
-    <form class="form-horizontal" action="{% url 'account:user_login' %}" method="post">
-        {% csrf_token %}
-        <!--{{ form.as_p }}-->
-        <div class="form-group">
-            <label for="{{ form.username.id_for_label }}" class="col-md-5 control-label"
-                   style="color: red"><span glyphicon-floppy-open></span>Username</label>
-            <div class="col-md-6 text-left">{{ form.username }}</div>
+<style>
+.full-screen {
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header {
+  background-color: rgba(255,255,255,0);
+  padding: 20px;
+  text-align: center;
+  color: rgb(0, 0, 0);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+/*
+.log-tit{position:relative; padding-bottom:30px; }
+.log-tit h3{color:#c9151e; font-weight:bold; font-size:36px; font-family:shsc; position:relative; z-index:10;left:-200px  }
+.log-tit span{display:block; position:absolute; top:24px; left:20px; z-index:1;  line-height:1em;  font-size:36px; font-weight:bold;  font-family:shsc; color:#b39c9c41; }
+*/
+</style>
+
+<body class="full-screen">
+  <div class="header">  {% include "loginheadertest.html"%}</div>
+  <div class="row text-center vertical-middle-sm separator">
+    <div class="col-md-6" >
+
+      <div class="log-con log-bxsd" style="height: 400px" >
+        <div class="log-tit">
+          <h3>通知公告</h3>
+          <span>Notification</span>
         </div>
 
-        <div class="form-group">
-            <label for="{{ form.password.id_for_label }}" class="col-md-5 control-label"
-                   style="color: blue"><span glyphicon-floppy-open></span>Password</label>
-            <div class="col-md-6 text-left">{{ form.password }}</div>
-        </div>
+        <div class="log-not clearfix" style="height: 200px" id="newsnotice">
+          <h1>Website Name</h1>
+        </div>				  
+  
+        <div class="log-fst" style="height: 200px" id="links">
+          <h1>test001</h1>
+          
+        </div> 
+      </div>
 
-        <input type="submit" class="btn btn-primary btn-lg" value="Login">
-    </form>
-    <p style="margin-top: 10px">Forgot your password? <a href="{% url 'account:password_reset' %}">reset password</a></p>
-    <p style="margin-top: 10px">If you had not a username,<a href="{% url 'account:user_register' %}">Register to be a user</a>,please</p>
-</div>
+    </div>
+
+    <div class="col-md-6" >
+
+      <div class="log-con log-bxsd" style="height: 400px" >
+        <div class="log-tit">
+          <h3>登录</h3>
+          <span>Login</span>
+        </div>
+        <div class="log-not clearfix" style="height: 250px" id="newsnotice">
+          <p style="margin-top: 60px"></p>
+          <p>Input your username and password</p>
+          <form class="form-horizontal" action="{% url 'account:user_login' %}" method="post">
+            {% csrf_token %}
+            <!--{{ form.as_p }}-->
+            <div class="form-group">
+              
+              <label for="{{ form.username.id_for_label }}" class="col-md-5 control-label" style="color: red"><span
+                  glyphicon-floppy-open></span>Username</label>
+              <div class="col-md-6 text-left">{{ form.username }}</div>
+            </div>
+            <div class="form-group">
+              <label for="{{ form.password.id_for_label }}" class="col-md-5 control-label" style="color: blue"><span
+                  glyphicon-floppy-open></span>Password</label>
+              <div class="col-md-6 text-left">{{ form.password }}</div>
+            </div>
+            <input type="submit" class="btn btn-primary btn-lg" value="Login">
+          </form>
+        </div>				  
+  
+        <div class="log-fst" style="height: 250px" id="links">
+          <p style="margin-top: 5px">
+            Forgot your password? <a href="{% url 'account:password_reset' %}"
+             style="color:red;">reset password</a></p>
+            <p style="margin-top: 10px">
+              If you don't have a username, <a href="{% url 'account:user_register' %}" style="color: blue;">Register to be a user</a>, please.
+            </p>
+          
+        </div> 
+      </div>
+
+
+
+    </div>
+  </div>
+</body>
 {% endblock %}

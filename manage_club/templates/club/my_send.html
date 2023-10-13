@@ -4,22 +4,35 @@
 {% block content %}
 <div class="row text-center vertical-middle-sm">
     <h1>我发出的消息👇</h1>
+    <div class="text-center vertical-middle-sm" style="margin-left: 10px">
+    <form class="form-horizontal" action="{% url 'club:my_send' %}" method="post">{% csrf_token %}
+        <div class="row" style="display: flex">
+            <div class="col-md-12 text-right"><span>请输入要搜索的用户名：</span></div>
+            <div class="col-md-12 text-left" id="keyword">{{ search_form.keyword }}</div>
+            <div class="col-md-6"><input type="submit" value="搜索"></div>
+        </div>
+    </form>
+</div>
 </div>
     <div class="col-md-2">
         {% include "club/leftslider.html" %}
     </div>
 <div class="container" style="margin-left: 200px">
     <div>
+    {% if messages %}
     {% for message in messages %}
     <div class="list-group">
         <a href="#" class="list-group-item active" style="margin-right: 100px">
-            <h4 class="list-group-item-heading">发信时间：{{ message.timestamp | date:"Y-m-d h:m:s" }}</h4></a>
+            <h4 class="list-group-item-heading">发信时间：{{ message.timestamp | date:"Y-m-d H:m:s" }}</h4></a>
+            <p class="list-group-item-text">收信人：{{ message.receiver_name }}</p>
             <p class="list-group-item-text">内容：{{ message.content |slice:'70'|linebreaks }}</p>
     </div>
     {% endfor %}
+    {% else %}
+    <h3 class="text-left">你没有给ta发消息</h3>
+    {% endif %}
     {% include "paginator.html" %}
     </div>
 </div>
-
 
 {% endblock %}>

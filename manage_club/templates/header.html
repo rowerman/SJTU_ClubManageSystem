@@ -2,17 +2,17 @@
 <div class="container">
     <nav class="navbar navbar-default" role="navigation">
         <div class="navbar-header">
-            <a class="navbar-brand" href="https://www.bilibili.com"><img src="{% static '/images/genshin.png' %}"
+            <a class="navbar-brand" href="https://www.sjtu.com"><img src="{% static '/images/genshin.png' %}"
                                                                          width="100px" height="30px"></a>
         </div>
         <div>
             <ul class="nav navbar-nav" role="tablist">
-                <li><a href="{% url 'home' %}">HOME</a></li>
+                <li><a href="{% url 'home:homepage' %}">HOME</a></li>
                 <li><a href="{% url 'club:my_club' %}">我加入的社团</a></li>
+                <li><a href="{% url 'club:manage_Myclub' %}">我管理的社团</a></li>
                 <li><a href="{% url 'club:list_club' %}">全部社团</a></li>
                 <li><a href="{% url 'club:all_activity' %}">最新活动</a></li>
-                <li><a href="{% url 'club:create_club' %}">创建社团</a></li>
-                <li><a href="{% url 'club:manage_Myclub' %}">我管理的社团</a></li>
+                <li><a href="#">社团闲置物品交易</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right" style="margin-right: 10px">
                 {% if user.is_authenticated %}
@@ -28,6 +28,8 @@
                             <li><a href="{% url 'club:send_message' %}">联络他人</a></li>
                             <li><a href="{% url 'club:my_receive' %}">收到的消息</a></li>
                             <li><a href="{% url 'club:my_send' %}">发出的消息</a></li>
+                            <li><a href="{% url 'club:create_club' %}">创建社团</a></li>
+                            <li><a href="{% url 'account:search' %}">查找用户</a></li>
                         </ul>
                      </div>
                 </li>

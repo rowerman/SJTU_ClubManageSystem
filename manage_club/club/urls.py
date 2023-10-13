@@ -12,7 +12,7 @@ urlpatterns = [
     url(r'^club-detail/(?P<club_id>\d+)/$',views.list_club_detail,name="club_detail"),
     url(r'^send-message/$',views.send_message,name="send_message"),
     url(r'^my-send/$',views.my_send,name="my_send"),
-    url(r'^my-send/(?P<type>\d+)/$', views.my_send_type, name="my_send_type"),
+    url(r'^my-send-type/(?P<type>\d+)/$', views.my_send_type, name="my_send_type"),
     url(r'^my-receive/$',views.my_recceived,name="my_receive"),
     url(r'^message-detail/(?P<message_id>\d+)/$',views.message_detail,name="message_detail"),
     url(r'^join-club/(?P<club_id>\d+)/$',views.join_club,name="join_club"),
@@ -29,4 +29,5 @@ urlpatterns = [
     url(r'^activity-detail/(?P<activity_id>\d+)/$',views.activity_detail_version,name="activity_detail"),
     url(r'^delete-activity/$',views.delete_activity,name="delete_activity"),
     url(r'^all-activity/$',views.all_activity,name="all_activity"),
+    url(r'^fan-Club/$',views.fan_Club,name="fan_Club"),
 ]

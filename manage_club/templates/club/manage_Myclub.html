@@ -11,6 +11,9 @@
         <a href="#" class="list-group-item active" style="margin-right: 100px">
             <h4 class="list-group-item-heading">{{ club.name }}</h4></a>
             <p class="list-group-item-text">成员数：{{ club.num_of_mem }}</p>
+            {% with total_fans=club.fans.count %}
+            <p class="list-group-item-text">关注数：{{ total_fans }}</p>
+            {% endwith %}
             <p class="list-group-item-text">概要：{{ club.Aboutme |slice:'70'|linebreaks }}</p>
     </div>
     <div class="clearfix">
@@ -18,6 +21,7 @@
         <a href="{% url 'club:manage_clubInfo' club.id %}"><button class="btn btn-primary btn-lg">社团信息管理</button></a>
         <a href="{% url 'club:create_activity' club.id %}"><button class="btn btn-primary btn-lg">为社团创建活动</button></a>
         <a href="{% url 'club:list_activity' club.id %}"><button class="btn btn-primary btn-lg">管理社团活动</button></a>
+        <a href="#"><button class="btn btn-primary btn-lg">新增社团闲置物品</button></a>
     </div>
     {% empty %}
     <h4 class="text-center">你还没有管理的社团捏~</h4>

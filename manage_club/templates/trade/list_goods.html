@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Goods{% endblock %}
+{% block content %}
+<div class="row text-center vertical-middle-sm">
+    <h1>已发布闲置物品👇</h1>
+</div>
+<div class="container">
+    {% for good in goods %}
+    <div class="list-group">
+        <a href="#" class="list-group-item active" style="margin-right: 100px">
+            <h4 class="list-group-item-heading">{{ good.name }}</h4></a>
+            <p class="list-group-item-text">物品状态:：{{ good.status }}</p>
+            <p class="list-group-item-text">物品价格:：{{ good.expense }}</p>
+            <p class="list-group-item-text">物品介绍：{{ good.intro |slice:'70'|linebreaks }}</p>
+    </div>
+    {% empty %}
+    <h4 class="text-center">还没有商品捏~</h4>
+    {% endfor %}
+    {% include "paginator.html" %}
+</div>
+
+{% endblock %}

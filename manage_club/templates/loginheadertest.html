@@ -1,0 +1,81 @@
+<!--
+ * @FileName: 
+ * @Description: 
+ * @Autor: Liujunjie/Aries-441
+ * @StudentNumber: 521021911059
+ * @Date: 2023-10-10 09:22:19
+ * @E-mail: sjtu.liu.jj@gmail.com/sjtu.1518228705@sjtu.edu.cn
+ * @LastEditTime: 2023-10-10 17:52:33
+-->
+<html lang="zh-CN">
+{% load static %}
+<head>
+	<title>上海交通大学社团管理系统</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >	
+	<meta name="Copyright" content="zfsoft" />
+	<link rel="icon" href="{% static '/images/sjtu.png' %}" type="image/x-icon">	
+	<link rel="shortcut icon" href="{% static '/images/sjtu.png' %}" type="image/x-icon">
+	
+	<script type="text/javascript">
+	</script>
+    <!--
+
+
+         <script type="text/javascript" src="/zftal-ui-v5-1.0.2/assets/js/other_jquery/jquery.min.js?ver=28281121"></script>
+
+         <script type="text/javascript" src="/zftal-ui-v5-1.0.2/assets/js/zftal/jquery.utils.contact-min.js?ver=28281121" charset="utf-8"></script>
+
+         <script type="text/javascript" src="/js/browse/browse-judge.js?ver=28281121"></script>
+
+
+         <link rel="stylesheet" type="text/css" href="/zftal-ui-v5-1.0.2/assets/css/zftal-ui.css">  	
+         <link rel="stylesheet" type="text/css" href="/css/assets/plugins/bootstrap/css/bootstrap.min.css">
+         <script type="text/javascript" src="/css/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+         
+
+         <link rel="stylesheet" type="text/css" href="/zftal-ui-v5-1.0.2/assets/plugins/chosen/css/chosen-min.css?ver=28281121" />
+         <script type="text/javascript" src="/zftal-ui-v5-1.0.2/assets/plugins/chosen/jquery.choosen.concat-min.js?ver=28281121" charset="utf-8"></script>
+         <script type="text/javascript" src="/zftal-ui-v5-1.0.2/assets/plugins/chosen/lang/zh_CN-min.js?ver=28281121" charset="utf-8"></script>
+         <script type="text/javascript" src="/zftal-ui-v5-1.0.2/assets/js/utils/jquery.utils.pinyin.min.js?ver=28281121" charset="utf-8"></script>
+
+         <script type="text/javascript" src="/js/jquery.zftal.contact-min.js?ver=28281121"></script>
+
+         <script type="text/javascript" src="/zftal-ui-v5-1.0.2/assets/js/zftal/lang/jquery.zftal_zh_CN-min.js?ver=28281121"></script>	
+    -->
+           
+
+	<link rel="stylesheet" href="{% static '/css/shjd-style.css' %}">
+	<style type="text/css">
+	.active{
+			color:#c9151e; 
+	        font-weight: bold;
+	}
+	</style>
+</head>
+<body class="shjd-bg">
+
+	<div class="shjd-header">		
+		<div class="navbar navbar-default navbar-static-top">
+			<div class="container container_1170">
+				<div class="navbar-header">  
+					<a class="navbar-brand" href="#"><div class="logo clearfix"><img src="{% static '/images/logo.png' %}" alt="" >
+						<span id="xtmc" >上海交通大学社团管理系统</span>
+						<!--<span  id="xtmc" style="font-size: 16px;">Shanghai Jiao Tong University Club Management System</span>-->
+					</div></a>
+
+				</div>
+				<!-- 中英文切换 
+					<div class="btn-group" style="margin-top: 48px;">
+						<button type="button" id="btn_zh_CN" value="zh_CN"  class="btn btn-sm btn-lang btn-lang-disabled" href="javascript:void(0);" >中  文</button>
+						<button type="button" id="btn_en_US" value="en_US"  class="btn btn-sm btn-lang btn-lang-disabled" href="javascript:void(0);" >English</button>
+					</div> 是否显示-->
+					<script type="text/javascript">
+						var _localeKey 	= "zh_CN";
+						jQuery("#btn_" + _localeKey).removeClass("btn-lang-disabled").addClass("active");
+					</script> 
+				
+			</div>
+		</div>
+	</div>
+</body>
