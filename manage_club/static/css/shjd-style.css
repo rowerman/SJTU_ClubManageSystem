@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @charset "utf-8";
 /* CSS Document */
 html, body, div, span, applet, object, iframe,h1, h2, h3, h4, h5, h6, p, blockquote, pre,a, abbr, acronym, address, big, cite, code,del, dfn, em, img, ins, kbd, q, s, samp,
@@ -58,3 +59,65 @@ src: url('../fonts/SourceHanSerifCNRegular.ttf'),
 .log-tit{position:relative; padding-bottom:30px; }
 .log-tit h3{color:#c9151e; font-weight:bold; font-size:36px; font-family:shsc; position:absolute; z-index:10;left:20px  }
 .log-tit span{display:block; position:absolute; top:32px; left:30px; z-index:1;  line-height:1em;  font-size:30px; font-weight:bold;  font-family:shsc; color:#b39c9c41; }
+=======
+@charset "utf-8";
+/* CSS Document */
+html, body, div, span, applet, object, iframe,h1, h2, h3, h4, h5, h6, p, blockquote, pre,a, abbr, acronym, address, big, cite, code,del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,b, u, i, center,dl, dt, dd, ol, ul, li,fieldset, form, label, legend,table, caption, tbody, tfoot, thead, tr, th, td,article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary,time, mark, audio, video {
+	margin:0; padding:0; border:0; font-size:100%; font:inherit; 
+}
+/* HTML5 display-role reset for older browsers */
+body{ font-size:14px; font-family:"Microsoft Yahei",Arial, Helvetica, sans-serif; }
+ol, ul{list-style: none;}
+blockquote, q{	quotes: none;}
+blockquote:before, blockquote:after,q:before, q:after {	content:'';	content:none; }
+table {	border-collapse: collapse;	border-spacing: 0; }
+img{border:none;}
+a:link, a:visited{color:#474747; text-decoration:none;  }
+a:hover, a:active{color:#4a89dc; text-decoration:none;  }
+.fl{float:left;}
+.fr{float:right;}
+.clear { clear: both; height: 0; font-size: 0; line-height:0; }
+.clearfix { 
+    zoom: 1;
+}
+.clearfix:after { content:""; display:table; clear:both; }
+/* 登录页 */
+.shjd-manage{background:#f9f9f9; }
+@font-face
+{
+font-family:shsc;
+src: url('../fonts/SourceHanSerifCNRegular.ttf'),
+}
+.full-screen{background:#f9f9f9 url(../images/bdbg.png) no-repeat top center; }
+/*----头部----*/
+.shjd-header{ background:#c9151e; }
+.shjd-header .navbar-default{background:none; border-color:none; margin-bottom:0; }
+.shjd-header .navbar-brand{padding:20px; float:none; }
+/*.shjd-header .navbar-brand .logo{}*/
+.shjd-header .navbar-brand .logo img{float:left;}
+.shjd-header .navbar-brand .logo span{float:left; margin:15px 0 0 30px;  font-size:40px; color:#ffffff; line-height:1em; border-left:1px solid rgba(255,255,255,0.5);  padding:8px 30px;  }
+.shjd-header .navbar-right{ padding-top:40px; }
+.shjd-header .lan-change{float:left; line-height:30px; margin-right:15px; }
+.shjd-header .lan-change span{font-size:16px;  color:#000; cursor:pointer; display:inline-block; padding:5px; margin:0 5px;  }
+.shjd-header .lan-change .active{ color:#ffffff;}
+.shjd-header .per-sec{min-width:150px; max-width:300px;   }
+/*.shjd-header .per-sec .dropdown-toggle{}*/
+.shjd-header .per-sec .dropdown-toggle img{float:left; width:40px; height:40px; border-radius:50%; }
+.shjd-header .per-sec .dropdown-toggle>a{float:right;  font-size:14px; color:#ffffff; padding:5px; line-height:30px; border-radius:4px;  }
+.shjd-header .per-sec .per-info{ margin:0 20px; line-height:40px; color:#ffffff; float:left; }
+.shjd-header .per-sec .open a{color:#c9151e;}
+
+
+.shjd-main-sec{padding:105px 0 100px;  }
+.shjd-main-sec .row{position:relative; }
+.log-bxsd{box-shadow:0 0 5px #e0e0e0;  background:#ffffff; height:490px; margin-top: 200px}
+.log-con{margin-right:10px; padding:30px; margin-top: 200px; }
+.log-log{padding:30px; }
+
+
+.log-tit{position:relative; padding-bottom:30px; }
+.log-tit h3{color:#c9151e; font-weight:bold; font-size:36px; font-family:shsc; position:absolute; z-index:10;left:20px  }
+.log-tit span{display:block; position:absolute; top:32px; left:30px; z-index:1;  line-height:1em;  font-size:30px; font-weight:bold;  font-family:shsc; color:#b39c9c41; }
+>>>>>>> zth
