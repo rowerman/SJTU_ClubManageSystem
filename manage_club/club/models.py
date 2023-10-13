@@ -5,6 +5,7 @@ from django.utils import timezone
 
 #社团信息
 class Club(models.Model):
+    leader = models.ForeignKey(User,related_name="leader",on_delete=models.CASCADE,default=None)
     name = models.CharField(max_length=100,unique=True)
     lead_name = models.CharField(max_length=100,default="hanwen")
     club_id = models.CharField(max_length=100)          #社团编号

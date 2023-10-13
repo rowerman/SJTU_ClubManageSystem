@@ -146,3 +146,4 @@ DEFAULT_FROM_EMAIL = "2747627989@qq.com"
 
 MEDIA_URL = '/images/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'images')
+

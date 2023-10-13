@@ -29,12 +29,12 @@
         </div>
         {% endfor %}
     {% else %}
-        {% if type == "1" %}
-        <h3 class="text-left">你没有给ta发送消息</h3>
-        <h3 class="text-left">或发送给ta的消息都还未被读取</h3>
-        {% else %}
+        {% if type == "2" %}
         <h3 class="text-left">你没有给ta的未读消息或发送给ta的消息都已被读取</h3>
         <h3 class="text-left">或发送给ta的消息都已被读取</h3>
+        {% else %}
+        <h3 class="text-left">你没有给ta发送消息</h3>
+        <h3 class="text-left">或发送给ta的消息都还未被读取</h3>
         {% endif %}
     {% endif %}
     {% include "paginator.html" %}

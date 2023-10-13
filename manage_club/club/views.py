@@ -11,7 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import InClub,Club
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from .forms import messageForm
-from django.db.models import QuerySet
+from django.db.models import QuerySet, Q
 from .forms import ClubForm
 from account.forms import SearchForm
 
@@ -26,6 +26,7 @@ def create_club(request):
         if club_form.is_valid():
             new_club = club_form.save(commit=False)
             new_club.lead_name = request.user.username
+            new_club.leader = request.user
             new_club.save()
 
             try:
@@ -43,24 +44,59 @@ def create_club(request):
             return HttpResponse("The input in invalid~")
 
 @login_required(login_url='/account/login')
-@require_GET
 def list_club(request):
+    if request.method == "GET":
+        search_form = SearchForm()
+        clubs = Club.objects.all()
+        paginator = Paginator(clubs,3)
+        page = request.GET.get('page')
+        try:
+            current_page = paginator.page(page)
+            clubs = current_page.object_list
+        except PageNotAnInteger:
+            current_page = paginator.page(1)
+            clubs = current_page.object_list
+        except EmptyPage:
+            current_page = paginator.page(paginator.num_pages)
+            clubs = current_page.object_list
 
-    clubs = Club.objects.all()
-    paginator = Paginator(clubs,3)
-    page = request.GET.get('page')
-    try:
-        current_page = paginator.page(page)
-        clubs = current_page.object_list
-    except PageNotAnInteger:
-        current_page = paginator.page(1)
-        clubs = current_page.object_list
-    except EmptyPage:
-        current_page = paginator.page(paginator.num_pages)
-        clubs = current_page.object_list
-
-    return render(request,"club/list_club.html",{"clubs":clubs,"page":current_page})
-
+        return render(request,"club/list_club.html",{"clubs":clubs,"page":current_page,"search_form":search_form})
+    else:
+        search_form = SearchForm(request.POST)
+        if search_form.is_valid():
+            keyword = request.POST['keyword']
+            try:
+                clubs = Club.objects.filter(name__icontains=keyword)
+                paginator = Paginator(clubs, 3)
+                page = request.GET.get('page')
+                try:
+                    current_page = paginator.page(page)
+                    clubs = current_page.object_list
+                except PageNotAnInteger:
+                    current_page = paginator.page(1)
+                    clubs = current_page.object_list
+                except EmptyPage:
+                    current_page = paginator.page(paginator.num_pages)
+                    clubs = current_page.object_list
+                return render(request, "club/list_club.html",
+                              {"search_form": search_form, "clubs": clubs, "page": current_page})
+            except:
+                clubs = Club.objects.none()
+                paginator = Paginator(clubs, 3)
+                page = request.GET.get('page')
+                try:
+                    current_page = paginator.page(page)
+                    clubs = current_page.object_list
+                except PageNotAnInteger:
+                    current_page = paginator.page(1)
+                    clubs = current_page.object_list
+                except EmptyPage:
+                    current_page = paginator.page(paginator.num_pages)
+                    clubs = current_page.object_list
+                return render(request,"club/list_club.html",
+                              {"search_form": search_form, "clubs": clubs, "page": current_page})
+        else:
+            return HttpResponse("1")
 @login_required(login_url='/account/login')
 @require_GET
 def list_club_detail(request,club_id):
@@ -197,7 +233,6 @@ def my_send_type(request,type):
             else:
                 try:
                     messages = message.objects.filter(receiver_name=keyword,receiver_read="no")
-                    print(messages)
                     paginator = Paginator(messages, 3)
                     page = request.GET.get('page')
                     try:
@@ -270,7 +305,7 @@ def join_club(request,club_id):
 
         club.num_of_mem = club.num_of_mem + 1
         club.save()
-    return HttpResponseRedirect(reverse('club:my_club'))
+    return HttpResponseRedirect(reverse('club:list_club'))
 
 @login_required(login_url='account/login')
 @require_GET
@@ -443,20 +478,57 @@ def delete_activity(request):
 
 @login_required(login_url='/account/login/')
 def all_activity(request):
-    activities = Activity.objects.all()
-    paginator = Paginator(activities, 4)
-    page = request.GET.get('page')
-    try:
-        current_page = paginator.page(page)
-        activities = current_page.object_list
-    except PageNotAnInteger:
-        current_page = paginator.page(1)
-        activities = current_page.object_list
-    except EmptyPage:
-        current_page = paginator.page(paginator.num_pages)
-        activities = current_page.object_list
+    if request.method == "GET":
+        search_form = SearchForm()
+        activities = Activity.objects.all()
+        paginator = Paginator(activities, 4)
+        page = request.GET.get('page')
+        try:
+            current_page = paginator.page(page)
+            activities = current_page.object_list
+        except PageNotAnInteger:
+            current_page = paginator.page(1)
+            activities = current_page.object_list
+        except EmptyPage:
+            current_page = paginator.page(paginator.num_pages)
+            activities = current_page.object_list
 
-    return render(request,"club/all_activity.html",{"activities":activities,"page":current_page})
+        return render(request,"club/all_activity.html",{"activities":activities,"page":current_page,"search_form":search_form})
+    else:
+        search_form = SearchForm(request.POST)
+        if search_form.is_valid():
+            keyword = request.POST['keyword']
+            try:
+                activites = Activity.objects.filter(Q(name__icontains=keyword) or Q(belong__name__icontains=keyword))
+                paginator = Paginator(activites, 3)
+                page = request.GET.get('page')
+                try:
+                    current_page = paginator.page(page)
+                    activites = current_page.object_list
+                except PageNotAnInteger:
+                    current_page = paginator.page(1)
+                    activites = current_page.object_list
+                except EmptyPage:
+                    current_page = paginator.page(paginator.num_pages)
+                    activites = current_page.object_list
+                return render(request,"club/all_activity.html",
+                              {"search_form":search_form,"page":current_page,"activities":activites})
+            except:
+                activites = message.objects.none()
+                paginator = Paginator(activites, 3)
+                page = request.GET.get('page')
+                try:
+                    current_page = paginator.page(page)
+                    activites = current_page.object_list
+                except PageNotAnInteger:
+                    current_page = paginator.page(1)
+                    activites = current_page.object_list
+                except EmptyPage:
+                    current_page = paginator.page(paginator.num_pages)
+                    activites = current_page.object_list
+                return render(request,"club/all_activity.html",{"search_form":search_form,"activites":activites,"page":current_page})
+        else:
+            return HttpResponse("errorForm!")
 
 @login_required(login_url='/account/login')
 @csrf_exempt
