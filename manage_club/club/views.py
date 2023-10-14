@@ -5,17 +5,17 @@ from django.urls import reverse
 from django.views.decorators.http import require_GET, require_POST
 from .models import message, Activity
 from .forms import ClubCreateForm, ActivityForm
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from .models import InClub,Club
+from .models import InClub,Club,Advertisement
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from .forms import messageForm
 from django.db.models import QuerySet, Q
-from .forms import ClubForm
+from .forms import ClubForm,CreateAdvertisementForm
 from account.forms import SearchForm
 
-@login_required(login_url='/account/login')
+@login_required(login_url='/account/login/')
 @csrf_exempt
 def create_club(request):
     if request.method == "GET":
@@ -43,7 +43,7 @@ def create_club(request):
         else:
             return HttpResponse("The input in invalid~")
 
-@login_required(login_url='/account/login')
+@login_required(login_url='/account/login/')
 def list_club(request):
     if request.method == "GET":
         search_form = SearchForm()
@@ -97,13 +97,13 @@ def list_club(request):
                               {"search_form": search_form, "clubs": clubs, "page": current_page})
         else:
             return HttpResponse("1")
-@login_required(login_url='/account/login')
+@login_required(login_url='/account/login/')
 @require_GET
 def list_club_detail(request,club_id):
     clubInfo = Club.objects.get(id=club_id)
     return render(request,"club/club_detail.html",{"club":clubInfo})
 
-@login_required(login_url='account/login')
+@login_required(login_url='/account/login/')
 @csrf_exempt
 def send_message(request):
     if request.method == "POST":
@@ -263,7 +263,7 @@ def my_send_type(request,type):
             return HttpResponse("2")       #表单错误
 
 
-@login_required(login_url='account/login')
+@login_required(login_url='/account/login/')
 def my_recceived(request):
     messages = message.objects.filter(reciver=request.user)
     paginator = Paginator(messages,3)
@@ -279,7 +279,7 @@ def my_recceived(request):
         messages = current_page.object_list
     return render(request,"club/my_receive.html",{"messages":messages,"page":current_page})
 
-@login_required(login_url='account/login')
+@login_required(login_url='/account/login/')
 def message_detail(request,message_id):
     Message = message.objects.get(id=message_id)
     Message.receiver_read = "yes"
@@ -287,7 +287,7 @@ def message_detail(request,message_id):
     return render(request,"club/message_detail.html",{"Message":Message})
 
 
-@login_required(login_url='/account/login')
+@login_required(login_url='/account/login/')
 @csrf_exempt
 def join_club(request,club_id):
     club = Club.objects.get(id=club_id)
@@ -307,13 +307,13 @@ def join_club(request,club_id):
         club.save()
     return HttpResponseRedirect(reverse('club:list_club'))
 
-@login_required(login_url='account/login')
+@login_required(login_url='/account/login/')
 @require_GET
 def confirm_join(request,club_id):
     club = Club.objects.get(id=club_id)
     return render(request,"club/confirm_join.html",{"club":club})
 
-@login_required(login_url='/account/login')
+@login_required(login_url='/account/login/')
 def my_club(request):
     try:
         inclubs = InClub.objects.get(member_id=request.user.id)
@@ -337,7 +337,7 @@ def my_club(request):
         clubs = current_page.object_list
     return render(request,"club/my_club.html",{"clubs":clubs,"page":current_page})
 
-@login_required(login_url='/account/login')
+@login_required(login_url='/account/login/')
 def manage_Myclub(request):
     if request.method == "GET":
         clubs = Club.objects.filter(lead_name=request.user.username)
@@ -354,7 +354,7 @@ def manage_Myclub(request):
             clubs = current_page.object_list
         return render(request,"club/manage_Myclub.html",{"clubs":clubs,"page":current_page})
 
-@login_required(login_url='/account/login')
+@login_required(login_url='/account/login/')
 @require_GET
 def manage_member(request,club_id):
     club = Club.objects.get(id=club_id)
@@ -374,7 +374,7 @@ def manage_member(request,club_id):
         members = current_page.object_list
     return render(request,"club/manage_member.html",{"club":club,"commons":commons,"page":current_page})
 
-@login_required(login_url='/account/login')
+@login_required(login_url='/account/login/')
 @csrf_exempt
 def delete_member(request,club_id):
     member_id = request.POST["member_id"]
@@ -388,7 +388,7 @@ def delete_member(request,club_id):
     except:
         return HttpResponse("2")
 
-@login_required(login_url='account/login')
+@login_required(login_url='/account/login/')
 def manage_clubInfo(request,club_id):
     club = Club.objects.get(id=club_id)
     if request.method == "GET":
@@ -530,7 +530,7 @@ def all_activity(request):
         else:
             return HttpResponse("errorForm!")
 
-@login_required(login_url='/account/login')
+@login_required(login_url='/account/login/')
 @csrf_exempt
 @require_POST
 def fan_Club(request):
@@ -547,6 +547,79 @@ def fan_Club(request):
                 return HttpResponse("2")
         except:
             return HttpResponse("no!")
+
+@login_required(login_url='/account/login/')
+@csrf_exempt
+def create_ad(request,club_id):
+    if request.method == "GET":
+        create_add_form = CreateAdvertisementForm()
+        return render(request,"club/create_ad.html",{"form":create_add_form})
+    else:
+        club = Club.objects.get(id=club_id)
+        create_ad_form = CreateAdvertisementForm(request.POST,request.FILES)
+        if create_ad_form.is_valid():
+            new_ad = create_ad_form.save(commit=False)
+            new_ad.owner = club
+            new_ad.save()
+            return redirect("club:list_ads",club_id)
+
+@login_required(login_url='/account/login/')
+def list_ads(request,club_id):
+    if request.method == "GET":
+        search_form = SearchForm()
+        club = Club.objects.get(id=club_id)
+        ads = club.advertisement.all()
+        paginator = Paginator(ads, 3)
+        page = request.GET.get('page')
+        try:
+            current_page = paginator.page(page)
+            ads = current_page.object_list
+        except PageNotAnInteger:
+            current_page = paginator.page(1)
+            ads = current_page.object_list
+        except EmptyPage:
+            current_page = paginator.page(paginator.num_pages)
+            ads = current_page.object_list
+        return render(request,"club/list_ads.html",{"ads":ads,"page":current_page,"search_form":search_form,"club_id":club_id})
+    else:
+        search_form = SearchForm(request.POST)
+        if search_form.is_valid():
+            keyword = request.POST['keyword']
+            try:
+                ads = Advertisement.objects.filter(title__icontains=keyword)
+                paginator = Paginator(ads, 3)
+                page = request.GET.get('page')
+                try:
+                    current_page = paginator.page(page)
+                    ads = current_page.object_list
+                except PageNotAnInteger:
+                    current_page = paginator.page(1)
+                    ads = current_page.object_list
+                except EmptyPage:
+                    current_page = paginator.page(paginator.num_pages)
+                    ads = current_page.object_list
+                return render(request,"club/list_ads.html",{"ads":ads,"page":current_page,"search_form":search_form,"club_id":club_id})
+            except:
+                ads = Advertisement.objects.none()
+                paginator = Paginator(ads, 3)
+                page = request.GET.get('page')
+                try:
+                    current_page = paginator.page(page)
+                    ads = current_page.object_list
+                except PageNotAnInteger:
+                    current_page = paginator.page(1)
+                    ads = current_page.object_list
+                except EmptyPage:
+                    current_page = paginator.page(paginator.num_pages)
+                    ads = current_page.object_list
+                return render(request, "club/list_ads.html", {"ads": ads, "page": current_page, "search_form": search_form})
+        else:
+            return HttpResponse("errorForm!")
+
+
+
+
+
 
 
 

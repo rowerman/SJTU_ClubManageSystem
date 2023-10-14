@@ -70,7 +70,7 @@ def myself_version(request,user_id):
         club = InClub.objects.get(member=user)
     except:
         club = None
-    return render(request,"account/myself.html",{"user":user,"userinfo":userinfo,"club":club})
+    return render(request,"account/myself_SeeOnly.html",{"user":user,"userinfo":userinfo,"club":club})
 
 @login_required(login_url='/account/login/')
 def myself_edit(request):
@@ -114,18 +114,20 @@ def my_image(request):
 @csrf_exempt
 def search(request):
     if request.method == "GET":
+        type = "1"
         search_form = SearchForm()
-        return render(request,"account/search.html",{"search_form":search_form})
+        return render(request,"account/search.html",{"search_form":search_form,"type":type})
     else:
+        type = "2"
         search_form = SearchForm(request.POST)
         if search_form.is_valid():
             keyword = request.POST['keyword']
             results = User.objects.filter(username__icontains=keyword)
             if results:
-                return render(request,"account/search.html",{"search_form":search_form,"results":results})
+                return render(request,"account/search.html",{"search_form":search_form,"results":results,"type":type})
             else:
                 results = User.objects.none()
-                return render(request,"account/search.html",{"search_form":search_form,"results":results})
+                return render(request,"account/search.html",{"search_form":search_form,"results":results,"type":type})
         else:
             return HttpResponse("2")       #表单错误
 
