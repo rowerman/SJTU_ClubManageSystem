@@ -103,7 +103,10 @@ def list_club_detail(request,club_id):
     club = Club.objects.get(id=club_id)
     name = request.user.username
     user = User.objects.get(id=request.user.id)
-    theman = InClub.objects.get(member=user)
+    try:
+        theman = InClub.objects.get(member=user)
+    except:
+        theman = InClub()
     members = club.In_club.all()
     if theman in members:
         type = "1"
