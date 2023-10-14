@@ -81,9 +81,9 @@ WSGI_APPLICATION = "manage_club.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        'NAME': 'nis3368',
+        'NAME': 'manages',
         'USER': 'root',
-        'PASSWORD':'ljj0403!',
+        'PASSWORD':'hanwen',
         'HOST':'127.0.0.1',
         'PORT':'3306',
     }

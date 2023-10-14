@@ -100,8 +100,16 @@ def list_club(request):
 @login_required(login_url='/account/login/')
 @require_GET
 def list_club_detail(request,club_id):
-    clubInfo = Club.objects.get(id=club_id)
-    return render(request,"club/club_detail.html",{"club":clubInfo})
+    club = Club.objects.get(id=club_id)
+    user = User.objects.get(id=request.user.id)
+    theman = InClub.objects.get(member=user)
+    members = club.In_club.all()
+    if theman in members:
+        type = "1"
+    else:
+        type = "2"
+
+    return render(request,"club/club_detail.html",{"club":club,"type":type})
 
 @login_required(login_url='/account/login/')
 @csrf_exempt
@@ -308,6 +316,17 @@ def join_club(request,club_id):
     return HttpResponseRedirect(reverse('club:list_club'))
 
 @login_required(login_url='/account/login/')
+@csrf_exempt
+def exit_club(request):
+    club_id = request.POST['club_id']
+    club = Club.objects.get(id=club_id)
+    inclub = InClub.objects.get(member=request.user)
+    club.In_club.remove(inclub)
+    club.save()
+    return HttpResponse("1")
+
+
+@login_required(login_url='/account/login/')
 @require_GET
 def confirm_join(request,club_id):
     club = Club.objects.get(id=club_id)
@@ -396,7 +415,6 @@ def manage_clubInfo(request,club_id):
         return render(request,"club/manage_clubInfo.html",{"club_form":club_form,"club":club})
     else:
         club_form = ClubForm(request.POST)
-        print(club_form)
         if club_form.is_valid():
             club_cd = club_form.cleaned_data
             club.name = club_cd['name']
