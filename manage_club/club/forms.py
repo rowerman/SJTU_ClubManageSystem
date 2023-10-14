@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Club,Activity,message,InClub
+from .models import Club,Activity,message,InClub,Advertisement
 from django.db import models
 
 class ClubCreateForm(forms.ModelForm):
@@ -22,4 +22,10 @@ class ClubForm(forms.ModelForm):
     class Meta:
         model = Club
         fields = ("name","club_id","Aboutme")
+
+class CreateAdvertisementForm(forms.ModelForm):
+    class Meta:
+        model = Advertisement
+        fields = ("title","content","video","attach",)
+
 

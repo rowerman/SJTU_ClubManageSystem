@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+{%block title%}Create new club{% endblock %}
+{% block content %}
+<div style="margin-left: 200px;margin-top: 10px">
+    <form enctype="multipart/form-data" action="." method="post">{% csrf_token %}
+        <div style="margin-top: 10px">
+            <div class="col-md-2 text-left"><span>广告标题：</span></div>
+            <div class="col-md-10 text-left">{{ form.title }}</div>
+        </div>
+        <div style="margin-top: 20px">
+            <div class="col-md-2 text-left"><span>广告内容：</span></div>
+            <div class="col-md-10 text-left">{{ form.content }}</div>
+        </div>
+        <div style="margin-top: 20px">
+            <div class="col-md-2 text-left"><span>上传视频：</span></div>
+            <div class="col-md-10 text-left">{{ form.video }}</div>
+        </div>
+        <div style="margin-top: 20px">
+            <div class="col-md-2 text-left"><span>上传附件：</span></div>
+            <div class="col-md-10 text-left">{{ form.attach }}</div>
+        </div>
+        <div style="margin-top: 20px" class="text-center">
+            <input type="submit" value="create Ad">
+        </div>
+    </form>
+</div>
+
+{% endblock %}

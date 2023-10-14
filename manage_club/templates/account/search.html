@@ -11,7 +11,7 @@
         </div>
     </form>
 </div>
-
+{% if type == "2" %}
 {% if results %}
     <h3 class="text-left">搜索结果</h3>
     <ul class="list-group-item">
@@ -21,6 +21,7 @@
     </ul>
 {% else %}
     <h3>查无此人~</h3>
+{% endif %}
 {% endif %}
 
 <script src="{% static 'js/jquery.js' %}"></script>
