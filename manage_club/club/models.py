@@ -6,7 +6,7 @@ from .fields import OrderField
 #社团信息
 class Club(models.Model):
     leader = models.ForeignKey(User,related_name="leader",on_delete=models.CASCADE,default=None)
-    name = models.CharField(max_length=100,unique=True)
+    name = models.CharField(max_length=100)
     lead_name = models.CharField(max_length=100,default="hanwen")
     club_id = models.CharField(max_length=100)          #社团宣言
     created = models.DateTimeField(auto_now_add=True)

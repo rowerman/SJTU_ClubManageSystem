@@ -15,8 +15,8 @@
 {% if results %}
     <h3 class="text-left">搜索结果</h3>
     <ul class="list-group-item">
-        {% for user in results %}
-        <li><a href="{% url 'account:my_information' user.id %}">{{ user.username }}</a></li>
+        {% for user1 in results %}
+        <li><a href="{% url 'account:my_information' user1.id %}">{{ user1.username }}</a></li>
         {% endfor %}
     </ul>
 {% else %}

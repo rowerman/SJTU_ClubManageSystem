@@ -145,9 +145,13 @@
     </div>
 
     <div class="club-info-actions">
+        {% if type == "2" %}
         <a href="{% url 'club:join_club' club.id %}">
             <button class="btn btn-primary btn-lg" style="margin-top: 20px; font-size: 24px; width: 180px;">我要加入!</button>
         </a>
+        {% else %}
+            <button class="btn btn-primary btn-lg" style="margin-top: 20px; font-size: 24px; width: 180px;" onclick="exit_club({{ club.id }})">我要退出！</button>
+        {% endif %}
         <p style="margin-top: 30px; font-size: 20px;">
             <a onclick="fan_Club({{ club.id }},'follow')" href="#" style="margin-right: 10px;">
                 <span class="glyphicon glyphicon-thumbs-up" ></span>follow
@@ -189,17 +193,44 @@
             success: function (e) {
                 if (e == "1") {
                     layer.msg("感谢关注！");
-                    setTimeout(function() {window.location.reload();}, 2000); // 2000 毫秒等于 2 秒
+                    setTimeout(function() {window.location.reload();}, 500); // 2000 毫秒等于 2 秒
                 }
                 else {
                     layer.msg("我会继续努力~");
-                    setTimeout(function() {window.location.reload();}, 2000);
+                    setTimeout(function() {window.location.reload();}, 500);
                 }
             },
         });
     }
-
-
+</script>
+<script type="text/javascript">
+    function exit_club(club_id){
+        var index = layer.open({
+            type: 1,
+            skin:"layui-layer-rim",
+            area: ["400px","200px"],
+            title: "Comfirmation Exit",
+            content: '<div class="text-center" style="margin-top: 20px"><p>确定要退出嘛~</p></div>',
+            btn: ['Yes','No'],
+            yes: function (index,layero){
+                $.ajax({
+                    url: "{% url 'club:exit_club' %}",
+                    type: "POST",
+                    data: {"club_id":club_id},
+                    success: function (e){
+                        if(e=="1"){
+                            layer.msg("You have exit~");
+                            setTimeout(function() {window.location.reload();}, 500); // 2000 毫秒等于 2 秒
+                        }
+                        else{
+                            layer.msg("delete error!");
+                            setTimeout(function() {window.location.reload();}, 500); // 2000 毫秒等于 2 秒
+                        }
+                    },
+                });
+            },
+        });
+    }
 </script>
 {% endwith %}
 {% endblock %}
