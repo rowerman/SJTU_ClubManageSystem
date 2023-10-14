@@ -23,6 +23,7 @@
         <a href="{% url 'club:list_activity' club.id %}"><button class="btn btn-primary btn-lg">管理社团活动</button></a>
         <a href="#"><button class="btn btn-primary btn-lg">新增社团闲置物品</button></a>
         <a href="{% url 'club:create_ad' club.id %}"><button class="btn btn-primary btn-lg">创建社团广告</button></a>
+        <a href="{% url 'club:list_ads' club.id %}"><button class="btn btn-primary btn-lg">管理社团广告</button></a>
     </div>
     {% empty %}
     <h4 class="text-center">你还没有管理的社团捏~</h4>

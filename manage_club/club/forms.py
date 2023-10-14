@@ -28,4 +28,7 @@ class CreateAdvertisementForm(forms.ModelForm):
         model = Advertisement
         fields = ("title","content","video","attach",)
 
-
+class AdvertisementForm(forms.ModelForm):
+    class Meta:
+        model = Advertisement
+        fields = ("title","content","video","attach","show",)
