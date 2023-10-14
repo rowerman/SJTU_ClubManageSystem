@@ -60,7 +60,7 @@ def myself(request):
         club = InClub.objects.get(member=request.user)
     except:
         club = None
-    return render(request,"account/myself.html",{"user":user,"userinfo":userinfo,"club":club})
+    return render(request,"account/myself.html",{"user1":user,"userinfo":userinfo,"club":club})
 
 @login_required(login_url='/account/login/')
 def myself_version(request,user_id):
@@ -70,7 +70,7 @@ def myself_version(request,user_id):
         club = InClub.objects.get(member=user)
     except:
         club = None
-    return render(request,"account/myself_SeeOnly.html",{"user":user,"userinfo":userinfo,"club":club})
+    return render(request,"account/myself_SeeOnly.html",{"user1":user,"userinfo":userinfo,"club":club})
 
 @login_required(login_url='/account/login/')
 def myself_edit(request):
