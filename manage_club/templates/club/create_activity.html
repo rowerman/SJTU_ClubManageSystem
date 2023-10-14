@@ -2,25 +2,68 @@
 {% load static %}
 {%block title%}Create new club{% endblock %}
 {% block content %}
+
+<style>
+    body {
+        background-image: url("{% static './images/background.jpg' %}");
+        background-size: cover;
+        background-repeat: no-repeat;
+
+    }
+
+    .font-set {
+        font-family: Arial, sans-serif; /* 设置字体 */
+        font-size: 24px; /* 设置字号 */
+        font-weight: bold; /* 设置字体粗细 */
+        color: #333; /* 设置字体颜色 */
+        margin-bottom: 5px; /* 设置下边距 */
+    }
+</style>
+
+
 <div class="text-center vertical-middle-sm" style="margin-left: 10px">
     <form class="form-horizontal" action="." method="post">{% csrf_token %}
-        <div class="row" style="margin-top: 10px">
-            <div class="col-md-2 text-right"><span>活动名称：</span></div>
-            <div class="col-md-10 text-left">{{ activity_form.name }}</div>
+        <div class="row" style="margin-top: 20px">
+            <div class="col-md-12 text-center ">
+                <span class="font-set">活动名称：</span>
+                <br>  <!-- 添加换行符 -->
+                <div style="margin-top: 20px">
+                    {{ activity_form.name }}
+                </div>
+            </div>
         </div>
-        <div class="row" style="margin-top: 10px">
-            <div class="col-md-2 text-right"><span>开始时间：</span></div>
-            <div class="col-md-10 text-left">{{ activity_form.begin_date }}</div>
+
+        <div class="row" style="margin-top: 20px">
+            <div class="col-md-12 text-center ">
+                <span class="font-set">开始时间：</span>
+                <br>  <!-- 添加换行符 -->
+                <div style="margin-top: 20px">
+                    {{ activity_form.begin_date }}
+                </div>
+            </div>
         </div>
-        <div class="row" style="margin-top: 10px">
-            <div class="col-md-2 text-right"><span>结束时间：</span></div>
-            <div class="col-md-10 text-left">{{ activity_form.end_date }}</div>
+
+        <div class="row" style="margin-top: 20px">
+            <div class="col-md-12 text-center ">
+                <span class="font-set">结束时间：</span>
+                <br>  <!-- 添加换行符 -->
+                <div style="margin-top: 20px">
+                    {{ activity_form.end_date }}
+                </div>
+            </div>
         </div>
-        <div class="row" style="margin-top: 10px">
-            <div class="col-md-2 text-right"><span>活动描述：</span></div>
-            <div class="col-md-10 text-left">{{ activity_form.description }}</div>
+
+        <div class="row" style="margin-top: 20px">
+            <div class="col-md-12 text-center ">
+                <span class="font-set">活动描述：</span>
+                <br>  <!-- 添加换行符 -->
+                <div style="margin-top: 20px">
+                    {{ activity_form.description }}
+                </div>
+            </div>
         </div>
-        <div class="row">
+
+        <div class="row" style="margin-top: 50px">
             <input type="submit" class="btn btn-primary btn-lg" value="创建！" onclick="create_activity({{ club.id }})">
         </div>
     </form>

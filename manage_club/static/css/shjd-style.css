@@ -30,7 +30,7 @@ src: url('../fonts/SourceHanSerifCNRegular.ttf'),
 }
 .full-screen{background:#f9f9f9 url(../images/bdbg.png) no-repeat top center; }
 /*----头部----*/
-.shjd-header{ background:#c9151e; }
+.shjd-header{ background:#c9151e; width:100%}
 .shjd-header .navbar-default{background:none; border-color:none; margin-bottom:0; }
 .shjd-header .navbar-brand{padding:20px; float:none; }
 /*.shjd-header .navbar-brand .logo{}*/
