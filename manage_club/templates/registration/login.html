@@ -5,7 +5,7 @@
  * @StudentNumber: 521021911059
  * @Date: 2023-10-09 23:59:22
  * @E-mail: sjtu.liu.jj@gmail.com/sjtu.1518228705@sjtu.edu.cn
- * @LastEditTime: 2023-10-14 15:33:02
+ * @LastEditTime: 2023-10-14 19:14:43
 -->
 {% extends "base_withoutheader.html" %}
 {% load static %}
@@ -70,6 +70,7 @@
         <div class="log-not clearfix" style="height: 250px" id="newsnotice">
           <p style="margin-top: 60px"></p>
           <p>Input your username and password</p>
+          <p style="margin-top: 10px"></p>
           <form class="form-horizontal" action="{% url 'account:user_login' %}" method="post">
             {% csrf_token %}
             <!--{{ form.as_p }}-->
@@ -94,11 +95,9 @@
              style="color:red;">reset password</a></p>
             <p style="margin-top: 10px">
               If you don't have a username, <a href="{% url 'account:user_register' %}" style="color: blue;">Register to be a user</a>, please.
-            </p>
-          
+            </p>     
         </div> 
       </div>
-
 
 
     </div>
