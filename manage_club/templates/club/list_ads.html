@@ -16,7 +16,7 @@
 <div class="container">
     {% for ad in ads %}
     <div class="list-group">
-        <a href="#" class="list-group-item active" style="margin-right: 100px">
+        <a href="{% url 'club:ad_detail_owner' ad.id %}" class="list-group-item active" style="margin-right: 100px">
             <h4 class="list-group-item-heading">{{ ad.title }}</h4></a>
             <p class="list-group-item-text">内容：{{ ad.content |slice:'70'|linebreaks }}</p>
     </div>

@@ -31,3 +31,4 @@ urlpatterns = [
     url(r'^home/',include("home.urls",namespace='home')),
     url(r'^trade/',include('trade.urls',namespace='trade')),
 ]
+urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

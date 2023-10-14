@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}我的信息{% endblock %}
+{% block content %}
+
+<div>
+    <div class="text-center">
+        <h1>{{ ad.title }}</h1>
+        <p>所属社团：{{ club_name }}</p>
+    </div>
+    <div class="row text-center">
+        <div class="col-md-4 text-right"><span>广告描述：</span></div>
+        <div class="col-md-8 text-left">{{ ad.content }}</div>
+    </div>
+    <div>
+    {% if ad.video %}
+    <video src="{{ ad.video.url }}" controls="controls" class="text-center" height="500px" width="1000px"></video>
+    {% else %}
+    <p class="text-center">这个广告没有配套视频~</p>
+    {% endif %}
+    </div>
+    <div>
+        {% if ad.attach %}
+        <p><a href="{{ ad.attach.url }}">{{ ad.attach.name | cut:"club/club_" }}</a></p>
+        {% endif %}
+    </div>
+    <div>
+        <a href="{% url 'club:ad_detail_edit' ad.id %}"><button class="btn btn-lg">修改广告内容</button></a>
+    </div>
+</div>
+
+{% endblock %}

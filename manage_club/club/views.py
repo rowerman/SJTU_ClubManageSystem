@@ -12,7 +12,7 @@ from .models import InClub,Club,Advertisement
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from .forms import messageForm
 from django.db.models import QuerySet, Q
-from .forms import ClubForm,CreateAdvertisementForm
+from .forms import ClubForm,CreateAdvertisementForm,AdvertisementForm
 from account.forms import SearchForm
 
 @login_required(login_url='/account/login/')
@@ -101,6 +101,7 @@ def list_club(request):
 @require_GET
 def list_club_detail(request,club_id):
     club = Club.objects.get(id=club_id)
+    name = request.user.username
     user = User.objects.get(id=request.user.id)
     theman = InClub.objects.get(member=user)
     members = club.In_club.all()
@@ -109,7 +110,7 @@ def list_club_detail(request,club_id):
     else:
         type = "2"
 
-    return render(request,"club/club_detail.html",{"club":club,"type":type})
+    return render(request,"club/club_detail.html",{"club":club,"type":type,"name":name})
 
 @login_required(login_url='/account/login/')
 @csrf_exempt
@@ -320,6 +321,7 @@ def join_club(request,club_id):
 def exit_club(request):
     club_id = request.POST['club_id']
     club = Club.objects.get(id=club_id)
+    club.num_of_mem = club.num_of_mem - 1
     inclub = InClub.objects.get(member=request.user)
     club.In_club.remove(inclub)
     club.save()
@@ -633,6 +635,37 @@ def list_ads(request,club_id):
                 return render(request, "club/list_ads.html", {"ads": ads, "page": current_page, "search_form": search_form})
         else:
             return HttpResponse("errorForm!")
+
+@login_required(login_url='/account/login/')
+def ad_detail_owner(request,ad_id):
+    ad = Advertisement.objects.get(id=ad_id)
+    club_name = ad.owner.name
+    return render(request,"club/ad_detail_owner.html",{"ad":ad,"club_name":club_name})
+
+def ad_detail_other(request,ad_id):
+    ad = Advertisement.objects.get(id=ad_id)
+    return render(request,"club/ad_detail_other.html",{"ad":ad})
+
+def ad_detail_edit(request,ad_id):
+    ad = Advertisement.objects.get(id=ad_id)
+    if request.method == "GET":
+        ad_form = AdvertisementForm(initial={"title":ad.title,"content":ad.content,"video":ad.video,
+                                             "attach":ad.attach,"show":ad.show})
+        return render(request,"club/ad_detail_edit.html",{"ad_form":ad_form})
+    else:
+        ad_form = AdvertisementForm(request.POST,request.FILES)
+        if ad_form.is_valid():
+            ad_cd = ad_form.cleaned_data
+            ad.title = ad_cd['title']
+            ad.content = ad_cd['content']
+            ad.video =ad_cd['video']
+            ad.attach = ad_cd['attach']
+            ad.show = ad_cd['show']
+            ad.save()
+            return redirect("club:ad_detail_owner",ad_id)
+        else:
+            return HttpResponse("errorForm!")
+
 
 
 

@@ -145,12 +145,18 @@
     </div>
 
     <div class="club-info-actions">
-        {% if type == "2" %}
-        <a href="{% url 'club:join_club' club.id %}">
-            <button class="btn btn-primary btn-lg" style="margin-top: 20px; font-size: 24px; width: 180px;">我要加入!</button>
-        </a>
+        {% if name == club.lead_name %}
+            <a href="#">
+                <button class="btn btn-primary btn-lg" style="margin-top: 20px; font-size: 24px; width: 180px;">解散社团</button>
+            </a>
         {% else %}
-            <button class="btn btn-primary btn-lg" style="margin-top: 20px; font-size: 24px; width: 180px;" onclick="exit_club({{ club.id }})">我要退出！</button>
+            {% if type == "2" %}
+            <a href="{% url 'club:join_club' club.id %}">
+                <button class="btn btn-primary btn-lg" style="margin-top: 20px; font-size: 24px; width: 180px;">我要加入!</button>
+            </a>
+            {% else %}
+                <button class="btn btn-primary btn-lg" style="margin-top: 20px; font-size: 24px; width: 180px;" onclick="exit_club({{ club.id }})">我要退出！</button>
+            {% endif %}
         {% endif %}
         <p style="margin-top: 30px; font-size: 20px;">
             <a onclick="fan_Club({{ club.id }},'follow')" href="#" style="margin-right: 10px;">
