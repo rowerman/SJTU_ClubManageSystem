@@ -168,13 +168,6 @@
         </p>
     </div>
 
-    <div class="club-info-followers">
-        {% for user in club.fans.all %}
-        <p><strong>关注本社团的成员：</strong>{{ user.username }}</p>
-        {% empty %}
-        <p>还没有人关注此社团</p>
-        {% endfor %}
-    </div>
 
     <div class="row">
         <div class="col-md-6 club-info-photo">
