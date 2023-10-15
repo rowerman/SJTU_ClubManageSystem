@@ -24,9 +24,41 @@
         <p><a href="{{ ad.attach.url }}">{{ ad.attach.name | cut:"club/club_" }}</a></p>
         {% endif %}
     </div>
-    <div>
+    <div class="clearfix">
         <a href="{% url 'club:ad_detail_edit' ad.id %}"><button class="btn btn-lg">修改广告内容</button></a>
+        <button class="btn btn-lg" onclick="delete_ad({{ ad.id }})">删除该条广告</button>
     </div>
 </div>
 
+<script src="{% static 'js/layer.js' %}"></script>
+<script src="{% static 'js/jquery.js' %}"></script>
+<script type="text/javascript">
+    function delete_ad(ad_id){
+        var index = layer.open({
+            type: 1,
+            skin:"layui-layer-rim",
+            area: ["400px","200px"],
+            title: "Comfirmation Delete",
+            content: '<div class="text-center" style="margin-top: 20px"><p>确定要删除它嘛~</p></div>',
+            btn: ['Yes','No'],
+            yes: function (index,layero){
+                $.ajax({
+                    url: "{% url 'club:delete_ad' %}",
+                    type: "POST",
+                    data: {"ad_id":ad_id},
+                    success: function (e){
+                        if(e=="success"){
+                            layer.msg("You have delete it~");
+                            window.location.href = "{% url 'club:list_ads' club_id %}";
+                        }
+                        else{
+                            layer.msg("delete error!");
+                            setTimeout(function() {window.location.reload();}, 500); // 2000 毫秒等于 2 秒
+                        }
+                    },
+                });
+            },
+        });
+    }
+</script>
 {% endblock %}

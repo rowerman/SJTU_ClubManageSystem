@@ -8,6 +8,7 @@ app_name = "club"
 
 urlpatterns = [
     url(r'^create-club/$',views.create_club,name="create_club"),
+    url(r'^delete-club/$',views.delete_club,name="delete_club"),
     url(r'^list-club/$',views.list_club,name="list_club"),
     url(r'^club-detail/(?P<club_id>\d+)/$',views.list_club_detail,name="club_detail"),
     url(r'^send-message/$',views.send_message,name="send_message"),
@@ -37,4 +38,5 @@ urlpatterns = [
     url(r'^ad-detail-owner/(?P<ad_id>\d+)/$',views.ad_detail_owner,name="ad_detail_owner"),
     url(r'^ad-detail-other/(?P<ad_id>\d+)/$',views.ad_detail_other,name="ad_detail_other"),
     url(r'^ad-detail-edit/(?P<ad_id>\d+)/$',views.ad_detail_edit,name="ad_detail_edit"),
+    url(r'^delete_ad/$',views.delete_ad,name="delete_ad"),
 ]

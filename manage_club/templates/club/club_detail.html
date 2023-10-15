@@ -146,9 +146,7 @@
 
     <div class="club-info-actions">
         {% if name == club.lead_name %}
-            <a href="#">
-                <button class="btn btn-primary btn-lg" style="margin-top: 20px; font-size: 24px; width: 180px;">解散社团</button>
-            </a>
+            <button class="btn btn-primary btn-lg" style="margin-top: 20px; font-size: 24px; width: 180px;" onclick="delete_club({{ club.id }})">解散社团</button>
         {% else %}
             {% if type == "2" %}
             <a href="{% url 'club:join_club' club.id %}">
@@ -223,6 +221,41 @@
                         }
                         else{
                             layer.msg("delete error!");
+                            setTimeout(function() {window.location.reload();}, 500); // 2000 毫秒等于 2 秒
+                        }
+                    },
+                });
+            },
+        });
+    }
+</script>
+
+<script type="text/javascript">
+    function delete_club(club_id){
+        var index = layer.open({
+            type: 1,
+            skin:"layui-layer-rim",
+            area: ["400px","200px"],
+            title: "Comfirmation Exit",
+            content: '<div class="text-center" style="margin-top: 20px"><p>确定要删除社团嘛~确定要删除的话请输入“我确定”</p></div><input type="text" id="ensure">',
+            btn: ['狠心删除！','我再想想...'],
+            yes: function (index,layero){
+                ensurement = $("#ensure").val()
+                $.ajax({
+                    url: "{% url 'club:delete_club' %}",
+                    type: "POST",
+                    data: {"club_id":club_id,"ensurement":ensurement},
+                    success: function (e){
+                        if(e=="right"){
+                            layer.msg("You have delete it~");
+                            window.location.href = "{% url 'club:my_club' %}";
+                        }
+                        else if(e=="NoLeader"){
+                            layer.msg("你没有权限！!");
+                            setTimeout(function() {window.location.reload();}, 500); // 2000 毫秒等于 2 秒
+                        }
+                        else{
+                            layer.msg("删除错误！");
                             setTimeout(function() {window.location.reload();}, 500); // 2000 毫秒等于 2 秒
                         }
                     },

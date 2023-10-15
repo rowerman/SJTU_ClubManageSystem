@@ -44,6 +44,35 @@ def create_club(request):
             return HttpResponse("The input in invalid~")
 
 @login_required(login_url='/account/login/')
+@csrf_exempt
+def delete_club(request):
+    club_id = request.POST['club_id']
+    club = Club.objects.get(id=club_id)
+    if club.leader != request.user:
+        return HttpResponse("NoLeader")
+    try:
+        #删除Inclub
+        inclubs = club.In_club.all()
+        for inclub in inclubs:
+            inclub.In_club.remove(club)
+        #删除activity
+        activities = club.launch.all()
+        for activity in activities:
+            activity.delete()
+        #删除ad
+        ads = club.advertisement.all()
+        for ad in ads:
+            ad.delete()
+        #删除粉丝
+        club.fans.clear()
+        #删除社团
+        club.delete()
+        return HttpResponse("right")
+    except:
+        return HttpResponse("deleteError")
+
+
+@login_required(login_url='/account/login/')
 def list_club(request):
     if request.method == "GET":
         search_form = SearchForm()
@@ -347,7 +376,6 @@ def my_club(request):
         clubs = inclubs.In_club.all()
     else:
         clubs = Club.objects.none()
-    print(clubs)
     paginator = Paginator(clubs,3)
     page = request.GET.get('page')
     try:
@@ -643,12 +671,13 @@ def list_ads(request,club_id):
 def ad_detail_owner(request,ad_id):
     ad = Advertisement.objects.get(id=ad_id)
     club_name = ad.owner.name
-    return render(request,"club/ad_detail_owner.html",{"ad":ad,"club_name":club_name})
+    club_id = ad.owner.id
+    return render(request,"club/ad_detail_owner.html",{"ad":ad,"club_name":club_name,"club_id":club_id})
 
 def ad_detail_other(request,ad_id):
     ad = Advertisement.objects.get(id=ad_id)
     return render(request,"club/ad_detail_other.html",{"ad":ad})
-
+@login_required(login_url='/account/login/')
 def ad_detail_edit(request,ad_id):
     ad = Advertisement.objects.get(id=ad_id)
     if request.method == "GET":
@@ -668,6 +697,17 @@ def ad_detail_edit(request,ad_id):
             return redirect("club:ad_detail_owner",ad_id)
         else:
             return HttpResponse("errorForm!")
+
+@login_required(login_url='/account/login/')
+@csrf_exempt
+def delete_ad(request):
+    ad_id = request.POST['ad_id']
+    try:
+        ad = Advertisement.objects.get(id=ad_id)
+        ad.delete()
+        return HttpResponse("success")
+    except:
+        return HttpResponse("error")
 
 
 
