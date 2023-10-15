@@ -8,7 +8,7 @@
 <div class="container">
     {% for club in clubs %}
     <div class="list-group">
-        <a href="#" class="list-group-item active" style="margin-right: 100px">
+        <a href="{% url 'club:club_detail' club.id %}" class="list-group-item active" style="margin-right: 100px">
             <h4 class="list-group-item-heading">{{ club.name }}</h4></a>
             <p class="list-group-item-text">成员数：{{ club.num_of_mem }}</p>
             {% with total_fans=club.fans.count %}
