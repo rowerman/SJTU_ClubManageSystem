@@ -2,6 +2,79 @@
 {% load static %}
 {% block title %}articles{% endblock %}
 {% block content %}
+
+<style>
+        .block {
+            background-color: #ffffff;
+            display: flex;
+            align-items: center;
+            margin-bottom: 1px;
+            margin-top: -15px;
+            padding-top: 10px;
+            border-top: 1.5px solid #e8e8e8;
+        }
+
+        .block1 {
+            background-color: #ffffff;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            margin-bottom: -5px;
+            margin-top:3px;
+        }
+
+        .first_text {
+            /* 文本的样式 */
+            margin-right: 150px; /* 右侧的间距 */
+            font-size: 17px;
+        }
+
+        .text {
+            /* 文本的样式 */
+            margin-right: 150px; /* 右侧的间距 */
+            font-size: 17px;
+            color: #fe7a16;
+        }
+
+        .last_text {
+            /* 文本的样式 */
+            margin-right: 150px; /* 右侧的间距 */
+            font-size: 17px;
+            color: #959595;
+        }
+
+        .self_button{
+            display: flex;
+            margin-right: 200px; /* 右侧的间距 */
+            font-size: 14px;
+            color: #959595;
+            margin-bottom: 18px;
+        }
+
+        .icon1 {
+            /* 图标样式 */
+            display: inline-block;
+            width: 17px; /* 设置图标的宽度 */
+            height: 17px; /* 设置图标的高度 */
+            vertical-align: middle; /* 垂直对齐方式设为居中 */
+            background-size: cover;
+            background-image: url("/static/images/l1.png");
+        }
+
+        .icon2 {
+            /* 图标样式 */
+            display: inline-block;
+            width: 17px; /* 设置图标的宽度 */
+            height: 17px; /* 设置图标的高度 */
+            vertical-align: middle; /* 垂直对齐方式设为居中 */
+            background-size: cover;
+            background-image: url("/static/images/l1.png");
+        }
+
+</style>
+
+
+
 <div class="row text-center vertical-middle-sm">
     <div class="text-center vertical-middle-sm" style="margin-left: 10px">
     <form class="form-horizontal" action="{% url 'club:all_activity' %}" method="post">{% csrf_token %}
@@ -11,22 +84,38 @@
         </div>
     </form>
     </div>
-    <h1>全部活动👇</h1>
 </div>
-<div class="container">
+
+<div class="first_header">{% include "kits/first_header3.html" %}</div>
+
     {% for activity in activities %}
-    <div class="list-group">
-        <a href="{% url 'club:activity_detail' activity.id  %}" class="list-group-item active" style="margin-right: 100px">
-            <h4 class="list-group-item-heading">{{ activity.name }}</h4></a>
-        <p class="list-group-item-text">本活动由<a href="{% url 'club:club_detail' activity.belong.id %}">{{ activity.belong.name }}</a>承办</p>
-            <p class="list-group-item-text">开始时间：{{ activity.begin_date | date:"Y-m-d h:m:s" }}</p>
-            <p class="list-group-item-text">结束时间：{{ activity.end_date | date:"Y-m-d h:m:s" }}</p>
-            <p class="list-group-item-text">概要：{{ activity.description |slice:'70'|linebreaks }}</p>
-    </div>
+        <div class="block">
+            <div class="first_text">
+                <a href="{% url 'club:activity_detail' activity.id %}">
+                <h4 class="list-group-item-heading">{{ activity.name }}</h4></a>
+            </div>
+            <div class="text"><p class="list-group-item-text">本活动由<a href="{% url 'club:club_detail' activity.belong.id %}">{{ activity.belong.name }}</a>承办</p></div>
+            <div class="text"><p class="list-group-item-text">{{ activity.description |slice:'70'|linebreaks }}</p></div>
+        </div>
+
+        <div class="block1">
+            <div class="self_button">
+                <span class="icon1"></span>
+                <p class="list-group-item-text">开始时间：{{ activity.begin_date | date:"Y-m-d h:m:s" }}</p>
+            </div>
+            <div class="self_button">
+                <span class="icon2"></span>
+                <p class="list-group-item-text">结束时间：{{ activity.end_date | date:"Y-m-d h:m:s" }}</p>
+            </div>
+        </div>
+
     {% empty %}
-    <h4 class="text-center">没有活动捏~</h4>
+    <div class="first_header">{% include "kits/footer.html" %}</div>
     {% endfor %}
+    <div class="block"></div>
+
+
     {% include "paginator.html" %}
-</div>
+
 
 {% endblock %}

@@ -2,6 +2,14 @@
 {% load static %}
 {%block title%}Create new club{% endblock %}
 {% block content %}
+
+<button onclick="goBack()">返回上一页</button>
+
+<script>
+function goBack() {
+  history.back();
+}
+</script>
 <div style="margin-left: 200px;margin-top: 10px">
     <form enctype="multipart/form-data" action="." method="post">{% csrf_token %}
         <div style="margin-top: 10px">

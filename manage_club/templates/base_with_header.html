@@ -1,0 +1,27 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>{% block title %}{% endblock %}</title>
+        <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    </head>
+
+    <style>
+        body {
+            background-color: #f1efef; /* 设置背景颜色为灰色 */
+        }
+    </style>
+
+<body>
+    <div class="fore_header">{% include "fore_header.html" %}</div>
+    <div class="second_header">{% include "header.html" %}</div>
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+
+    {% block javascript %}{% endblock %}
+</body>
+</html>

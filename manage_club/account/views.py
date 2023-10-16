@@ -97,7 +97,7 @@ def myself_edit(request):
         userinfo_form = UserInfoForm(initial={"school":userinfo.school,"age":userinfo.age,"department":userinfo.department
                                               ,"level":userinfo.level,"aboutme":userinfo.aboutme})
         return render(request,"account/myself_edit.html",{"user_form":user_form,
-                                                          "userinfo_form":userinfo_form})
+                                                          "userinfo_form":userinfo_form,"userinfo":userinfo})
 
 @login_required(login_url='/account/login/')
 def my_image(request):

@@ -1,45 +1,111 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}my information{% endblock %}
 {% block content %}
-<div class="row text-center vertical-middle-sm">
-    <h1>Edit My Information</h1>
-    <div class="col-md-6">
+
+<style>
+    body {
+        background-image: url("{% static './images/background3.jpg' %}");
+        background-size: cover;
+        background-repeat: no-repeat;
+
+    }
+
+
+    .information {
+        margin: 20px auto;
+        padding: 20px;
+        background-color: rgba(245, 245, 245, 0.7);
+        border-radius: 10px;
+        max-width: 1000px;
+    }
+
+    .photo{
+        float: right;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-right: 40px;
+
+    }
+
+    .photo-section {
+        margin-bottom: 20px;
+    }
+
+
+    .button-section {
+        display: flex;
+        justify-content: center;
+        margin-top: 40px;
+    }
+
+    .information span{
+        font-weight: bold;
+        margin-left: 80px;
+        margin-top: -60px;
+    }
+
+    .fontstyle{
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+
+</style>
+
+<div class="information">
+    <h1 style="text-align: center; margin-bottom: 40px;">Edit My Information</h1>
+    <div class="photo">
+    <div class="photo-section">
+        {% if userinfo.photo %}
+        <img name="user_face" src="{{ userinfo.photo | striptags }}" class="img-circle" id="my_photo" width="300px" height="300px">
+        {% else %}
+        <img name="user_face" src="{% static 'images/genshin.png' %}" class="img-circle" id="my_photo" width="300px" height="300px">
+        {% endif %}
+    </div>
+
+    <div>
+        <button class="btn btn-primary btn-lg" id="upload_image" onclick="upload_image_layer()">上传我的照片</button>
+    </div>
+        </div>
+
         <form class="form-horizontal" action="." method="post">{% csrf_token %}
-            <div class="row">
-                <div class="col-md-4 text-right"><span>用户名：</span></div>
-                <div class="col-md-8 text-left">{{ user.username }}</div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 text-right"><span>年龄：</span></div>
-                <div class="col-md-8 text-left">{{ userinfo_form.age }}</div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 text-right"><span>学院：</span></div>
-                <div class="col-md-8 text-left">{{ userinfo_form.school}}</div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 text-right"><span>专业：</span></div>
-                <div class="col-md-8 text-left">{{ userinfo_form.department }}</div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 text-right"><span>邮箱：</span></div>
-                <div class="col-md-8 text-left">{{ user_form.email }}</div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 text-right"><span>手机号：</span></div>
-                <div class="col-md-8 text-left">{{ userinfo_form.phone }}</div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 text-right"><span>个人介绍：</span></div>
-                <div class="col-md-8 text-left">{{ userinfo_form.aboutme }}</div>
-            </div>
-            <div class="row">
-                <input type="submit" class="btn btn-primary btn-lg" value="Submit">
+            <div class="fontstyle"><span>用户名：</span>{{ user.username }}</div>
+            <div class="fontstyle"><span>年龄：</span>{{ userinfo_form.age }}</div>
+            <div class="fontstyle"><span>学院：</span>{{ userinfo_form.school}}</div>
+            <div class="fontstyle"><span>专业：</span>{{ userinfo_form.department }}</div>
+            <div class="fontstyle"><span>邮箱：</span>{{ user_form.email }}</div>
+            <div class="fontstyle"><span>手机号：</span>{{ userinfo_form.phone }}</div>
+            <div class="fontstyle"><span>个人介绍：</span></div>
+            <div class="fontstyle" style="margin-left: 80px;">{{ userinfo_form.aboutme }}</div>
+
+            <div class="button-section">
+                <input type="submit" class="btn btn-primary btn-lg" value="Submit" style="font-size:30px;" onclick="showSuccessMessage()">
             </div>
         </form>
-    </div>
-    <div class="col-md-6">
-        <p>picture</p>
-    </div>
+
+
 </div>
+
+<script type="text/javascript" src='{% static "js/jquery.js" %}'></script>
+<script type="text/javascript" src="{% static 'js/layer.js' %}"></script>
+
+<script>
+    function upload_image_layer() {
+        layer.open({
+            title: "上传头像",
+            area: ['700px', '650px'],
+            type: 2,
+            content: "{% url 'account:my_image' %}",
+        });
+    }
+
+function showSuccessMessage() {
+        layer.msg("提交成功！");
+        setTimeout(function() {window.location.reload();}, 1000);
+    }
+
+</script>
 {% endblock %}
