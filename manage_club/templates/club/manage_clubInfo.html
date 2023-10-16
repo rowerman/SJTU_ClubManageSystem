@@ -2,51 +2,92 @@
 {% load static %}
 {% block title %}my information{% endblock %}
 {% block content %}
-<div class="row text-center vertical-middle-sm">
-    <h1>Edit {{ club.name }} の Information</h1>
-    <div class="col-md-6">
-        <form class="form-horizontal" action="." method="post">{% csrf_token %}
-            <div class="row">
-                <div class="col-md-4 text-right"><span>社团名：</span></div>
-                <div class="col-md-8 text-left">{{ club_form.name }}</div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 text-right"><span>社长：</span></div>
-                <div class="col-md-8 text-left">{{ club.lead_name }}</div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 text-right"><span>社团编号：</span></div>
-                <div class="col-md-8 text-left">{{ club_form.club_id}}</div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 text-right"><span>创建日期：</span></div>
-                <div class="col-md-8 text-left">{{ club.created | date:"T-m-d H:m:s" }}</div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 text-right"><span>社团人数：</span></div>
-                <div class="col-md-8 text-left">{{ club.num_of_mem}}</div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 text-right"><span>社团介绍：</span></div>
-                <div class="col-md-8 text-left">{{ club_form.Aboutme }}</div>
-            </div>
-            <div class="row">
-                <input type="submit" class="btn btn-primary btn-lg" value="Submit">
-            </div>
-        </form>
-    </div>
-        <div class="col-md-6">
-            <div style="margin-right: 100px">
+<style>
+    body {
+        background-image: url("{% static './images/background3.jpg' %}");
+        background-size: cover;
+        background-repeat: no-repeat;
+
+    }
+
+
+    .information {
+        margin: 20px auto;
+        padding: 20px;
+        background-color: rgba(245, 245, 245, 0.7);
+        border-radius: 10px;
+        max-width: 1000px;
+    }
+
+    .photo{
+        float: right;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-right: 40px;
+
+    }
+
+    .photo-section {
+        margin-bottom: 20px;
+    }
+
+
+
+    .button-section {
+        display: flex;
+        justify-content: center;
+        margin-top: 40px;
+    }
+
+    .information span{
+        font-weight: bold;
+        margin-left: 80px;
+        margin-top: -60px;
+    }
+
+    .fontstyle{
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+
+</style>
+
+
+<div class="information">
+    <h1 style="text-align: center; margin-bottom: 40px;">Edit {{ club.name }} の Information</h1>
+    <div class="photo">
+    <div class="photo-section">
                 {% if club.photo %}
-                <img src="{{ club.photo | striptags }}" class="img-circle" id="club_photo",name="club_face">
+                <img src="{{ club.photo | striptags }}" class="img-circle" id="club_photo",name="club_face" width="300px" height="300px">
                 {% else %}
-                <img name="club_face" src="{% static 'images/op.png' %}" class="img-circle"  id="club_photo" width="100px" height="100px">
+                <img name="club_face" src="{% static 'images/genshin.png' %}" class="img-circle"  id="club_photo" width="300px" height="300px">
                 {% endif %}
             </div>
-            <div style="margin-right: 100px">
+
+    <div>
                 <button class="btn btn-primary btn-lg" id="upload_image" onclick="upload_image_layer()">upload club's photo</button>
             </div>
         </div>
+
+        <form class="form-horizontal" action="." method="post">{% csrf_token %}
+            <div class="fontstyle"><span>社团名：</span>{{ club_form.name }}</div>
+            <div class="fontstyle"><span>社长：</span>{{ club.lead_name }}</div>
+            <div class="fontstyle"><span>社团编号：</span>{{ club_form.club_id}}</div>
+            <div class="fontstyle"><span>创建日期：</span>{{ club.created | date:"T-m-d H:m:s" }}</div>
+            <div class="fontstyle"><span>社团人数：</span>{{ club.num_of_mem}}</div>
+            <div class="fontstyle"><span>社团介绍：</span></div>
+            <div class="fontstyle" style="margin-left: 80px;">{{ club_form.Aboutme }}</div>
+            <div class="button-section">
+                <input type="submit" class="btn btn-primary btn-lg" value="Submit" style="font-size:30px;" onclick="showSuccessMessage()">
+            </div>
+
+        </form>
+
+
+
 </div>
 
 <script type="text/javascript" src='{% static "js/jquery.js" %}'></script>
@@ -62,5 +103,12 @@
             content:"{% url 'club:club_image' club.id %}",
         });
     }
+
+    function showSuccessMessage() {
+        layer.msg("提交成功！");
+        setTimeout(function() {window.location.reload();}, 2000);
+    }
+
 </script>
 {% endblock %}
+

@@ -4,49 +4,45 @@
 {% block title %}Message Information{% endblock %}
 
 {% block content %}
-<style>
-.glyphicon {
-  position: relative;
-  top: 1px;
-  display: inline-block;
-  font-family: 'Glyphicons Halflings';
-  font-style: normal;
-  font-weight: normal;
-  line-height: 1;
-  font-size: 50px;
-  font-weight: bold;
 
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-.glyphicon-left-arrow:before {
-  content: "\2190";
-}
+<style>
+    body {
+        background-image: url("{% static './images/background3.jpg' %}");
+        background-size: cover;
+        background-repeat: no-repeat;
+
+    }
+
+
+    .information {
+        margin: 20px auto;
+        padding: 20px;
+        background-color: rgba(245, 245, 245, 0.7);
+        border-radius: 10px;
+        max-width: 700px;
+    }
+
+    .information span{
+        font-weight: bold;
+        margin-left: 80px;
+    }
+
+    .fontstyle{
+        font-size: 25px;
+        margin-bottom: 50px;
+    }
+
+
 </style>
 
-<div class="row">
-    <a name="back" href="{% url 'club:all_activity' %}"><span class="glyphicon glyphicon-left-arrow" style="margin-left: 20px"></span></a>
+<div class="information">
+
+    <div class="fontstyle"><span>活动名：</span>{{ activity.name }}</div>
+    <div class="fontstyle"><span>活动开始时间：</span>{{ activity.begin_date | timezone:"Asia/Shanghai" | date:"Y-m-d H:m:s" }}</div>
+    <div class="fontstyle"><span>活动结束时间：</span>{{ activity.begin_date | timezone:"Asia/Shanghai" | date:"Y-m-d H:m:s" }}</div>
+    <div class="fontstyle"><span>活动描述：</span>{{ activity.description }}</div>
+
+
 </div>
-<div class="row text-center vertical-middle-sm" style="margin-top: 20px">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="row">
-                <div class="col-md-4 text-right"><span>活动名：</span></div>
-                <div class="col-md-8 text-left">{{ activity.name }}</div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 text-right"><span>活动开始时间：</span></div>
-                <div class="col-md-8 text-left">{{ activity.begin_date | timezone:"Asia/Shanghai" | date:"Y-m-d H:m:s" }}</div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 text-right"><span>活动结束时间：</span></div>
-                <div class="col-md-8 text-left">{{ activity.end_date | timezone:"Asia/Shanghai" | date:"Y-m-d H:m:s" }}</div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 text-right"><span>活动描述：</span></div>
-                <div class="col-md-8 text-left">{{ activity.description }}</div>
-            </div>
-        </div>
-    </div>
-</div>
+
 {% endblock %}
