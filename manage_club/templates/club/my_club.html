@@ -1,19 +1,150 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}My send{% endblock %}
+{% block title %}articles{% endblock %}
 {% block content %}
-<div class="row text-center vertical-middle-sm">
-    <h1>我加入的社团👇</h1>
-</div>
-<div class="container">
-    {% for club in clubs %}
-    <div class="list-group">
-        <a href="{% url 'club:club_detail' club.id %}" class="list-group-item active" style="margin-right: 100px">
-            <h4 class="list-group-item-heading">社团名：{{ club.name }}</h4></a>
-            <p class="list-group-item-text">社团介绍：{{ club.Aboutme |slice:'70'|linebreaks }}</p>
-    </div>
-    {% endfor %}
-    {% include "paginator.html" %}
-</div>
 
-{% endblock %}>
+<style>
+        .block {
+            background-color: #ffffff;
+            display: flex;
+            align-items: center;
+            margin-bottom: 1px;
+            margin-top: -15px;
+            padding-top: 10px;
+            border-top: 1.5px solid #e8e8e8;
+        }
+
+        .block1 {
+            background-color: #ffffff;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            margin-bottom: -5px;
+            margin-top:3px;
+        }
+
+        .first_text {
+            /* 文本的样式 */
+            margin-right: 150px; /* 右侧的间距 */
+            font-size: 17px;
+        }
+
+        .text {
+            /* 文本的样式 */
+            margin-right: 150px; /* 右侧的间距 */
+            font-size: 17px;
+            color: #fe7a16;
+        }
+
+        .last_text {
+            /* 文本的样式 */
+            margin-right: 150px; /* 右侧的间距 */
+            font-size: 17px;
+            color: #959595;
+        }
+
+        .self_button{
+            display: flex;
+            margin-right: 100px; /* 右侧的间距 */
+            font-size: 14px;
+            color: #959595;
+            margin-bottom: 18px;
+        }
+
+        .icon1 {
+            /* 图标样式 */
+            display: inline-block;
+            width: 25px; /* 设置图标的宽度 */
+            height: 25px; /* 设置图标的高度 */
+            vertical-align: middle; /* 垂直对齐方式设为居中 */
+            background-size: cover;
+            background-image: url("/static/images/up.png");
+        }
+
+        .icon2 {
+            /* 图标样式 */
+            display: inline-block;
+            width: 25px; /* 设置图标的宽度 */
+            height: 25px; /* 设置图标的高度 */
+            vertical-align: middle; /* 垂直对齐方式设为居中 */
+            background-size: cover;
+            background-image: url("/static/images/down.png");
+        }
+
+        .icon3 {
+            /* 图标样式 */
+            display: inline-block;
+            width: 15px; /* 设置图标的宽度 */
+            height: 15px; /* 设置图标的高度 */
+            vertical-align: middle; /* 垂直对齐方式设为居中 */
+            background-size: cover;
+            background-image: url("/static/images/l3.png");
+        }
+
+        .icon4 {
+            /* 图标样式 */
+            display: inline-block;
+            width: 15px; /* 设置图标的宽度 */
+            height: 15px; /* 设置图标的高度 */
+            vertical-align: middle; /* 垂直对齐方式设为居中 */
+            background-size: cover;
+            background-image: url("/static/images/l4.png");
+        }
+
+        .icon5 {
+            /* 图标样式 */
+            display: inline-block;
+            width: 15px; /* 设置图标的宽度 */
+            height: 15px; /* 设置图标的高度 */
+            vertical-align: middle; /* 垂直对齐方式设为居中 */
+            background-size: cover;
+            background-image: url("/static/images/l5.png");
+        }
+
+        .icon6 {
+            /* 图标样式 */
+            display: inline-block;
+            width: 15px; /* 设置图标的宽度 */
+            height: 15px; /* 设置图标的高度 */
+            vertical-align: middle; /* 垂直对齐方式设为居中 */
+            background-size: cover;
+            background-image: url("/static/images/l6.png");
+        }
+
+</style>
+
+<div class="first_header">{% include "kits/first_header1.html" %}</div>
+
+    {% for club in clubs %}
+        <div class="block">
+            <div class="first_text">
+                <a href="{% url 'club:club_detail' club.id %}">
+                <h4 class="list-group-item-heading">{{ club.name }}</h4></a>
+            </div>
+            <div class="text"><p class="list-group-item-heading">{{ club.num_of_mem }}成员</p></div>
+            <div class="text">
+                {% with total_fans=club.fans.count %}
+                <p class="list-group-item-heading">{{ total_fans }}关注</p>
+                {% endwith %}
+            </div>
+            <div class="last_text"><p class="list-group-item-heading">{{ club.Aboutme |slice:'70'|linebreaks }}</p></div>
+        </div>
+
+        <div class="block1">
+            <div class="self_button">
+                <span class="icon1"></span>
+                <a onclick="fan_Club({{ club.id }},'follow')" href="#">follow</a>
+            </div>
+            <div class="self_button">
+                <span class="icon2"></span><a onclick="fan_Club({{ club.id }},'unfollow')" href="#">unfollow</a>
+            </div>
+        </div>
+
+    {% empty %}
+    <h4 class="text-center">你还没有加入的社团捏~</h4>
+    {% endfor %}
+    <div class="block"></div>
+    {% include "paginator.html" %}
+
+
+{% endblock %}
