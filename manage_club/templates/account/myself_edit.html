@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}my information{% endblock %}
 {% block content %}
 <div class="row text-center vertical-middle-sm">
@@ -38,8 +39,46 @@
             </div>
         </form>
     </div>
-    <div class="col-md-6">
-        <p>picture</p>
+    <div class="photo-section">
+        {% if userinfo.photo %}
+        <img name="user_face" src="{{ userinfo.photo | striptags }}" class="img-circle" id="my_photo" width="100px" height="100px">
+        {% else %}
+        <img name="user_face" src="{% static 'images/genshin.png' %}" class="img-circle" id="my_photo" width="100px" height="100px">
+        {% endif %}
+    </div>
+    <div class="button-section">
+        <button class="btn btn-primary btn-lg" id="upload_image" onclick="upload_image_layer()">上传我的照片</button>
     </div>
 </div>
+
+<script type="text/javascript" src='{% static "js/jquery.js" %}'></script>
+<script type="text/javascript" src="{% static 'js/layer.js' %}"></script>
+
+<script>
+    function upload_image_layer() {
+        layer.open({
+            title: "上传头像",
+            area: ['700px', '650px'],
+            type: 2,
+            content: "{% url 'account:my_image' %}",
+        });
+    }
+
+    window.addEventListener('DOMContentLoaded', function () {
+        var aboutMeSpan = document.querySelector('.about-me');
+        var aboutMeText = aboutMeSpan.textContent;
+        var formattedText = formatText(aboutMeText, 40);
+        aboutMeSpan.innerHTML = formattedText;
+    });
+
+    function formatText(text, maxLength) {
+        var formattedText = '';
+        while (text.length > maxLength) {
+            formattedText += text.substr(0, maxLength) + '<br>';
+            text = text.substr(maxLength);
+        }
+        formattedText += text;
+        return formattedText;
+    }
+</script>
 {% endblock %}
