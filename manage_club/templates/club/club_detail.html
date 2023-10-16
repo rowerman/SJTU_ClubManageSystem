@@ -107,6 +107,14 @@
 
 </style>
 
+<button onclick="goBack()">返回上一页</button>
+
+<script>
+function goBack() {
+  history.back();
+}
+</script>
+
 <div class="row text-center vertical-middle-sm club-info-container">
     <div class="club-info-header">
         <h1>{{ club.name }}社团的基本信息</h1>
