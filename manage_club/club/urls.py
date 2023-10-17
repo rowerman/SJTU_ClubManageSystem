@@ -31,6 +31,7 @@ urlpatterns = [
     url(r'^activity-detail/(?P<activity_id>\d+)/$',views.activity_detail_version,name="activity_detail"),
     url(r'^delete-activity/$',views.delete_activity,name="delete_activity"),
     url(r'^all-activity/$',views.all_activity,name="all_activity"),
+    url(r'^my-activity/$',views.my_activity,name="my_activity"),
     url(r'^fan-Club/$',views.fan_Club,name="fan_Club"),
 
     url(r'^create-ad/(?P<club_id>\d+)/$',views.create_ad,name="create_ad"),

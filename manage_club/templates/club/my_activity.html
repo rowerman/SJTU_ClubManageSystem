@@ -80,7 +80,7 @@
 
 <div class="row text-center vertical-middle-sm">
     <div class="text-center vertical-middle-sm" style="margin-left: 10px">
-    <form class="form-horizontal" action="{% url 'club:all_activity' %}" method="post">{% csrf_token %}
+    <form class="form-horizontal" action="{% url 'club:my_activity' %}" method="post">{% csrf_token %}
         <div class="row" style="display: flex">
             <div class="col-md-12 text-right"><span>请输入要搜索的活动名：</span></div>
             <div class="col-md-12 text-left" id="keyword">{{ search_form.keyword }}<input type="submit" value="搜索"></div>
