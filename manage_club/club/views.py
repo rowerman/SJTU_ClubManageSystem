@@ -412,7 +412,6 @@ def manage_member(request,club_id):
     club = Club.objects.get(id=club_id)
     tmp = club.In_club.all()
     commons = User.objects.filter(member__in=tmp).distinct()
-    print(commons)
     paginator = Paginator(commons, 8)
     page = request.GET.get('page')
     try:
@@ -578,6 +577,78 @@ def all_activity(request):
                     current_page = paginator.page(paginator.num_pages)
                     activites = current_page.object_list
                 return render(request,"club/all_activity.html",{"search_form":search_form,"activites":activites,"page":current_page})
+        else:
+            return HttpResponse("errorForm!")
+
+@login_required(login_url='/account/login/')
+def my_activity(request):
+    if request.method == "GET":
+        search_form = SearchForm()
+        member = InClub.objects.get(member=request.user)
+        try:
+            clubs = member.In_club.all()
+            activities = Activity.objects.none()
+            for club in clubs:
+                activitiess = club.launch.all()
+                activities = activities.union(activitiess)
+        except:
+            activities = Activity.objects.none()
+        paginator = Paginator(activities, 4)
+        page = request.GET.get('page')
+        try:
+            current_page = paginator.page(page)
+            activities = current_page.object_list
+        except PageNotAnInteger:
+            current_page = paginator.page(1)
+            activities = current_page.object_list
+        except EmptyPage:
+            current_page = paginator.page(paginator.num_pages)
+            activities = current_page.object_list
+
+        return render(request,"club/my_activity.html",{"activities":activities,"page":current_page,"search_form":search_form})
+    else:
+        search_form = SearchForm(request.POST)
+        if search_form.is_valid():
+            keyword = request.POST['keyword']
+            try:
+                activities_inDB = Activity.objects.filter(Q(name__icontains=keyword) or Q(belong__name__icontains=keyword))
+                member = InClub.objects.get(member=request.user)
+                try:
+                    clubs = member.In_club.all()
+                    activities_ofMine = Activity.objects.none()
+                    for club in clubs:
+                        activitiess = club.launch.all()
+                        activities_ofMine = activities_ofMine.union(activitiess)
+                except:
+                    activities_ofMine = Activity.objects.none()
+                activities = activities_inDB.intersection(activities_ofMine)
+                paginator = Paginator(activities, 3)
+                page = request.GET.get('page')
+                try:
+                    current_page = paginator.page(page)
+                    activites = current_page.object_list
+                except PageNotAnInteger:
+                    current_page = paginator.page(1)
+                    activites = current_page.object_list
+                except EmptyPage:
+                    current_page = paginator.page(paginator.num_pages)
+                    activites = current_page.object_list
+                return render(request,"club/my_activity.html",
+                              {"search_form":search_form,"page":current_page,"activities":activites})
+            except:
+                activites = message.objects.none()
+                paginator = Paginator(activites, 3)
+                page = request.GET.get('page')
+                try:
+                    current_page = paginator.page(page)
+                    activites = current_page.object_list
+                except PageNotAnInteger:
+                    current_page = paginator.page(1)
+                    activites = current_page.object_list
+                except EmptyPage:
+                    current_page = paginator.page(paginator.num_pages)
+                    activites = current_page.object_list
+                return render(request,"club/my_activity.html",{"search_form":search_form,"activites":activites,"page":current_page})
         else:
             return HttpResponse("errorForm!")
 
