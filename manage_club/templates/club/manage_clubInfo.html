@@ -83,7 +83,7 @@ function goBack() {
         <form class="form-horizontal" action="." method="post">{% csrf_token %}
             <div class="fontstyle"><span>社团名：</span>{{ club_form.name }}</div>
             <div class="fontstyle"><span>社长：</span>{{ club.lead_name }}</div>
-            <div class="fontstyle"><span>社团编号：</span>{{ club_form.club_id}}</div>
+            <div class="fontstyle"><span>社团宣言：</span>{{ club_form.club_id}}</div>
             <div class="fontstyle"><span>创建日期：</span>{{ club.created | date:"T-m-d H:m:s" }}</div>
             <div class="fontstyle"><span>社团人数：</span>{{ club.num_of_mem}}</div>
             <div class="fontstyle"><span>社团介绍：</span></div>

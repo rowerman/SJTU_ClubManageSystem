@@ -35,6 +35,14 @@
 
 </style>
 
+<button onclick="goBack()">返回上一页</button>
+
+<script>
+function goBack() {
+  history.back();
+}
+</script>
+
 <div class="information">
 
     <div class="fontstyle"><span>活动名：</span>{{ activity.name }}</div>

@@ -75,6 +75,9 @@
 
 
 
+
+
+
 <div class="row text-center vertical-middle-sm">
     <div class="text-center vertical-middle-sm" style="margin-left: 10px">
     <form class="form-horizontal" action="{% url 'club:all_activity' %}" method="post">{% csrf_token %}
@@ -85,6 +88,18 @@
     </form>
     </div>
 </div>
+
+<button onclick="go_my()">查看我的社团的活动</button>
+<button onclick="go_all()">查看校内全部活动</button>
+<script>
+    function go_all() {
+      
+    }
+    
+    function go_my(){
+        
+    }
+</script>
 
 <div class="first_header">{% include "kits/first_header3.html" %}</div>
 
