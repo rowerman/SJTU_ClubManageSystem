@@ -55,6 +55,45 @@
 
 </style>
 
+
+<script type="text/javascript" src='{% static "js/jquery.js" %}'></script>
+<script type="text/javascript" src="{% static 'js/layer.js' %}"></script>
+
+<script>
+    function upload_image_layer() {
+        layer.open({
+            title: "上传头像",
+            area: ['700px', '650px'],
+            type: 2,
+            content: "{% url 'account:my_image' %}",
+        });
+    }
+
+    function showSuccessMessage() {
+            layer.msg("提交成功！");
+            setTimeout(function() {window.location.reload();}, 1000);
+        }
+
+    function validateForm() {
+        var My_age = document.getElementsByName('age')[0].value.trim();
+        var My_school = document.getElementsByName('school')[0].value.trim();
+        var My_dep = document.getElementsByName('department')[0].value.trim();
+        var My_email = document.getElementsByName('email')[0].value.trim();
+        var My_phone = document.getElementsByName('phone')[0].value.trim();
+        var My_aboutme = document.getElementsByName('aboutme')[0].value.trim();
+        // 过滤并拦截特殊字符
+        var regex = /[/?!*<>&"']/; // 可根据需要自定义特殊字符的正则表达式
+        if (regex.test(My_age) || regex.test(My_school) || 
+            regex.test(My_dep) || regex.test(My_email) ||
+            regex.test(My_phone) || regex.test(My_aboutme)) {
+          alert('请不要使用特殊字符如/?!*<>&\"\'');
+          return false; // 阻止表单提交
+        }
+      
+        return true; // 允许表单提交
+      }
+</script>
+
 <div class="information">
     <h1 style="text-align: center; margin-bottom: 40px;">Edit My Information</h1>
     <div class="photo">
@@ -71,7 +110,8 @@
     </div>
         </div>
 
-        <form class="form-horizontal" action="." method="post">{% csrf_token %}
+        <form class="form-horizontal" action="." method="post" onsubmit="return validateForm()">
+            {% csrf_token %}
             <div class="fontstyle"><span>用户名：</span>{{ user.username }}</div>
             <div class="fontstyle"><span>年龄：</span>{{ userinfo_form.age }}</div>
             <div class="fontstyle"><span>学院：</span>{{ userinfo_form.school}}</div>
@@ -89,23 +129,5 @@
 
 </div>
 
-<script type="text/javascript" src='{% static "js/jquery.js" %}'></script>
-<script type="text/javascript" src="{% static 'js/layer.js' %}"></script>
 
-<script>
-    function upload_image_layer() {
-        layer.open({
-            title: "上传头像",
-            area: ['700px', '650px'],
-            type: 2,
-            content: "{% url 'account:my_image' %}",
-        });
-    }
-
-function showSuccessMessage() {
-        layer.msg("提交成功！");
-        setTimeout(function() {window.location.reload();}, 1000);
-    }
-
-</script>
 {% endblock %}

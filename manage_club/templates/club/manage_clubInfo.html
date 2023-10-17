@@ -1,3 +1,12 @@
+<!--
+ * @FileName: 
+ * @Description: 
+ * @Autor: Liujunjie/Aries-441
+ * @StudentNumber: 521021911059
+ * @Date: 2023-10-12 23:24:18
+ * @E-mail: sjtu.liu.jj@gmail.com/sjtu.1518228705@sjtu.edu.cn
+ * @LastEditTime: 2023-10-17 16:29:56
+-->
 {% extends "base.html" %}
 {% load static %}
 {% block title %}my information{% endblock %}
@@ -58,14 +67,47 @@
 
 <button onclick="goBack()">返回上一页</button>
 
+
+
+<script type="text/javascript" src='{% static "js/jquery.js" %}'></script>
+<script type="text/javascript" src="{% static 'js/layer.js' %}"></script>
 <script>
-function goBack() {
-  history.back();
+    function validateForm() {
+        var clubName = document.getElementsByName('name')[0].value.trim();
+        var clubDeclaration = document.getElementsByName('club_id')[0].value.trim();
+        var clubIntroduction = document.getElementsByName('Aboutme')[0].value.trim();
+      
+        // 过滤并拦截特殊字符
+        var regex = /[/?!*<>&"']/; // 可根据需要自定义特殊字符的正则表达式
+        if (regex.test(clubName) || regex.test(clubDeclaration) || regex.test(clubIntroduction)) {
+          alert('请不要使用特殊字符如/?!*<>&\"\'');
+          return false; // 阻止表单提交
+        }
+      
+        return true; // 允许表单提交
+      }
+      
+    function goBack() {
+    history.back();
+
+    function upload_image_layer(){
+        layer.open({
+            title:"上传社团头像",
+            area:['700px','650px'],
+            type:2,
+            content:"{% url 'club:club_image' club.id %}",
+        });
+    }
+
+    function showSuccessMessage() {
+        layer.msg("提交成功！");
+        setTimeout(function() {window.location.reload();}, 2000);
+    }
 }
 </script>
 
 <div class="information">
-    <h1 style="text-align: center; margin-bottom: 40px;">Edit {{ club.name }} の Information</h1>
+    <h1 style="text-align: center; margin-bottom: 40px;">Edit {{ club.name }} 的 Information</h1>
     <div class="photo">
     <div class="photo-section">
                 {% if club.photo %}
@@ -73,14 +115,15 @@ function goBack() {
                 {% else %}
                 <img name="club_face" src="{% static 'images/genshin.png' %}" class="img-circle"  id="club_photo" width="300px" height="300px">
                 {% endif %}
-            </div>
+    </div>
 
     <div>
                 <button class="btn btn-primary btn-lg" id="upload_image" onclick="upload_image_layer()">upload club's photo</button>
             </div>
         </div>
 
-        <form class="form-horizontal" action="." method="post">{% csrf_token %}
+        <form class="form-horizontal" action="." method="post" onsubmit="return validateForm()">
+            {% csrf_token %}
             <div class="fontstyle"><span>社团名：</span>{{ club_form.name }}</div>
             <div class="fontstyle"><span>社长：</span>{{ club.lead_name }}</div>
             <div class="fontstyle"><span>社团宣言：</span>{{ club_form.club_id}}</div>
@@ -98,25 +141,6 @@ function goBack() {
 
 </div>
 
-<script type="text/javascript" src='{% static "js/jquery.js" %}'></script>
-<script type="text/javascript" src="{% static 'js/layer.js' %}"></script>
 
-
-<script>
-    function upload_image_layer(){
-        layer.open({
-            title:"上传社团头像",
-            area:['700px','650px'],
-            type:2,
-            content:"{% url 'club:club_image' club.id %}",
-        });
-    }
-
-    function showSuccessMessage() {
-        layer.msg("提交成功！");
-        setTimeout(function() {window.location.reload();}, 2000);
-    }
-
-</script>
 {% endblock %}
 
