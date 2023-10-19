@@ -5,7 +5,7 @@
 
 <style>
     body {
-        background-image: url("{% static './images/background3.jpg' %}");
+        background-image: url("{% static './images/background4.jpeg' %}");
         background-size: cover;
         background-repeat: no-repeat;
 
@@ -26,7 +26,7 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        margin-right: 40px;
+        margin-right: 70px;
 
     }
 
@@ -49,12 +49,49 @@
 
     .fontstyle{
         font-size: 20px;
-        margin-bottom: 15px;
+        margin-bottom: 20px;
     }
 
 
 </style>
 
+
+
+
+<div class="information">
+    <h1 style="font-size: 48px; text-align: center; margin-bottom: 40px; font-family: STCaiyun; text-shadow: 2px 2px 4px #000000;">Edit My Information</h1>
+    <div class="photo">
+    <div class="photo-section">
+        {% if userinfo.photo %}
+        <img name="user_face" src="{{ userinfo.photo | striptags }}" class="img-circle" id="my_photo" width="300px" height="300px">
+        {% else %}
+        <img name="user_face" src="{% static 'images/genshin.png' %}" class="img-circle" id="my_photo" width="300px" height="300px">
+        {% endif %}
+    </div>
+
+    <div>
+        <button class="btn btn-primary btn-lg" id="upload_image" onclick="upload_image_layer()">上传我的照片</button>
+    </div>
+        </div>
+
+        <form class="form-horizontal" action="." method="post" onsubmit="return validateForm()">
+            {% csrf_token %}
+            <div class="fontstyle"><span style="font-family: STHupo;">用户名：</span>{{ user.username }}</div>
+            <div class="fontstyle"><span style="font-family: STHupo;">年龄：</span>{{ userinfo_form.age }}</div>
+            <div class="fontstyle"><span style="font-family: STHupo;">学院：</span>{{ userinfo_form.school}}</div>
+            <div class="fontstyle"><span style="font-family: STHupo;">专业：</span>{{ userinfo_form.department }}</div>
+            <div class="fontstyle"><span style="font-family: STHupo;">邮箱：</span>{{ user_form.email }}</div>
+            <div class="fontstyle"><span style="font-family: STHupo;">手机号：</span>{{ userinfo_form.phone }}</div>
+            <div class="fontstyle"><span style="font-family: STHupo;">个人介绍：</span></div>
+            <div class="fontstyle" style="margin-left: 80px; ">{{ userinfo_form.aboutme }}</div>
+
+            <div class="button-section">
+                <input type="submit" class="btn btn-primary btn-lg" value="Submit" style="font-size:30px;" onclick="showSuccessMessage()">
+            </div>
+        </form>
+
+
+</div>
 
 <script type="text/javascript" src='{% static "js/jquery.js" %}'></script>
 <script type="text/javascript" src="{% static 'js/layer.js' %}"></script>
@@ -83,51 +120,16 @@
         var My_aboutme = document.getElementsByName('aboutme')[0].value.trim();
         // 过滤并拦截特殊字符
         var regex = /[/?!*<>&"']/; // 可根据需要自定义特殊字符的正则表达式
-        if (regex.test(My_age) || regex.test(My_school) || 
+        if (regex.test(My_age) || regex.test(My_school) ||
             regex.test(My_dep) || regex.test(My_email) ||
             regex.test(My_phone) || regex.test(My_aboutme)) {
           alert('请不要使用特殊字符如/?!*<>&\"\'');
           return false; // 阻止表单提交
         }
-      
+
         return true; // 允许表单提交
       }
 </script>
-
-<div class="information">
-    <h1 style="text-align: center; margin-bottom: 40px;">Edit My Information</h1>
-    <div class="photo">
-    <div class="photo-section">
-        {% if userinfo.photo %}
-        <img name="user_face" src="{{ userinfo.photo | striptags }}" class="img-circle" id="my_photo" width="300px" height="300px">
-        {% else %}
-        <img name="user_face" src="{% static 'images/genshin.png' %}" class="img-circle" id="my_photo" width="300px" height="300px">
-        {% endif %}
-    </div>
-
-    <div>
-        <button class="btn btn-primary btn-lg" id="upload_image" onclick="upload_image_layer()">上传我的照片</button>
-    </div>
-        </div>
-
-        <form class="form-horizontal" action="." method="post" onsubmit="return validateForm()">
-            {% csrf_token %}
-            <div class="fontstyle"><span>用户名：</span>{{ user.username }}</div>
-            <div class="fontstyle"><span>年龄：</span>{{ userinfo_form.age }}</div>
-            <div class="fontstyle"><span>学院：</span>{{ userinfo_form.school}}</div>
-            <div class="fontstyle"><span>专业：</span>{{ userinfo_form.department }}</div>
-            <div class="fontstyle"><span>邮箱：</span>{{ user_form.email }}</div>
-            <div class="fontstyle"><span>手机号：</span>{{ userinfo_form.phone }}</div>
-            <div class="fontstyle"><span>个人介绍：</span></div>
-            <div class="fontstyle" style="margin-left: 80px;">{{ userinfo_form.aboutme }}</div>
-
-            <div class="button-section">
-                <input type="submit" class="btn btn-primary btn-lg" value="Submit" style="font-size:30px;" onclick="showSuccessMessage()">
-            </div>
-        </form>
-
-
-</div>
 
 
 {% endblock %}

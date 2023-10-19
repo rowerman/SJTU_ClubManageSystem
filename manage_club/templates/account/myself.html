@@ -3,10 +3,17 @@
 {% block title %}我的信息{% endblock %}
 {% block content %}
 <style>
+    body {
+        background-image: url("{% static './images/background4.jpeg' %}");
+        background-size: cover;
+        background-repeat: no-repeat;
+
+    }
+
     .information {
         margin: 20px;
         padding: 20px;
-        background-color: #f5f5f5;
+        background-color: rgba(245, 245, 245, 0.6);
         border-radius: 10px;
     }
 
@@ -16,6 +23,7 @@
     }
 
     .user-info h1 {
+        font-family: STCaiyun;
         font-size: 35px;
         margin-bottom: 30px;
         font-weight: 800;
@@ -23,12 +31,13 @@
 
     .user-info div {
         font-size: 20px;
-        margin-bottom: 10px; /* 设置行间距为 10px */
-        margin-left: 40px;
+        margin-bottom: 15px; /* 设置行间距为 10px */
+        margin-left: 50px;
     }
 
     .user-info span {
         font-weight: bold;
+        font-family: STHupo;
     }
 
     .user-info ul {
@@ -52,7 +61,7 @@
         float: right;
         margin-left: 100px;
         margin-right: 200px;
-        margin-top: 60px;
+        margin-top: 90px;
         margin-bottom: 20px;
     }
 
@@ -71,6 +80,8 @@
     .button-section button {
         width: 150px;
     }
+
+
 </style>
 
 <div class="information">
@@ -81,11 +92,9 @@
         <img name="user_face" src="{% static 'images/genshin.png' %}" class="img-circle" id="my_photo">
         {% endif %}
     </div>
-    <div class="button-section">
-        <button class="btn btn-primary btn-lg" id="upload_image" onclick="upload_image_layer()">上传我的照片</button>
-    </div>
+
     <div class="user-info">
-        <h1>{{ user.username }} の信息</h1>
+        <h1>{{ user.username }}の信息</h1>
         <div>
             <div><span>用户名：</span>{{ user1.username }}</div>
             <div><span>年龄：</span>{{ userinfo.age }}</div>
@@ -104,13 +113,17 @@
                 </ul>
             </div>
             <div>
-            <span>个人介绍：</span>
-            <span class="about-me" style="font-weight: 400;">{{ userinfo.aboutme }}</span>
-                </div>
+                <span>个人介绍：</span>
+                <span class="about-me" style="font-weight: 400; font-family:SimHei">{{ userinfo.aboutme }}</span>
+            </div>
         </div>
 
 
-        <a href="{% url 'account:edit_my_information' %}"><button class="btn btn-primary btn-lg" style="font-size: 25px; margin-left: 420px; margin-top: 50px;">编辑我的信息</button></a>
+        <a href="{% url 'account:edit_my_information' %}">
+            <button class="btn btn-primary btn-lg" style="font-size: 25px; margin-left: 420px; margin-top: 50px;">
+                编辑我的信息
+            </button>
+        </a>
     </div>
 </div>
 
@@ -118,14 +131,7 @@
 <script type="text/javascript" src="{% static 'js/layer.js' %}"></script>
 
 <script>
-    function upload_image_layer() {
-        layer.open({
-            title: "上传头像",
-            area: ['700px', '650px'],
-            type: 2,
-            content: "{% url 'account:my_image' %}",
-        });
-    }
+
 
     window.addEventListener('DOMContentLoaded', function () {
         var aboutMeSpan = document.querySelector('.about-me');
@@ -143,5 +149,7 @@
         formattedText += text;
         return formattedText;
     }
+
+
 </script>
 {% endblock %}
