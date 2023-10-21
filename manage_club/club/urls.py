@@ -36,6 +36,7 @@ urlpatterns = [
 
     url(r'^create-ad/(?P<club_id>\d+)/$',views.create_ad,name="create_ad"),
     url(r'^list-ads/(?P<club_id>\d+)/$',views.list_ads,name="list_ads"),
+    url(r'^manage_ad/(?P<club_id>\d+)/$',views.manage_ad,name="manage_ad"),
     url(r'^ad-detail-owner/(?P<ad_id>\d+)/$',views.ad_detail_owner,name="ad_detail_owner"),
     url(r'^ad-detail-other/(?P<ad_id>\d+)/$',views.ad_detail_other,name="ad_detail_other"),
     url(r'^ad-detail-edit/(?P<ad_id>\d+)/$',views.ad_detail_edit,name="ad_detail_edit"),
