@@ -71,8 +71,14 @@
         .log-tit h3{color:#c9151e; font-weight:bold; font-size:36px; font-family:shsc; position:relative; z-index:10;left:-150px  }
         .log-tit span{display:block; position:absolute; top:42px; left:-130px; z-index:1;  line-height:1em;  font-size:30px; font-weight:bold;  font-family:shsc; color:#b39c9c41; }
     </style>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <script>
+
+      document.getElementById("loginForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // 阻止表单默认提交行为
+        return false; // 阻止表单提交
+      });
+
         function checkSpecialCharacters(input) {
           var regex = /[/?!*<>&"']/;
           if (regex.test(input)) {
@@ -100,6 +106,25 @@
             return false;
           }
         }
+
+        function encryptPassword() {
+          var passwordInput = document.getElementById("{{ form.password.id_for_label }}");
+          var password = passwordInput.value.trim();
+          // 使用 CryptoJS 进行 SHA256 加密
+          var encryptedPassword = CryptoJS.SHA256(password).toString();
+          // 替换密码字段的明文值为加密后的值
+          passwordInput.value = encryptedPassword;
+
+          var passwordInput2 = document.getElementById("{{ form.password2.id_for_label }}");
+          var password2 = passwordInput2.value.trim();
+          // 使用 CryptoJS 进行 SHA256 加密
+          var encryptedPassword2 = CryptoJS.SHA256(password2).toString();
+          // 替换密码字段的明文值为加密后的值
+          passwordInput2.value = encryptedPassword2;
+
+          return true; // 允许表单提交
+        }
+
       </script>
 </head>
 <body>
@@ -142,7 +167,7 @@
                     <div class="log-not clearfix" id="newsnotice">
 
                       <div class="empty-line1"></div>
-                      <form class="form-horizontal" action="." method="post" onsubmit="return validateForm()">
+                      <form class="form-horizontal" action="." method="post" onsubmit="return encryptPassword() & validateForm()" id="loginForm">
                         {% csrf_token %}
                         <div class="form-group">
                           <label for="{{ form.username.id_for_label }}" class="col-md-5 control-label">Username</label>
@@ -156,13 +181,17 @@
                         </div>
                         <div class="form-group">
                           <label for="{{ form.password.id_for_label }}" class="col-md-5 control-label">Password</label>
-                          <div class="col-md-6 text-left">{{ form.password }}</div>
+                          <div class="col-md-6 text-left">
+                            <input type="password" id="{{ form.password.id_for_label }}" name="{{ form.password.html_name }}" class="form-control">
+                          </div>
                         </div>
                         <div class="form-group">
-                          <label for="{{ form.password.id_for_label }}" class="col-md-5 control-label">Confirm Password</label>
-                          <div class="col-md-6 text-left">{{ form.password2 }}</div>
+                          <label for="{{ form.password2.id_for_label }}" class="col-md-5 control-label">Confirm Password</label>
+                          <div class="col-md-6 text-left">
+                            <input type="password" id="{{ form.password2.id_for_label }}" name="{{ form.password2.html_name }}" class="form-control">
+                          </div>
                         </div>
-                        <input type="submit" class="btn btn-primary btn-lg" value="REGISTER">
+                        <input type="submit" class="btn btn-primary btn-lg" value="REGISTER" onsubmit="return encryptPassword() & validateForm()">
                       </form>
                     </div>
                   </div>

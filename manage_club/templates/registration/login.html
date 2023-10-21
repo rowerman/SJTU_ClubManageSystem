@@ -5,7 +5,7 @@
  * @StudentNumber: 521021911059
  * @Date: 2023-10-09 23:59:22
  * @E-mail: sjtu.liu.jj@gmail.com/sjtu.1518228705@sjtu.edu.cn
- * @LastEditTime: 2023-10-17 15:04:36
+ * @LastEditTime: 2023-10-22 03:00:42
 -->
 {% extends "base_withoutheader.html" %}
 {% load static %}
@@ -30,14 +30,64 @@
   left: 0;
   right: 0;
 }
-/*
-.log-tit{position:relative; padding-bottom:30px; }
-.log-tit h3{color:#c9151e; font-weight:bold; font-size:36px; font-family:shsc; position:relative; z-index:10;left:-200px  }
-.log-tit span{display:block; position:absolute; top:24px; left:20px; z-index:1;  line-height:1em;  font-size:36px; font-weight:bold;  font-family:shsc; color:#b39c9c41; }
-*/
-</style>
 
+
+
+#togglePasswordBtn {
+  background: none;
+  border: none;
+  padding: 0;
+  position: relative;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+#eyeIcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 8px;
+  border: 2px solid #000;
+  border-radius: 50%;
+  background-color: transparent;
+  transition: background-color 0.3s;
+}
+</style>
+<!-- 添加FontAwesome图标库的CSS链接 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
 <script>
+
+  document.getElementById("loginForm").addEventListener("submit", function(event) {
+    event.preventDefault(); // 阻止表单默认提交行为
+    return false; // 阻止表单提交
+  });
+
+  function togglePasswordVisibility() {
+    var passwordInput = document.getElementById("{{ form.password.id_for_label }}");
+    var togglePasswordBtn = document.getElementById("togglePasswordBtn");
+  
+    if (passwordInput.type === "password") {
+      passwordInput.type = "text";
+      togglePasswordBtn.querySelector("i").classList.remove("fa-eye");
+      togglePasswordBtn.querySelector("i").classList.add("fa-eye-slash");
+    } else {
+      passwordInput.type = "password";
+      togglePasswordBtn.querySelector("i").classList.remove("fa-eye-slash");
+      togglePasswordBtn.querySelector("i").classList.add("fa-eye");
+    }
+  
+    // Reset password visibility after 3 seconds
+    setTimeout(function() {
+      passwordInput.type = "password";
+      togglePasswordBtn.querySelector("i").classList.remove("fa-eye-slash");
+      togglePasswordBtn.querySelector("i").classList.add("fa-eye");
+    }, 3000);
+  }
+  
   function checkSpecialCharacters(input) {
     var regex = /[/?!*<>&"']/;
     if (regex.test(input)) {
@@ -53,7 +103,21 @@
       return false;
     }
   }
+
+
+  function encryptPassword() {
+    var passwordInput = document.getElementById("{{ form.password.id_for_label }}");
+    var password = passwordInput.value.trim();
+    // 使用 CryptoJS 进行 SHA256 加密
+    var encryptedPassword = CryptoJS.SHA256(password).toString();
+    // 替换密码字段的明文值为加密后的值
+    passwordInput.value = encryptedPassword;
+    return true; // 允许表单提交
+  }
+
+
 </script>
+
 
 <body class="full-screen">
   <!-- 线条背景动画 -->
@@ -92,23 +156,34 @@
           <p style="margin-top: 60px"></p>
           <p>Input your username and password</p>
           <p style="margin-top: 10px"></p>
-          <form class="form-horizontal" action="{% url 'account:user_login' %}" method="post" onsubmit="return validateForm()">
+
+          <form class="form-horizontal" action="{% url 'account:user_login' %}" method="post" onsubmit="return encryptPassword()&validateForm()" id="loginForm">
             {% csrf_token %}
-            <!--{{ form.as_p }}-->
             <div class="form-group">
-              
-              <label for="{{ form.username.id_for_label }}" class="col-md-5 control-label" style="color: red"><span
-                  glyphicon-floppy-open></span>Username</label>
+              <label for="{{ form.username.id_for_label }}" class="col-md-5 control-label" style="color: red">
+                <span class="glyphicon glyphicon-user"></span>Username
+              </label>
               <div class="col-md-6 text-left">{{ form.username }}</div>
             </div>
-            
             <div class="form-group">
-              <label for="{{ form.password.id_for_label }}" class="col-md-5 control-label" style="color: blue"><span
-                  glyphicon-floppy-open></span>Password</label>
-              <div class="col-md-6 text-left">{{ form.password }}</div>
+              <label for="{{ form.password.id_for_label }}" class="col-md-5 control-label" style="color: blue">
+                <span class="glyphicon glyphicon-lock"></span>Password
+              </label>
+              <div class="col-md-6 text-left">
+                
+                <input type="password" id="{{ form.password.id_for_label }}" name="{{ form.password.html_name }}" class="form-control">
+                <button type="button" id="togglePasswordBtn" onclick="togglePasswordVisibility();">
+                  <span class="input-group-text" id="togglePassword" style="cursor: pointer;"><i class="fas fa-eye"></i></span>
+                </button>
+
+                
+              </div>
             </div>
-            <input type="submit" class="btn btn-primary btn-lg" value="Login">
+
+            <input type="submit" class="btn btn-primary btn-lg" value="Login" >
           </form>
+
+
         </div>				  
   
         <div class="log-fst" style="height: 250px" id="links">
