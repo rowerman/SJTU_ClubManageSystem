@@ -62,8 +62,27 @@
 </style>
 
 
+<script>
+    function validateForm() {
+        var clubName = document.getElementsByName('name')[0].value.trim();
+        var clubDeclaration = document.getElementsByName('club_id')[0].value.trim();
+        var clubIntroduction = document.getElementsByName('Aboutme')[0].value.trim();
+      
+        // 过滤并拦截特殊字符
+        var regex = /[/?!*<>&"']/; // 可根据需要自定义特殊字符的正则表达式
+        if (regex.test(clubName) || regex.test(clubDeclaration) || regex.test(clubIntroduction)) {
+          alert('请不要使用特殊字符如/?!*<>&\"\'');
+          return false; // 阻止表单提交
+        }
+      
+        return true; // 允许表单提交
+      }
+      
+</script>
+
 <div class="text-center vertical-middle-sm" style="margin-left: 10px">
-    <form class="form-horizontal" action="." method="post">{% csrf_token %}
+    <form class="form-horizontal" action="." method="post" onsubmit="return validateForm()">
+        {% csrf_token %}
         <div class="row" style="margin-top: 20px">
             <div class="col-md-12 text-center ">
                 <span class="font-set">社团名称：</span>

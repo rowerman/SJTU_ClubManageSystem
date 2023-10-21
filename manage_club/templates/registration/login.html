@@ -5,7 +5,7 @@
  * @StudentNumber: 521021911059
  * @Date: 2023-10-09 23:59:22
  * @E-mail: sjtu.liu.jj@gmail.com/sjtu.1518228705@sjtu.edu.cn
- * @LastEditTime: 2023-10-17 08:13:59
+ * @LastEditTime: 2023-10-17 15:04:36
 -->
 {% extends "base_withoutheader.html" %}
 {% load static %}
@@ -36,6 +36,24 @@
 .log-tit span{display:block; position:absolute; top:24px; left:20px; z-index:1;  line-height:1em;  font-size:36px; font-weight:bold;  font-family:shsc; color:#b39c9c41; }
 */
 </style>
+
+<script>
+  function checkSpecialCharacters(input) {
+    var regex = /[/?!*<>&"']/;
+    if (regex.test(input)) {
+      alert("用户名中包含特殊字符，请删除后再提交。");
+      return false;
+    }
+    return true;
+  }
+
+  function validateForm() {
+    var usernameInput = document.getElementById("username").value;
+    if (!checkSpecialCharacters(usernameInput)) {
+      return false;
+    }
+  }
+</script>
 
 <body class="full-screen">
   <!-- 线条背景动画 -->
@@ -74,7 +92,7 @@
           <p style="margin-top: 60px"></p>
           <p>Input your username and password</p>
           <p style="margin-top: 10px"></p>
-          <form class="form-horizontal" action="{% url 'account:user_login' %}" method="post">
+          <form class="form-horizontal" action="{% url 'account:user_login' %}" method="post" onsubmit="return validateForm()">
             {% csrf_token %}
             <!--{{ form.as_p }}-->
             <div class="form-group">
@@ -83,6 +101,7 @@
                   glyphicon-floppy-open></span>Username</label>
               <div class="col-md-6 text-left">{{ form.username }}</div>
             </div>
+            
             <div class="form-group">
               <label for="{{ form.password.id_for_label }}" class="col-md-5 control-label" style="color: blue"><span
                   glyphicon-floppy-open></span>Password</label>

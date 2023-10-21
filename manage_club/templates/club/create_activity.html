@@ -22,14 +22,33 @@
 
 <button onclick="goBack()">返回上一页</button>
 
+<script type="text/javascript" src='{% static "js/jquery.js" %}'></script>
+<script type="text/javascript" src="{% static 'js/layer.js' %}"></script>
 <script>
-function goBack() {
-  history.back();
-}
+    function goBack() {
+    history.back();
+    }
+
+    function validateForm() {
+        var Activity_Name = document.getElementsByName('name')[0].value.trim();
+        var Activity_begin_date = document.getElementsByName('begin_date')[0].value.trim();
+        var Activity_end_date = document.getElementsByName('end_date')[0].value.trim();
+        var Activity_description = document.getElementsByName('description')[0].value.trim();
+        // 过滤并拦截特殊字符
+        var regex = /[/?!*<>&"']/; // 可根据需要自定义特殊字符的正则表达式
+        if (regex.test(Activity_Name) || regex.test(Activity_begin_date) || 
+            regex.test(Activity_end_date) || regex.test(Activity_description)) {
+          alert('请不要使用特殊字符如/?!*<>&\"\'');
+          return false; // 阻止表单提交
+        }
+      
+        return true; // 允许表单提交
+      }
 </script>
 
 <div class="text-center vertical-middle-sm" style="margin-left: 10px">
-    <form class="form-horizontal" action="." method="post">{% csrf_token %}
+    <form class="form-horizontal" action="." method="post" onsubmit="return validateForm()">
+        {% csrf_token %}
         <div class="row" style="margin-top: 20px">
             <div class="col-md-12 text-center ">
                 <span class="font-set">活动名称：</span>
@@ -76,6 +95,5 @@ function goBack() {
     </form>
 </div>
 
-<script type="text/javascript" src='{% static "js/jquery.js" %}'></script>
-<script type="text/javascript" src="{% static 'js/layer.js' %}"></script>
+
 {% endblock %}

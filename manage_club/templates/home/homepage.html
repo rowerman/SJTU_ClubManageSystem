@@ -1,5 +1,229 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}articles{% endblock %}
 {% block content %}
 
-    <div class="block_content">{% include "home.html" %}</div>
+<style>
+        .block {
+            background-color: #ffffff;
+            display: flex;
+            align-items: center;
+            margin-bottom: 1px;
+            margin-top: -15px;
+            padding-top: 10px;
+            border-top: 1.5px solid #e8e8e8;
+        }
+
+        .block1 {
+            background-color: #ffffff;
+            padding: 10px;
+            align-items: center;
+            margin-bottom: -5px;
+            margin-top:3px;
+        }
+
+         .block2 {
+            background-color: #ffffff;
+            display: flex;
+            padding: 10px;
+            align-items: center;
+            margin-bottom: -5px;
+            margin-top:3px;
+        }
+
+        .first_text {
+            /* 文本的样式 */
+            margin-right: 150px; /* 右侧的间距 */
+            font-size: 17px;
+        }
+
+        .text {
+            /* 文本的样式 */
+            margin-right: 150px; /* 右侧的间距 */
+            font-size: 17px;
+            color: #fe7a16;
+        }
+
+        .last_text {
+            /* 文本的样式 */
+            margin-right: 150px; /* 右侧的间距 */
+            font-size: 17px;
+            color: #959595;
+        }
+
+        .self_button{
+            display: flex;
+            margin-right: 400px; /* 右侧的间距 */
+            font-size: 14px;
+            color: #959595;
+            margin-bottom: 18px;
+        }
+
+        .self_button1{
+            display: flex;
+            margin-right: 100px; /* 右侧的间距 */
+            font-size: 20px;
+            color: #959595;
+            margin-bottom: 18px;
+        }
+
+        .self_button2{
+            display: flex;
+            margin-right: 103px; /* 右侧的间距 */
+            font-size: 22px;
+            color: #959595;
+            margin-bottom: 18px;
+        }
+
+
+        .icon1 {
+            /* 图标样式 */
+            display: inline-block;
+            width: 15px; /* 设置图标的宽度 */
+            height: 15px; /* 设置图标的高度 */
+            vertical-align: middle; /* 垂直对齐方式设为居中 */
+            background-size: cover;
+            background-image: url("/static/images/l1.png");
+        }
+
+        .icon2 {
+            /* 图标样式 */
+            display: inline-block;
+            width: 15px; /* 设置图标的宽度 */
+            height: 15px; /* 设置图标的高度 */
+            vertical-align: middle; /* 垂直对齐方式设为居中 */
+            background-size: cover;
+            background-image: url("/static/images/l2.png");
+        }
+
+        .icon3 {
+            /* 图标样式 */
+            display: inline-block;
+            width: 15px; /* 设置图标的宽度 */
+            height: 15px; /* 设置图标的高度 */
+            vertical-align: middle; /* 垂直对齐方式设为居中 */
+            background-size: cover;
+            background-image: url("/static/images/l3.png");
+        }
+
+        .icon4 {
+            /* 图标样式 */
+            display: inline-block;
+            width: 15px; /* 设置图标的宽度 */
+            height: 15px; /* 设置图标的高度 */
+            vertical-align: middle; /* 垂直对齐方式设为居中 */
+            background-size: cover;
+            background-image: url("/static/images/l4.png");
+        }
+
+        .icon5 {
+            /* 图标样式 */
+            display: inline-block;
+            width: 15px; /* 设置图标的宽度 */
+            height: 15px; /* 设置图标的高度 */
+            vertical-align: middle; /* 垂直对齐方式设为居中 */
+            background-size: cover;
+            background-image: url("/static/images/l5.png");
+        }
+
+        .icon6 {
+            /* 图标样式 */
+            display: inline-block;
+            width: 15px; /* 设置图标的宽度 */
+            height: 15px; /* 设置图标的高度 */
+            vertical-align: middle; /* 垂直对齐方式设为居中 */
+            background-size: cover;
+            background-image: url("/static/images/l6.png");
+        }
+
+        .face1 {
+            /* 图标样式 */
+            display: inline-block;
+            width: 40px; /* 设置图标的宽度 */
+            height: 40px; /* 设置图标的高度 */
+            vertical-align: middle; /* 垂直对齐方式设为居中 */
+            background-size: cover;
+            background-image: url("/static/images/Hanwen.jpg");
+        }
+
+        .face2 {
+            /* 图标样式 */
+            display: inline-block;
+            width: 40px; /* 设置图标的宽度 */
+            height: 40px; /* 设置图标的高度 */
+            vertical-align: middle; /* 垂直对齐方式设为居中 */
+            background-size: cover;
+            background-image: url("/static/images/Tianhang.jpg");
+        }
+
+</style>
+    <div class="first_header">{% include "kits/homepage_header.html" %}</div>
+
+        <div class="block">
+            <div class="first_text">
+                <a href="{% url 'club:list_club' %}">
+                    <h4 class="list-group-item-heading">[置顶] 社团管理公告</h4></a>
+            </div>
+        </div>
+
+        <div class="block1">
+            <div class="self_button">
+                <span class="icon1"></span><p>尊敬的用户您好，在创建社团及开展相关活动时，请遵守中华人民共和国相关法律法规</p>
+            </div>
+            <div class="self_button">
+                <span class="icon2"></span><p>社团成员有义务维护网络环境的风朗气清，在使用“联络他人”“发布活动”等功能时，请您文明用语、尊重他人</p>
+            </div>
+             <div class="self_button">
+                <span class="icon3"></span><p>我们支持社团积极开展活动，但开展大规模集会活动前请您向有关部门报备，并遵守相关法律法规</p>
+            </div>
+            <div class="self_button">
+                <span class="icon4"></span><p>本服务基于华为云，符合相关监管要求，请您自觉回避使用任何可能涉及歧视、侮辱、伤害中华民族感情的言论</p>
+            </div>
+        </div>
+
+        <div class="block">
+            <div class="first_text">
+                <a href="https://github.com/rowerman/SJTU_ClubManageSystem">
+                    <h4 class="list-group-item-heading">[关于我们] 开发人员名单</h4></a>
+            </div>
+        </div>
+
+        <div class="block2">
+            <div class="self_button1">
+                <img name="user_face" src="/static/images/Hanwen.jpg" class="img-circle" width="80" height="80">
+            </div>
+            <div class="self_button1">
+                <img name="user_face" src="/static/images/Tianhang.jpg" class="img-circle" width="80" height="80">
+            </div>
+            <div class="self_button1">
+                <img name="user_face" src="/static/images/Junjie.jpg" class="img-circle" width="80" height="80">
+            </div>
+            <div class="self_button1">
+                <img name="user_face" src="/static/images/Haochen.jpg" class="img-circle" width="80" height="80">
+            </div>
+            <div class="self_button1">
+                <img name="user_face" src="/static/images/Haoxin.jpg" class="img-circle" width="80" height="80">
+            </div>
+        </div>
+
+        <div class="block2">
+            <div class="self_button2">
+                <a href="https://github.com/rowerman"><p>Hanwen</p></a>
+            </div>
+            <div class="self_button2">
+                <a href="https://github.com/zth855"><p>Tianhang</p></a>
+            </div>
+            <div class="self_button2">
+                <a href="https://github.com/Aries-441"><p>Junjie</p></a>
+            </div>
+            <div class="self_button2">
+                <a href="https://github.com/xhc12138"><p>Haochen</p></a>
+            </div>
+            <div class="self_button2">
+                <a href="https://github.com/LoBreeze"><p>Haoxin</p></a>
+            </div>
+
+        </div>
+
 
 {% endblock %}

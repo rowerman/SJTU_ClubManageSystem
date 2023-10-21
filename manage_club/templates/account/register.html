@@ -71,6 +71,36 @@
         .log-tit h3{color:#c9151e; font-weight:bold; font-size:36px; font-family:shsc; position:relative; z-index:10;left:-150px  }
         .log-tit span{display:block; position:absolute; top:42px; left:-130px; z-index:1;  line-height:1em;  font-size:30px; font-weight:bold;  font-family:shsc; color:#b39c9c41; }
     </style>
+
+    <script>
+        function checkSpecialCharacters(input) {
+          var regex = /[/?!*<>&"']/;
+          if (regex.test(input)) {
+            alert("用户名中包含特殊字符[/\?\!\*\<\>\&\"\'\]，请删除后再提交。");
+            return false;
+          }
+          return true;
+        }
+    
+        function validateEmail(email) {
+          var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          return regex.test(email);
+        }
+    
+        function validateForm() {
+          var usernameInput = document.getElementById("id_username").value;
+          var emailInput = document.getElementById("id_email").value;
+    
+          if (!checkSpecialCharacters(usernameInput)) {
+            return false;
+          }
+    
+          if (!validateEmail(emailInput)) {
+            alert("请输入有效的邮箱地址。");
+            return false;
+          }
+        }
+      </script>
 </head>
 <body>
     <div class="container-diy">
@@ -112,7 +142,8 @@
                     <div class="log-not clearfix" id="newsnotice">
 
                       <div class="empty-line1"></div>
-                      <form class="form-horizontal" action="." method="post">{% csrf_token %}
+                      <form class="form-horizontal" action="." method="post" onsubmit="return validateForm()">
+                        {% csrf_token %}
                         <div class="form-group">
                           <label for="{{ form.username.id_for_label }}" class="col-md-5 control-label">Username</label>
                           <div class="col-md-6 text-left">

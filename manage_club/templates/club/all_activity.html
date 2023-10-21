@@ -75,9 +75,6 @@
 
 
 
-
-
-
 <div class="row text-center vertical-middle-sm">
     <div class="text-center vertical-middle-sm" style="margin-left: 10px">
     <form class="form-horizontal" action="{% url 'club:all_activity' %}" method="post">{% csrf_token %}
@@ -97,8 +94,11 @@
     {% for activity in activities %}
         <div class="block">
             <div class="first_text">
-                <a href="{% url 'club:activity_detail' activity.id %}">
-                <h4 class="list-group-item-heading">{{ activity.name }}</h4></a>
+                <a href="javascript:void(0);"
+                   onclick="showLayerWindow('{{ activity.name }}', '{{ activity.begin_date | date:" Y-m-d h:m:s" }}', '{{ activity.end_date | date:" Y-m-d h:m:s" }}', '{{ activity.description }}')">
+                <h4 class="list-group-item-heading">{{ activity.name }}</h4>
+
+
             </div>
             <div class="text"><p class="list-group-item-text">本活动由<a href="{% url 'club:club_detail' activity.belong.id %}">{{ activity.belong.name }}</a>承办</p></div>
             <div class="text"><p class="list-group-item-text">{{ activity.description |slice:'70'|linebreaks }}</p></div>
@@ -123,5 +123,20 @@
 
     {% include "paginator.html" %}
 
+<script type="text/javascript" src='{% static "js/jquery.js" %}'></script>
+<script type="text/javascript" src="{% static 'js/layer.js' %}"></script>
+
+<script>
+    function showLayerWindow(activityName, beginDate, endDate, description) {
+    layer.open({
+        title: '活动信息',
+        content: '<p>活动名称：' + activityName + '</p>' +
+                 '<p>活动开始时间：' + beginDate + '</p>' +
+                 '<p>活动结束时间：' + endDate + '</p>' +
+                 '<p>活动描述：' + description + '</p>',
+        area: ['500px', '300px']
+    });
+}
+</script>
 
 {% endblock %}
