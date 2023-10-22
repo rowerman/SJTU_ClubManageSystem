@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}articles{% endblock %}
+{% block content %}
+<style>
+.glyphicon {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-family: 'Glyphicons Halflings';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  font-size: 20px;
+  font-weight: bold;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.glyphicon-left-arrow:before {
+  content: "\2190";
+}
+</style>
+
+<div class="row text-center vertical-middle-sm">
+    <h1>{{ club.name }}的广告们</h1>
+</div>
+<div class="row">
+    <a name="back" href="{% url 'club:manage_Myclub' %}"><span class="glyphicon glyphicon-left-arrow" style="margin-left: 20px"></span></a>
+</div>
+<div>
+    <table class="table table-hover" style="margin-top: 10px">
+        <tr>
+            <td>序号</td>
+            <td>活动名称</td>
+            <td>是否正在展示中</td>
+            <td>操作</td>
+        </tr>
+        {% for ad in ads %}
+        <tr id="{{ forloop.counter }}">
+            <td>{{ forloop.counter }}</td>
+            <td><a href="{% url 'club:ad_detail_owner' ad.id %}">{{ ad.title }}</a></td>
+            <td>{{ ad.show }}</td>
+            <td>
+                <a name="delete" href="javascript:" onclick="delete_ad({{ ad.id}})"><span class="glyphicon glyphicon-trash" style="margin-left: 20px"></span></a>
+            </td>
+        </tr>
+        {% empty %}
+        <p>这个社团没有广告~</p>
+        {% endfor %}
+    </table>
+</div>
+
+
+<div class="container">
+    {% include "paginator.html" %}
+</div>
+
+<script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/layer.js' %}"></script>
+<script type="text/javascript">
+    function delete_ad(ad_id){
+    var index = layer.open({
+        type: 1,
+        skin:"layui-layer-rim",
+        area: ["400px","200px"],
+        title: "Comfirmation Exit",
+        content: '<div class="text-center" style="margin-top: 20px"><p>确定要删除这个活动嘛</p></div>',
+        btn: ['yes','no'],
+        yes: function (index,layero){
+            $.ajax({
+                url: "{% url 'club:delete_ad' %}",
+                type: "POST",
+                data: {"ad_id":ad_id},
+                success: function (e){
+                    if(e=="success"){
+                        layer.msg("deleted~");
+                        window.location.href = "{% url 'club:manage_ad' club_id %}";
+                    }
+                    else{
+                        layer.msg("error!");
+                    }
+                },
+            });
+            },
+        })
+    }
+</script>
+{% endblock %}

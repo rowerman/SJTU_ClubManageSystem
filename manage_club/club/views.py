@@ -683,7 +683,7 @@ def create_ad(request,club_id):
             new_ad = create_ad_form.save(commit=False)
             new_ad.owner = club
             new_ad.save()
-            return redirect("club:list_ads",club_id)
+            return redirect("club:manage_ad",club_id)
 
 @login_required(login_url='/account/login/')
 def list_ads(request,club_id):
@@ -780,6 +780,22 @@ def delete_ad(request):
     except:
         return HttpResponse("error")
 
+@login_required(login_url='/account/login/')
+def manage_ad(request,club_id):
+    club = Club.objects.get(id=club_id)
+    ads = club.advertisement.all()
+    paginator = Paginator(ads, 8)
+    page = request.GET.get('page')
+    try:
+        current_page = paginator.page(page)
+        ads = current_page.object_list
+    except PageNotAnInteger:
+        current_page = paginator.page(1)
+        ads = current_page.object_list
+    except EmptyPage:
+        current_page = paginator.page(paginator.num_pages)
+        ads = current_page.object_list
+    return render(request,"club/manage_ad.html",{"ads":ads,"club_id":club_id,"club":club,"page":current_page})
 
 
 

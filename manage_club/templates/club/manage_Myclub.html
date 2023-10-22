@@ -149,6 +149,9 @@
             <div class="self_button">
                 <span class="icon6"></span><a href="{% url 'club:create_ad' club.id %}"><p>创建社团广告</p></a>
             </div>
+            <div class="self_button">
+                <span class="icon6"></span><a href="{% url 'club:manage_ad' club.id %}"><p>管理社团广告</p></a>
+            </div>
         </div>
 
     {% empty %}
