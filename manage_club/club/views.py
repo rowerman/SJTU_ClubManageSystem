@@ -797,7 +797,21 @@ def manage_ad(request,club_id):
         ads = current_page.object_list
     return render(request,"club/manage_ad.html",{"ads":ads,"club_id":club_id,"club":club,"page":current_page})
 
-
+def view_ad_lists(request,club_id):
+    club = Club.objects.get(id=club_id)
+    ads = club.advertisement.all()
+    paginator = Paginator(ads, 8)
+    page = request.GET.get('page')
+    try:
+        current_page = paginator.page(page)
+        ads = current_page.object_list
+    except PageNotAnInteger:
+        current_page = paginator.page(1)
+        ads = current_page.object_list
+    except EmptyPage:
+        current_page = paginator.page(paginator.num_pages)
+        ads = current_page.object_list
+    return render(request,"club/view_ad_lists.html",{"ads":ads,"club_id":club_id,"club":club,"page":current_page})
 
 
 
