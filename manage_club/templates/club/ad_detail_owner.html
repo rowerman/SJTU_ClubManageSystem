@@ -3,29 +3,48 @@
 {% block title %}我的信息{% endblock %}
 {% block content %}
 
-<div>
-    <div class="text-center">
-        <h1>{{ ad.title }}</h1>
-        <p>所属社团：{{ club_name }}</p>
-    </div>
-    <div class="row text-center">
-        <div class="col-md-4 text-right"><span>广告描述：</span></div>
-        <div class="col-md-8 text-left">{{ ad.content }}</div>
-    </div>
+<style>
+    body {
+        background-image: url("{% static './images/ad_background.jpeg' %}");
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    .information {
+        margin: 20px auto;
+        padding: 20px;
+        background-color: rgba(245, 245, 245, 1);
+        border-radius: 10px;
+        max-width: 600px;
+    }
+
+</style>
+
+
+<div class="text-center">
     <div>
+        <h1 style="font-weight: bold">{{ ad.title }}</h1>
+        <p style="margin-top: 20px; font-size:15px;">所属社团：{{ club_name }}</p>
+    </div>
+
+    <div style="margin-top: 20px;">
     {% if ad.video %}
     <video src="{{ ad.video.url }}" controls="controls" class="text-center" height="500px" width="1000px"></video>
     {% else %}
-    <p class="text-center">这个广告没有配套视频~</p>
+    <p style="margin-top: 20px; font-size:30px; font-weight: bold">这个广告没有配套视频~</p>
     {% endif %}
     </div>
-    <div>
+    <div class="text-left" style="margin-left: 70px; margin-top: 20px; font-size: 20px;">
         {% if ad.attach %}
         <p><a href="{{ ad.attach.url }}">{{ ad.attach.name | cut:"club/club_" }}</a></p>
         {% endif %}
     </div>
+    <div class="information">
+        <div style="font-size:25px; font-weight: bold"><span>广告描述：</span></div>
+        <div class="text-left" style="margin-top: 5px;">{{ ad.content }}</div>
+    </div>
     <div class="clearfix">
-        <button class="btn btn-lg" onclick="delete_ad({{ ad.id }})">删除该条广告</button>
+        <button class="btn btn-primary btn-lg" onclick="delete_ad({{ ad.id }})">删除该条广告</button>
     </div>
 </div>
 
