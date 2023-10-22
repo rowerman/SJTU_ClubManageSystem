@@ -33,17 +33,13 @@
         <tr>
             <td>序号</td>
             <td>广告名称</td>
-            <td>是否正在展示中</td>
-            <td>操作</td>
+
         </tr>
         {% for ad in ads %}
         <tr id="{{ forloop.counter }}">
             <td>{{ forloop.counter }}</td>
-            <td><a href="{% url 'club:ad_detail_owner' ad.id %}">{{ ad.title }}</a></td>
-            <td>{{ ad.show }}</td>
-            <td>
-                <a name="delete" href="javascript:" onclick="delete_ad({{ ad.id}})"><span class="glyphicon glyphicon-trash" style="margin-left: 20px"></span></a>
-            </td>
+            <td><a href="{% url 'club:ad_detail_other' ad.id %}">{{ ad.title }}</a></td>
+
         </tr>
         {% empty %}
         <p>这个社团没有广告~</p>
