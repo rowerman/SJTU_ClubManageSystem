@@ -14,6 +14,25 @@
 
 <button onclick="goBack()">返回上一页</button>
 
+<style>
+    body {
+        background-image: url("{% static './images/background4.jpeg' %}");
+        background-size: cover;
+        background-repeat: no-repeat;
+
+    }
+
+    .information {
+        margin: 20px auto;
+        padding: 20px;
+        background-color: rgba(245, 245, 245, 0.7);
+        border-radius: 10px;
+        max-width: 600px;
+    }
+</style>
+
+
+
 <script>
     function goBack() {
     history.back(); 
@@ -33,27 +52,27 @@
       }
 </script>
 
-<div style="margin-left: 200px;margin-top: 10px">
+<div class="information">
     <form enctype="multipart/form-data" action="." method="post"onsubmit="return validateForm()">
         {% csrf_token %}
-        <div style="margin-top: 10px">
-            <div class="col-md-2 text-left"><span>广告标题：</span></div>
-            <div class="col-md-10 text-left">{{ form.title }}</div>
+        <div>
+            <div style="margin-top: 20px ; font-size: 20px; font-weight: bold; font-family: STHupo;"><span>广告标题：</span></div>
+            <div style="margin-left: 120px; margin-top: -25px">{{ form.title }}</div>
         </div>
-        <div style="margin-top: 20px">
-            <div class="col-md-2 text-left"><span>广告内容：</span></div>
-            <div class="col-md-10 text-left">{{ form.content }}</div>
+        <div>
+            <div style="margin-top: 20px ; font-size: 20px; font-weight: bold; font-family: STHupo;"><span >广告内容：</span></div>
+            <div style="margin-left: 120px; margin-top: -25px">{{ form.content }}</div>
         </div>
-        <div style="margin-top: 20px">
-            <div class="col-md-2 text-left"><span>上传视频：</span></div>
-            <div class="col-md-10 text-left">{{ form.video }}</div>
+        <div>
+            <div style="margin-top: 20px ; font-size: 20px; font-weight: bold; font-family: STHupo;"><span>上传视频：</span></div>
+            <div style="margin-left: 120px; margin-top: -25px">{{ form.video }}</div>
         </div>
-        <div style="margin-top: 20px">
-            <div class="col-md-2 text-left"><span>上传附件：</span></div>
-            <div class="col-md-10 text-left">{{ form.attach }}</div>
+        <div>
+            <div style="margin-top: 20px ; font-size: 20px; font-weight: bold; font-family: STHupo;"><span>上传附件：</span></div>
+            <div style="margin-left: 120px; margin-top: -25px">{{ form.attach }}</div>
         </div>
-        <div style="margin-top: 20px" class="text-center">
-            <input type="submit" value="create Ad">
+        <div style="margin-top: 30px; margin-left: 250px">
+            <input type="submit" class="btn btn-primary btn-lg" value="create Ad">
         </div>
     </form>
 </div>
