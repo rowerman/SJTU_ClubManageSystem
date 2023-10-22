@@ -30,6 +30,8 @@ def user_login(request):
         else:
             return HttpResponse("Invalid login!")
 
+    else:
+        login_form = LoginForm(request.POST)
     if request.method == "GET":
         login_form = LoginForm()
         return render(request, "registration/login.html", {"form": login_form})

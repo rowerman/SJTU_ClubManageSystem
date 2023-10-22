@@ -5,7 +5,7 @@
  * @StudentNumber: 521021911059
  * @Date: 2023-10-09 23:59:22
  * @E-mail: sjtu.liu.jj@gmail.com/sjtu.1518228705@sjtu.edu.cn
- * @LastEditTime: 2023-10-22 03:00:42
+ * @LastEditTime: 2023-10-22 14:51:19
 -->
 {% extends "base_withoutheader.html" %}
 {% load static %}
@@ -147,39 +147,53 @@
 
     <div class="col-md-6" >
 
-      <div class="log-con log-bxsd" style="height: 400px" >
+      <div class="log-con log-bxsd" style="height: 580px" >
         <div class="log-tit">
           <h3>登录</h3>
           <span>Login</span>
         </div>
-        <div class="log-not clearfix" style="height: 250px" id="newsnotice">
+        <div class="log-not clearfix" style="height: 380px" id="newsnotice">
           <p style="margin-top: 60px"></p>
           <p>Input your username and password</p>
           <p style="margin-top: 10px"></p>
 
           <form class="form-horizontal" action="{% url 'account:user_login' %}" method="post" onsubmit="return encryptPassword()&validateForm()" id="loginForm">
             {% csrf_token %}
+
             <div class="form-group">
               <label for="{{ form.username.id_for_label }}" class="col-md-5 control-label" style="color: red">
                 <span class="glyphicon glyphicon-user"></span>Username
               </label>
               <div class="col-md-6 text-left">{{ form.username }}</div>
             </div>
+
             <div class="form-group">
               <label for="{{ form.password.id_for_label }}" class="col-md-5 control-label" style="color: blue">
-                <span class="glyphicon glyphicon-lock"></span>Password
+                <i class="fas fa-key"></i>Password
               </label>
-              <div class="col-md-6 text-left">
-                
-                <input type="password" id="{{ form.password.id_for_label }}" name="{{ form.password.html_name }}" class="form-control">
-                <button type="button" id="togglePasswordBtn" onclick="togglePasswordVisibility();">
-                  <span class="input-group-text" id="togglePassword" style="cursor: pointer;"><i class="fas fa-eye"></i></span>
-                </button>
-
-                
+              <div class="col-md-5">
+                <div class="row">
+                  <div class="col-md-8">
+                    <input type="password" id="{{ form.password.id_for_label }}" name="{{ form.password.html_name }}" class="form-control">
+                  </div>
+                  <div class="col-md-2">
+                    <button type="button" id="togglePasswordBtn" onclick="togglePasswordVisibility();" class="btn btn-default">
+                      <span class="input-group-text" id="togglePassword" style="cursor: pointer;"><i class="fas fa-eye"></i></span>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
-
+            
+            <div class="form-group">
+              <label for="{{ form.captcha.id_for_label }}" class="col-md-5 control-label" style="color: green">
+                <i class="fas fa-shield-alt"></i> Captcha
+              </label>
+              <div class="col-md-3 text-left">
+                {{ form.captcha }}
+              </div>
+            </div>
+            <p style="margin-top: 15px"></p>
             <input type="submit" class="btn btn-primary btn-lg" value="Login" >
           </form>
 

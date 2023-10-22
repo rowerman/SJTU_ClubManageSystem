@@ -1,11 +1,11 @@
 from django import forms
 from django.contrib.auth.models import User
 from .models import UserInfo
-
+from captcha.fields import CaptchaField
 class LoginForm(forms.Form):
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
-
+    captcha = CaptchaField(label="Captcha", error_messages={"invalid":u'验证码错误'})
 class RegistrationForm(forms.ModelForm):
     password = forms.CharField(label="Password",widget=forms.PasswordInput)
     password2 = forms.CharField(label="Confirm password",widget=forms.PasswordInput)

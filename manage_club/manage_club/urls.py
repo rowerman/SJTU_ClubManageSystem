@@ -30,5 +30,6 @@ urlpatterns = [
     url(r'^club/', include('club.urls', namespace='club')),
     url(r'^home/',include("home.urls",namespace='home')),
     url(r'^trade/',include('trade.urls',namespace='trade')),
+    path('captcha/', include('captcha.urls')),
 ]
 urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

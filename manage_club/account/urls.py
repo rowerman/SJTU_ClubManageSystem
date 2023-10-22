@@ -3,6 +3,9 @@ from . import views
 from django.conf import settings
 from django.contrib.auth import views as auth_views
 from django.urls import path
+from captcha.views import captcha_image
+from django.conf.urls import include
+
 
 app_name='account'
 
@@ -30,4 +33,7 @@ urlpatterns = [
     url(r'^edit-my-information/$',views.myself_edit,name="edit_my_information"),
     url(r'^my-image/$',views.my_image,name="my_image"),
     url(r'^search/$',views.search,name="search"),
+    
+    path('captcha/', include('captcha.urls')),
+
 ]
