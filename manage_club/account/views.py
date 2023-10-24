@@ -12,27 +12,36 @@ from django.contrib import messages
 from .forms import UserInfoForm, LoginForm, RegistrationForm, UserForm, SearchForm
 from .models import UserInfo
 from club.models import InClub
-
+from cryptography.hazmat.primitives.asymmetric import rsa
+from cryptography.hazmat.primitives import serialization
+from django.http import JsonResponse
+from django.http import HttpResponse
+from django.shortcuts import render
 
 def user_login(request):
-    if request.method == "POST":
-        login_form = LoginForm(request.POST)
-        if login_form.is_valid():
-            cd = login_form.cleaned_data
-            user = authenticate(username=cd['username'], password=cd['password'])
-
-            if user:
-                login(request, user)
-                return redirect('/home/homepage/')
-            else:
-                messages.success(request, '用户名或密码错误！')
-                return redirect('/account/login/')
-        else:
-            return HttpResponse("Invalid login!")
-
-    else:
-        login_form = LoginForm(request.POST)
     if request.method == "GET":
+        # 生成RSA密钥对
+        login_form = LoginForm()
+        private_key = rsa.generate_private_key(
+            public_exponent=65537,
+            key_size=1024
+        )
+        public_key = private_key.public_key()
+        # 获取公钥的PEM表示
+        public_pem = public_key.public_bytes(
+            encoding=serialization.Encoding.PEM,
+            format=serialization.PublicFormat.SubjectPublicKeyInfo
+        )
+        # 存储私钥，用于后续加密
+
+        # 将公钥设置为Cookie
+        response = render(request, 'registration/login.html', {
+            'form': login_form,
+            'public_key': public_pem.decode('utf-8')
+        })
+        response.set_cookie('publicKey', public_pem.decode('utf-8'))
+        return response
+    else:
         login_form = LoginForm()
         return render(request, "registration/login.html", {"form": login_form})
 

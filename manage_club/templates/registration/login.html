@@ -5,7 +5,7 @@
  * @StudentNumber: 521021911059
  * @Date: 2023-10-09 23:59:22
  * @E-mail: sjtu.liu.jj@gmail.com/sjtu.1518228705@sjtu.edu.cn
- * @LastEditTime: 2023-10-22 14:51:19
+ * @LastEditTime: 2023-10-24 15:28:37
 -->
 {% extends "base_withoutheader.html" %}
 {% load static %}
@@ -59,6 +59,16 @@
 <!-- 添加FontAwesome图标库的CSS链接 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/3.0.0/jsencrypt.min.js"></script>
+<script defer>
+  function setPublicKeyCookie() {
+
+  }
+
+
+</script>
+
+
 <script>
 
   document.getElementById("loginForm").addEventListener("submit", function(event) {
@@ -106,6 +116,31 @@
 
 
   function encryptPassword() {
+
+    // 创建加密实例
+    // 从localStorage中获取公钥
+    // 获取公钥从Cookie
+    var cookies = document.cookie.split(';');
+    var publicKey = null;
+    for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim();
+        if (cookie.startsWith('publicKey=')) {
+            publicKey = cookie.substring('publicKey='.length);
+            break;
+        }
+    }
+    var encrypt = new JSEncrypt();
+    encrypt.setPublicKey(publicKey);
+
+    var passwordInput = document.getElementById("{{ form.password.id_for_label }}");
+    var password = passwordInput.value.trim();
+    // 加密密码
+    var encryptedPassword = encrypt.encrypt(password);
+
+    // 更新表单字段值为加密后的值
+    passwordInput.value = encryptedPassword;
+    return true;
+    /*
     var passwordInput = document.getElementById("{{ form.password.id_for_label }}");
     var password = passwordInput.value.trim();
     // 使用 CryptoJS 进行 SHA256 加密
@@ -113,6 +148,7 @@
     // 替换密码字段的明文值为加密后的值
     passwordInput.value = encryptedPassword;
     return true; // 允许表单提交
+    */
   }
 
 
@@ -157,7 +193,7 @@
           <p>Input your username and password</p>
           <p style="margin-top: 10px"></p>
 
-          <form class="form-horizontal" action="{% url 'account:user_login' %}" method="post" onsubmit="return encryptPassword()&validateForm()" id="loginForm">
+          <form class="form-horizontal" id='form' action="{% url 'account:user_login' %}" method="post" onsubmit="return encryptPassword()&validateForm()" id="loginForm">
             {% csrf_token %}
 
             <div class="form-group">
@@ -194,7 +230,7 @@
               </div>
             </div>
             <p style="margin-top: 15px"></p>
-            <input type="submit" class="btn btn-primary btn-lg" value="Login" >
+            <input type="submit" class="btn btn-primary btn-lg" value="Login" id="e">
           </form>
 
 
