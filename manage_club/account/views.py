@@ -8,7 +8,8 @@ from django.urls import reverse
 from django import forms
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
-
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from .forms import UserInfoForm, LoginForm, RegistrationForm, UserForm, SearchForm
 from .models import UserInfo
 from club.models import InClub
@@ -17,22 +18,33 @@ from cryptography.hazmat.primitives import serialization
 from django.http import JsonResponse
 from django.http import HttpResponse
 from django.shortcuts import render
+from cryptography.hazmat.primitives import hashes
+import os
+from Cryptodome.PublicKey import RSA
+from Cryptodome.Cipher import  PKCS1_v1_5
+import base64
+from urllib import parse
+from django.shortcuts import render
+from django.http import *
+
+from Crypto.PublicKey import RSA
+from Crypto.Cipher import PKCS1_v1_5
+from Crypto import Random
+import base64
 
 def user_login(request):
     if request.method == "GET":
         # 生成RSA密钥对
         login_form = LoginForm()
-        private_key = rsa.generate_private_key(
-            public_exponent=65537,
-            key_size=1024
-        )
-        public_key = private_key.public_key()
-        # 获取公钥的PEM表示
-        public_pem = public_key.public_bytes(
-            encoding=serialization.Encoding.PEM,
-            format=serialization.PublicFormat.SubjectPublicKeyInfo
-        )
-        # 存储私钥，用于后续加密
+
+        #随机
+        gen_random = Random.new().read
+        # 生成秘钥
+        rsakey = RSA.generate(1024,gen_random)
+        public_pem = rsakey.publickey().exportKey()
+        private_pem = rsakey.exportKey()
+        with open("rsa.private.pem", mode="wb") as f:
+            f.write(private_pem)
 
         # 将公钥设置为Cookie
         response = render(request, 'registration/login.html', {
@@ -42,8 +54,27 @@ def user_login(request):
         response.set_cookie('publicKey', public_pem.decode('utf-8'))
         return response
     else:
-        login_form = LoginForm()
-        return render(request, "registration/login.html", {"form": login_form})
+        login_form = LoginForm(request.POST)  
+
+        if login_form.is_valid():
+                            
+            cd = login_form.cleaned_data
+            password = cd['password']
+            with open("rsa.private.pem", mode="r") as f:
+                    prikey = f.read()
+                    rsa_pk = RSA.importKey(prikey)
+                    rsa = PKCS1_v1_5.new(rsa_pk)
+                    result = rsa.decrypt(base64.b64decode(password), None)
+            user = authenticate(username=cd['username'],password=result.decode("utf-8"))
+
+            if user:
+                login(request, user)
+                return redirect('/home/homepage/')
+            else:
+                messages.success(request, '用户名或密码错误！')
+                return redirect('/account/login/')
+        else:
+            return HttpResponse("Invalid login!")
 
 def register(request):
     if request.method == "POST":

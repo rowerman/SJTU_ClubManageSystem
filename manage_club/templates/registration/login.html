@@ -5,7 +5,7 @@
  * @StudentNumber: 521021911059
  * @Date: 2023-10-09 23:59:22
  * @E-mail: sjtu.liu.jj@gmail.com/sjtu.1518228705@sjtu.edu.cn
- * @LastEditTime: 2023-10-24 15:28:37
+ * @LastEditTime: 2023-10-24 22:55:50
 -->
 {% extends "base_withoutheader.html" %}
 {% load static %}
@@ -115,43 +115,81 @@
   }
 
 
+  function convertPublicKey(publicKey) {
+  publicKey = publicKey.replace(/\\/g, "");
+      publicKey = publicKey.replace(/\r?\n|\r|012/g, "")
+      publicKey = publicKey.replace(/^"|"$/g, ''); // 删除开头和结尾的引号
+      //publicKey = publicKey.replace(/(.{64})/g, '$1\n'); // 在每行末尾添加换行符
+    
+      var formattedKey = publicKey ;
+      return formattedKey;
+
+}
+// 使用私匙进行数据解密码
+function decryptData(encrypted) {   
+  var uncrypted;
+  var rsadecrypt=new JSEncrypt(); 
+  rsadecrypt.setPrivateKey(privateKey);
+  uncrypted=rsadecrypt.decrypt(encrypted);  
+   return uncrypted;
+}
+
+    
   function encryptPassword() {
+    
+    var passwordInput = document.getElementById("{{ form.password.id_for_label }}");
+    var password = passwordInput.value.trim();
 
-    // 创建加密实例
-    // 从localStorage中获取公钥
-    // 获取公钥从Cookie
-    var cookies = document.cookie.split(';');
-    var publicKey = null;
-    for (var i = 0; i < cookies.length; i++) {
-        var cookie = cookies[i].trim();
-        if (cookie.startsWith('publicKey=')) {
-            publicKey = cookie.substring('publicKey='.length);
-            break;
-        }
-    }
+    // 使用 CryptoJS 进行 SHA256 加密
+    password = CryptoJS.SHA256(password).toString();
     var encrypt = new JSEncrypt();
-    encrypt.setPublicKey(publicKey);
+    var privateKey = encrypt.getPrivateKey();
+    var publicKey = encrypt.getPublicKey();
+    console.log(publicKey)
+        // 获取公钥从Cookie
+        var cookies = document.cookie.split(';');
+        var publicKey2 = null;
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            if (cookie.startsWith('publicKey=')) {
+                publicKey2 = cookie.substring('publicKey='.length);
+                break;
+            }
+        }
+        console.log(publicKey2)
+        publicKey3=convertPublicKey(publicKey2);
+        console.log(publicKey3);
+        var rsaEncrypt = new JSEncrypt();
+        rsaEncrypt.setPublicKey(publicKey3);
+        encrypted = rsaEncrypt.encrypt(password);
+        console.log(encrypted);
+        // 更新表单字段值为加密后的值
+        passwordInput.value = encrypted;
 
-    var passwordInput = document.getElementById("{{ form.password.id_for_label }}");
-    var password = passwordInput.value.trim();
-    // 加密密码
-    var encryptedPassword = encrypt.encrypt(password);
 
-    // 更新表单字段值为加密后的值
-    passwordInput.value = encryptedPassword;
-    return true;
-    /*
-    var passwordInput = document.getElementById("{{ form.password.id_for_label }}");
-    var password = passwordInput.value.trim();
-    // 使用 CryptoJS 进行 SHA256 加密
-    var encryptedPassword = CryptoJS.SHA256(password).toString();
-    // 替换密码字段的明文值为加密后的值
-    passwordInput.value = encryptedPassword;
-    return true; // 允许表单提交
-    */
-  }
+    var uncrypted;
+    var rsadecrypt=new JSEncrypt(); 
+    rsadecrypt.setPrivateKey(privateKey);
+    uncrypted=rsadecrypt.decrypt(encrypted); 
+        console.log("Decrypted Text: " + uncrypted);
 
 
+
+
+    
+        return true;
+        /*
+        var passwordInput = document.getElementById("{{ form.password.id_for_label }}");
+        var password = passwordInput.value.trim();
+        // 使用 CryptoJS 进行 SHA256 加密
+        var encryptedPassword = CryptoJS.SHA256(password).toString();
+        // 替换密码字段的明文值为加密后的值
+        passwordInput.value = encryptedPassword;
+        return true; // 允许表单提交
+        */
+      }
+
+    
 </script>
 
 
