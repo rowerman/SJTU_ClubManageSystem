@@ -5,7 +5,7 @@
  * @StudentNumber: 521021911059
  * @Date: 2023-10-09 23:59:22
  * @E-mail: sjtu.liu.jj@gmail.com/sjtu.1518228705@sjtu.edu.cn
- * @LastEditTime: 2023-10-24 22:55:50
+ * @LastEditTime: 2023-10-26 10:01:51
 -->
 {% extends "base_withoutheader.html" %}
 {% load static %}
@@ -143,21 +143,18 @@ function decryptData(encrypted) {
     // 使用 CryptoJS 进行 SHA256 加密
     password = CryptoJS.SHA256(password).toString();
     var encrypt = new JSEncrypt();
-    var privateKey = encrypt.getPrivateKey();
-    var publicKey = encrypt.getPublicKey();
-    console.log(publicKey)
         // 获取公钥从Cookie
         var cookies = document.cookie.split(';');
-        var publicKey2 = null;
+        var publicKey = null;
         for (var i = 0; i < cookies.length; i++) {
             var cookie = cookies[i].trim();
             if (cookie.startsWith('publicKey=')) {
-                publicKey2 = cookie.substring('publicKey='.length);
+                publicKey = cookie.substring('publicKey='.length);
                 break;
             }
         }
-        console.log(publicKey2)
-        publicKey3=convertPublicKey(publicKey2);
+        console.log(publicKey)
+        publicKey3=convertPublicKey(publicKey);
         console.log(publicKey3);
         var rsaEncrypt = new JSEncrypt();
         rsaEncrypt.setPublicKey(publicKey3);
@@ -165,19 +162,7 @@ function decryptData(encrypted) {
         console.log(encrypted);
         // 更新表单字段值为加密后的值
         passwordInput.value = encrypted;
-
-
-    var uncrypted;
-    var rsadecrypt=new JSEncrypt(); 
-    rsadecrypt.setPrivateKey(privateKey);
-    uncrypted=rsadecrypt.decrypt(encrypted); 
-        console.log("Decrypted Text: " + uncrypted);
-
-
-
-
-    
-        return true;
+        return true;
         /*
         var passwordInput = document.getElementById("{{ form.password.id_for_label }}");
         var password = passwordInput.value.trim();
@@ -198,30 +183,12 @@ function decryptData(encrypted) {
 <script src="https://files.cnblogs.com/files/blogs/694608/js.js" color="0,0,255" opacity="1" count="119" zindex="-2">
 </script>
   <div class="header">  {% include "loginheadertest.html"%}</div>
-  <div class="row text-center vertical-middle-sm separator">
-    <div class="col-md-6" >
+  <div class="text-center vertical-middle-sm separator">
 
-      <div class="log-con log-bxsd" style="height: 400px" >
-        <div class="log-tit">
-          <h3>通知公告</h3>
-          <span>Notification</span>
-        </div>
-
-        <div class="log-not clearfix" style="height: 200px" id="newsnotice">
-          <!--<h1>Website Name</h1>-->
-        </div>				  
-  
-        <div class="log-fst" style="height: 200px" id="links">
-          <!--<h1>test001</h1>-->
-          
-        </div> 
-      </div>
-
-    </div>
 
     <div class="col-md-6" >
 
-      <div class="log-con log-bxsd" style="height: 580px" >
+      <div class="log-con log-bxsd" style="height: 580px;margin-left:50%;margin-right:50%;width:560px"  >
         <div class="log-tit">
           <h3>登录</h3>
           <span>Login</span>
